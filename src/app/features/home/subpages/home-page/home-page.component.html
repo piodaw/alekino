@@ -1,0 +1,12 @@
+<main>
+  <div class="date-wrapper">
+    <app-date-picker
+            (dateSelected)="handleSelectedDate($event)"
+            (daySelected)="handleSelectedDay($event)"
+    >
+    </app-date-picker>
+  </div>
+  <div class="showing-wrapper">
+    <app-movie-card [showing$]="showings$"></app-movie-card>
+  </div>
+</main>

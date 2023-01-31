@@ -1,15 +1,30 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from '@shared/ui/footer/footer'
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, FooterComponent],
   template: `
-    application shell
     <router-outlet></router-outlet>
+    <app-footer></app-footer>
   `,
-  styles: [],
+  styles: [`
+    /*:host {*/
+    /*  display: flex;*/
+    /*  flex-direction: column;*/
+    /*  min-height: 100vh;*/
+    /*}*/
+    
+    /*router-outlet {*/
+    /*  flex: 1;*/
+    /*}*/
+    
+    /*app-footer {*/
+    /*  flex-shrink: 0;*/
+    /*}*/
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {}

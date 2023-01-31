@@ -1,0 +1,11 @@
+main {
+  min-height: calc(100vh - var(--headerAndFooter-height));
+  margin-top: var(--header-height);
+}
+
+.date-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0;
+}

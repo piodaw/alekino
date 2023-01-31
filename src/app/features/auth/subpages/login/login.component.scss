@@ -1,0 +1,67 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.login-wrapper {
+  width: 400px;
+  height: 350px;
+  padding: 32px;
+  background-color: var(--surface);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+}
+
+.email-container,
+.password-container,
+mat-form-field {
+  width: 100%;
+}
+
+.password-container {
+  display: flex;
+}
+
+mat-label {
+  color: var(--text-primary);
+}
+
+input {
+  color: var(--text-primary)!important;
+  border: red;
+}
+
+::ng-deep .mat-form-field-outline {
+  border-color: var(--text-primary);
+}
+
+.icon-wrapper {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.submit {
+  background-color: var(--primaryLight) !important;
+  color: var(--text-primary) !important;
+}
