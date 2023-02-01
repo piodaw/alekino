@@ -34,10 +34,8 @@ import { NgForOf } from '@angular/common'
   styles: [`
     .footer-wrapper {
       margin-top: 24px;
-      padding: 0 20px;
       width: 100%;
       height: 100px;
-      /*z-index: 2000;*/
       background-color: var(--primaryDark);
     }
 

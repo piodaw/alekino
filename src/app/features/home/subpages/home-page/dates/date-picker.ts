@@ -64,11 +64,14 @@ export class DatePickerComponent implements OnInit {
     this.activeRoute.queryParams.subscribe(params => {
       if (this.days.includes(params['date'])) {
         this.selectedDate = params['date'];
+        this.dateSelected.emit(this.dates[this.days.indexOf(params['date'])]);
       } else {
         this.router.navigate(['/404'], { replaceUrl: true })
       }
-    })
 
-    this.dateSelected.emit(format(new Date(), 'yyyy-MM-dd'));
+      if (!params['date']) {
+        this.dateSelected.emit(format(new Date(), 'yyyy-MM-dd'));
+      }
+    })
   }
 }

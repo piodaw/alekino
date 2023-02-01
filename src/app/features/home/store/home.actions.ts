@@ -3,9 +3,8 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store'
 import {
   Movie,
   MovieResponse,
-  Showing,
-  ShowingData,
-  ShowingResponse
+  ShowingById,
+  ShowingData
 } from 'src/app/features/home/shared/home.interfaces'
 
 export const MovieActions = createActionGroup({
@@ -31,6 +30,8 @@ export const ShowingsActions = createActionGroup({
   source: 'Showings',
   events: {
     'get showings': props<{ date: string, filters: string, hall_id: number }>(),
+
+    'get showing': props<{ showingId: number }>()
   }
 })
 
@@ -39,5 +40,8 @@ export const ShowingsApiActions = createActionGroup({
   events: {
     'get showings success': props<{ Showing: ShowingData }>(),
     'get showings failure': emptyProps(),
+
+    'get showing success': props<{ Showing: ShowingById }>(),
+    'get showing failure': emptyProps(),
   }
 })

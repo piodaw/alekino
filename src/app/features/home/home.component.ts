@@ -10,21 +10,7 @@ import { FooterComponent } from '@shared/ui/footer/footer'
     <router-outlet></router-outlet>
     <app-footer></app-footer>
   `,
-  styles: [`
-    /*:host {*/
-    /*  display: flex;*/
-    /*  flex-direction: column;*/
-    /*  min-height: 100vh;*/
-    /*}*/
-    
-    /*router-outlet {*/
-    /*  flex: 1;*/
-    /*}*/
-    
-    /*app-footer {*/
-    /*  flex-shrink: 0;*/
-    /*}*/
-  `],
+  styles: [``],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {}

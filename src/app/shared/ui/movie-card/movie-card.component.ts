@@ -5,6 +5,9 @@ import { ShowingData } from 'src/app/features/home/shared/home.interfaces'
 import { AsyncPipe, JsonPipe, NgForOf, NgIf, NgOptimizedImage } from '@angular/common'
 import { MatCardModule } from '@angular/material/card'
 import { MatButtonModule } from '@angular/material/button'
+import { Routing } from '@shared/routes/routing'
+import { RouterLink } from '@angular/router'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 @Component({
   selector: 'app-movie-card',
@@ -16,7 +19,9 @@ import { MatButtonModule } from '@angular/material/button'
     NgIf,
     NgForOf,
     NgOptimizedImage,
-    MatButtonModule
+    MatButtonModule,
+    RouterLink,
+    MatProgressSpinnerModule
   ],
   template: `
     <div class="showing-card-wrapper" *ngIf="showing$ | async as showing">
@@ -34,7 +39,7 @@ import { MatButtonModule } from '@angular/material/button'
               <p>{{ show.shortdescription }}</p>
             </div>
             <div class="hours-wrapper">
-              <button class="hours" mat-stroked-button color="accent" *ngFor="let hours of show.showings">
+              <button class="hours" mat-stroked-button color="accent" *ngFor="let hours of show.showings" (click)="redirectToReservationPage(hours.id)">
                 <div class="hour-button">
                   <span>{{ hours.start.split(" ")[1] }}</span>
                   <span>Sala: {{ hours.hallid }}</span>
@@ -132,4 +137,9 @@ import { MatButtonModule } from '@angular/material/button'
 export class MovieCardComponent {
   @Input() showing$!: Observable<ShowingData>
   @Output() movieSelected = new EventEmitter<string>();
+  @Output() redirectToReservation = new EventEmitter<string>();
+
+  redirectToReservationPage(id: number) {
+    this.redirectToReservation.emit(`${Routing.RESERVATION}/${id}`);
+  }
 }

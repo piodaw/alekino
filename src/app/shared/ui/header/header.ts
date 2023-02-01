@@ -21,9 +21,14 @@ import { SideNavComponent } from '@shared/ui/side-nav/side-nav.component'
       </button>
       <span [routerLink]="[routing.HOME]">Cinvelo</span>
       <span class="spacer"></span>
-      <button mat-icon-button>
-        <mat-icon>favorite</mat-icon>
-      </button>
+      <div class="icons-wrapper" *ngIf="loggedUser$ | async as user">
+        <button mat-icon-button *ngIf="user.userId">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="user.userId">
+          <mat-icon>favorite</mat-icon>
+        </button>
+      </div>
       <div *ngIf="loggedUser$ | async as user">
         <button mat-icon-button class="initials" matTooltip="Konto" *ngIf="user.userId; else notLogged">
           <div *ngIf="user.role === 0; else admin">
@@ -82,6 +87,10 @@ import { SideNavComponent } from '@shared/ui/side-nav/side-nav.component'
       transform: rotate(180deg);
       transition: transform 0.3s ease-in-out;
     }
+
+    .icons-wrapper {
+      margin-right: 10px;
+    }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -93,7 +102,7 @@ import { SideNavComponent } from '@shared/ui/side-nav/side-nav.component'
     NgIf,
     AsyncPipe,
     JsonPipe,
-    SideNavComponent
+    SideNavComponent,
   ]
 })
 

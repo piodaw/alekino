@@ -37,3 +37,20 @@ export interface ShowingData {
 export interface ShowingWMovie extends Movie {
   showings: Showing[]
 }
+
+export interface ShowingAndMovieData {
+  showing: ShowingById;
+}
+
+export interface ShowingById {
+  id: number;
+  start: string;
+  bookedseats: string[];
+  paidseats: string[];
+  movieid: number;
+  title: string;
+  duration: string;
+  hallid: number;
+  columns: string[];
+  rows: string[];
+}

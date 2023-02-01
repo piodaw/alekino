@@ -17,7 +17,7 @@ $cinema-primary: mat.define-palette(palette.$primary-palette, 600);
 $cinema-secondary: mat.define-palette(palette.$secondary-palette, 200);
 $cinema-error: mat.define-palette(palette.$error-palette, 500);
 
-$cinema-theme: mat.define-light-theme((
+$cinema-theme: mat.define-dark-theme((
   color: (
     primary: $cinema-primary,
     accent: $cinema-secondary,

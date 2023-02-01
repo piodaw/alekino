@@ -6,11 +6,11 @@ import {
   ShowingsActions,
   ShowingsApiActions
 } from 'src/app/features/home/store/home.actions'
-import { catchError, combineLatest, EMPTY, forkJoin, from, map, mergeMap, of, switchMap, toArray } from 'rxjs'
+import { catchError, combineLatest, map, of, switchMap } from 'rxjs'
 
 import { MovieService } from 'src/app/features/home/shared/services/movie.service'
 import { ShowingService } from 'src/app/features/home/shared/services/showing.service'
-import { Showing, ShowingData, ShowingWMovie } from '../shared/home.interfaces'
+import { ShowingWMovie } from '../shared/home.interfaces'
 import { compareAsc } from 'date-fns'
 
 @Injectable()
@@ -47,13 +47,13 @@ export class HomeEffects {
         ])
       ),
       map(([movies, showings]) => {
-        let ShowingData: ShowingWMovie[] = [];
+        const ShowingData: ShowingWMovie[] = [];
         showings.showings.sort((a, b) => {
           return compareAsc(new Date(a.start), new Date(b.start));
         });
         showings.showings.forEach(showing => {
           const movie = movies.movies.find(movie => movie.id === showing.movieid);
-          let movieIndex = ShowingData.findIndex(m => m.id === movie?.id);
+          const movieIndex = ShowingData.findIndex(m => m.id === movie?.id);
           if (movieIndex >= 0) {
             ShowingData[movieIndex].showings.push(showing);
           } else {
@@ -65,4 +65,13 @@ export class HomeEffects {
       catchError(() => of(ShowingsApiActions.getShowingsFailure()))
     );
   });
+
+  getShowingById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ShowingsActions.getShowing),
+      switchMap(({ showingId }) => this.showingService.getShowingById(showingId)),
+      map((showing) => ShowingsApiActions.getShowingSuccess({ Showing: showing })),
+      catchError(() => of(ShowingsApiActions.getShowingFailure()))
+    )
+  })
 }

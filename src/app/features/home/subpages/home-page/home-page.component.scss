@@ -1,5 +1,6 @@
 main {
   min-height: calc(100vh - var(--headerAndFooter-height));
+  width: 100vw;
   margin-top: var(--header-height);
 }
 

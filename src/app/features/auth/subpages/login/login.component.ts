@@ -27,7 +27,7 @@ export class LoginComponent {
   private formBuilder = inject(NonNullableFormBuilder)
   private store = inject(Store)
 
-  hide: boolean = true
+  hide = true
   routing = Routing
 
   loginForm = this.createLoginForm()

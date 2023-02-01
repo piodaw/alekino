@@ -7,6 +7,6 @@
     </app-date-picker>
   </div>
   <div class="showing-wrapper">
-    <app-movie-card [showing$]="showings$"></app-movie-card>
+    <app-movie-card [showing$]="showings$" (redirectToReservation)="handleRedirect($event)"></app-movie-card>
   </div>
 </main>

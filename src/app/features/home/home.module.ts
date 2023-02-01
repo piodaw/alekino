@@ -5,13 +5,15 @@ import { StoreModule } from '@ngrx/store'
 
 import { HomeComponent } from 'src/app/features/home/home.component';
 import { HomePageComponent } from './subpages/home-page/home-page.component';
-import { MovieReducer, ShowingsReducer } from 'src/app/features/home/store/home.reducer'
+import { MovieReducer, ShowingsByIdReducer, ShowingsReducer } from 'src/app/features/home/store/home.reducer'
 import { HomeEffects } from 'src/app/features/home/store/home.effects'
+import { ReservationsComponent } from './subpages/reservations/reservations.component';
 
 @NgModule({
   imports: [
     StoreModule.forFeature('movies', MovieReducer),
     StoreModule.forFeature('showings', ShowingsReducer),
+    StoreModule.forFeature('showingsById', ShowingsByIdReducer),
     EffectsModule.forFeature([HomeEffects]),
     RouterModule.forChild([
       {
@@ -25,6 +27,10 @@ import { HomeEffects } from 'src/app/features/home/store/home.effects'
           }
         ],
       },
+      {
+        path: 'reservation/:id',
+        component: ReservationsComponent
+      }
     ]),
   ],
 })

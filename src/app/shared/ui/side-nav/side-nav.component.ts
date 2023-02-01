@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core'
-
 import { MatIconModule } from '@angular/material/icon'
-import { Links } from '@shared/ui/footer/constants/links'
 import { RouterLink } from '@angular/router'
 import { NgForOf } from '@angular/common'
-import { MatDrawer, MatSidenav, MatSidenavModule } from '@angular/material/sidenav'
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav'
 
 @Component({
   selector: 'app-side-nav',
@@ -42,7 +40,7 @@ import { MatDrawer, MatSidenav, MatSidenavModule } from '@angular/material/siden
 export class SideNavComponent {
   @Input() open!: boolean;
   @Output() openChange = new EventEmitter<boolean>();
-  @ViewChild('drawer') drawer!: MatDrawer;
+  @ViewChild('drawer') drawer!: MatSidenav;
 
   onOpenChange(isOpen: boolean) {
     this.openChange.emit(isOpen);

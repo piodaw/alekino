@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
+
 import { API_URL } from '@core/env.token'
-import { ShowingResponse } from 'src/app/features/home/shared/home.interfaces'
+import { ShowingById, ShowingResponse } from 'src/app/features/home/shared/home.interfaces'
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +19,9 @@ export class ShowingService {
         hall_id,
       }
     })
+  }
+
+  getShowingById(showingId: number) {
+    return this.http.get<ShowingById>(`${this.base_url}/showings/${showingId}/movie`)
   }
 }
