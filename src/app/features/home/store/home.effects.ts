@@ -2,22 +2,24 @@ import { inject, Injectable } from '@angular/core'
 import { Actions, createEffect, ofType } from '@ngrx/effects'
 import {
   MovieActions,
-  MovieApiActions,
+  MovieApiActions, ReservationActions, ReservationApiActions,
   ShowingsActions,
   ShowingsApiActions
 } from 'src/app/features/home/store/home.actions'
 import { catchError, combineLatest, map, of, switchMap } from 'rxjs'
+import { compareAsc } from 'date-fns'
 
 import { MovieService } from 'src/app/features/home/shared/services/movie.service'
 import { ShowingService } from 'src/app/features/home/shared/services/showing.service'
 import { ShowingWMovie } from '../shared/home.interfaces'
-import { compareAsc } from 'date-fns'
+import { ReservationService } from 'src/app/features/home/shared/services/reservation.service'
 
 @Injectable()
 export class HomeEffects {
   private actions$ = inject(Actions)
   private movieService = inject(MovieService)
   private showingService = inject(ShowingService)
+  private reservationService = inject(ReservationService)
 
   getMovies$ = createEffect(() => {
     return this.actions$.pipe(
@@ -72,6 +74,29 @@ export class HomeEffects {
       switchMap(({ showingId }) => this.showingService.getShowingById(showingId)),
       map((showing) => ShowingsApiActions.getShowingSuccess({ Showing: showing })),
       catchError(() => of(ShowingsApiActions.getShowingFailure()))
+    )
+  })
+
+  addBookedSeat$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ShowingsActions.updateShowingBookedSeats),
+      switchMap(({ showingId, seat }) => this.showingService.addToBookedSeats(showingId, seat).pipe(
+        map((showing) => ShowingsApiActions.getShowingSuccess({ Showing: showing })),
+        catchError((error) => {
+          // add toast
+          console.log(error.error.message)
+          return of(ShowingsApiActions.getShowingFailure())
+        })
+      )),
+    )
+  })
+
+  getTickets$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ReservationActions.getTickets),
+      switchMap(() => this.reservationService.getTickets()),
+      map((tickets) => ReservationApiActions.getTicketsSuccess({ tickets: tickets })),
+      catchError(() => of(ReservationApiActions.getTicketsFailure()))
     )
   })
 }

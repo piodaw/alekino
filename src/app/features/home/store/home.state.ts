@@ -1,4 +1,10 @@
-import { MovieResponse, ShowingAndMovieData, ShowingData, ShowingResponse } from 'src/app/features/home/shared/home.interfaces'
+import {
+  MovieResponse,
+  ShowingAndMovieData,
+  ShowingData,
+  ShowingResponse,
+  TicketsData
+} from 'src/app/features/home/shared/home.interfaces'
 
 export const initialMovieState: MovieResponse = {
   count: 0,
@@ -24,7 +30,12 @@ export const initialShowingByIdState: ShowingAndMovieData = {
     title: '',
     duration: '',
     hallid: 0,
+    hallno: 0,
     columns: [],
     rows: []
   }
+}
+
+export const initialTicketsState: TicketsData = {
+  tickets: []
 }

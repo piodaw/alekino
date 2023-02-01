@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core'
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { HallComponent } from './hall/hall.component';
 import { Observable } from 'rxjs';
-import { ShowingById } from 'src/app/features/home/shared/home.interfaces';
+import { ShowingById, Ticket, TicketsData } from 'src/app/features/home/shared/home.interfaces'
 
 @Component({
   selector: 'app-stepper',
@@ -17,7 +17,7 @@ import { ShowingById } from 'src/app/features/home/shared/home.interfaces';
     <mat-stepper #stepper>
       <mat-step [stepControl]="firstFormGroup" errorMessage="Musisz wybrać miejsca">
         <ng-template matStepLabel>Wybierz miejsca</ng-template>
-        <app-hall [showing$]="showing$"></app-hall>
+        <app-hall [showing$]="showing$" [tickets$]="tickets$" (selectedSeat)="seatHandler($event)"></app-hall>
       </mat-step>
       <mat-step [stepControl]="secondFormGroup" errorMessage="Dane są wymagane">
         <form [formGroup]="secondFormGroup">
@@ -63,8 +63,9 @@ import { ShowingById } from 'src/app/features/home/shared/home.interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StepperComponent {
-  @Input() id!: number;
   @Input() showing$!: Observable<ShowingById>;
+  @Input() tickets$!: Observable<Ticket[]>
+  @Output() selectedSeat = new EventEmitter<{ seat: string, showingId: number }>();
 
   private formBuilder = inject(FormBuilder);
 
@@ -74,4 +75,8 @@ export class StepperComponent {
   secondFormGroup = this.formBuilder.group({
     secondCtrl: ['', Validators.required],
   });
+
+  seatHandler({ seat, showingId }: { seat: string, showingId: number }) {
+    this.selectedSeat.emit({ seat, showingId });
+  }
 }

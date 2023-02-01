@@ -24,6 +24,7 @@ export interface ShowingResponse {
 export interface Showing {
   end: string;
   hallid: number;
+  hallno: number;
   id: number;
   movieid: number;
   start: string;
@@ -51,6 +52,18 @@ export interface ShowingById {
   title: string;
   duration: string;
   hallid: number;
+  hallno: number;
   columns: string[];
   rows: string[];
+}
+
+export interface TicketsData {
+  tickets: Ticket[];
+}
+
+export interface Ticket {
+  ticket_type_id: number;
+  name: string;
+  price: number;
+  description: string | null;
 }

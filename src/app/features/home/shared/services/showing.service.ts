@@ -24,4 +24,10 @@ export class ShowingService {
   getShowingById(showingId: number) {
     return this.http.get<ShowingById>(`${this.base_url}/showings/${showingId}/movie`)
   }
+
+  addToBookedSeats(id: number, seat: string) {
+    return this.http.patch<ShowingById>(`${this.base_url}/showings/${id}/booked`, {
+      seats: seat
+    })
+  }
 }

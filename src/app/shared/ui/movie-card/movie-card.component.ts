@@ -42,7 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
               <button class="hours" mat-stroked-button color="accent" *ngFor="let hours of show.showings" (click)="redirectToReservationPage(hours.id)">
                 <div class="hour-button">
                   <span>{{ hours.start.split(" ")[1] }}</span>
-                  <span>Sala: {{ hours.hallid }}</span>
+                  <span>Sala: {{ hours.hallno }}</span>
                 </div>
               </button>
             </div>

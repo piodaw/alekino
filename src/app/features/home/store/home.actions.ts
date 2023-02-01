@@ -4,7 +4,7 @@ import {
   Movie,
   MovieResponse,
   ShowingById,
-  ShowingData
+  ShowingData, TicketsData
 } from 'src/app/features/home/shared/home.interfaces'
 
 export const MovieActions = createActionGroup({
@@ -31,7 +31,9 @@ export const ShowingsActions = createActionGroup({
   events: {
     'get showings': props<{ date: string, filters: string, hall_id: number }>(),
 
-    'get showing': props<{ showingId: number }>()
+    'get showing': props<{ showingId: number }>(),
+
+    'update showing booked seats': props<{ showingId: number, seat: string }>()
   }
 })
 
@@ -43,5 +45,20 @@ export const ShowingsApiActions = createActionGroup({
 
     'get showing success': props<{ Showing: ShowingById }>(),
     'get showing failure': emptyProps(),
+  }
+})
+
+export const ReservationActions = createActionGroup({
+  source: 'Reservation',
+  events: {
+    'get tickets': emptyProps(),
+  }
+})
+
+export const ReservationApiActions = createActionGroup({
+  source: 'Reservation API',
+  events: {
+    'get tickets success': props<{ tickets: TicketsData }>(),
+    'get tickets failure': emptyProps(),
   }
 })
