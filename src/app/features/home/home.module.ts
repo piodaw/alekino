@@ -13,6 +13,7 @@ import {
 } from 'src/app/features/home/store/home.reducer'
 import { HomeEffects } from 'src/app/features/home/store/home.effects'
 import { ReservationsComponent } from './subpages/reservations/reservations.component';
+import { WishlistComponent } from './subpages/wishlist/wishlist.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,10 @@ import { ReservationsComponent } from './subpages/reservations/reservations.comp
             path: '',
             component: HomePageComponent,
             pathMatch: 'full',
+          },
+          {
+            path: 'wishlist',
+            component: WishlistComponent
           }
         ],
       },

@@ -1,0 +1,103 @@
+.reservation {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.info-wrapper {
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.screen-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.screen {
+  width: 800px;
+  height: 5px;
+  background-color: var(--text-secondary);
+  margin: 0 auto;
+}
+
+.hall {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 60%;
+}
+
+.hall-wrapper {
+  display: flex;
+}
+
+.rows {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--secondary);
+  background-color: var(--secondaryDark);
+}
+
+.columns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--secondary);
+  background-color: var(--primaryLight);
+  cursor: pointer;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+
+  button {
+    width: 100px;
+  }
+}
+
+.tickets-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reserved {
+  background-color: var(--mdc-filled-button-disabled-container-color);
+}
+
+.selected {
+  background-color: var(--info);
+}
+
+.ticket-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+}
+
+.ticket-select {
+  width: 250px;
+  margin: 0 16px;
+}
+
+.ticket-price {
+  width: 100px;
+}

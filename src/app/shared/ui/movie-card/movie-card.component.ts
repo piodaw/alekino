@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { Routing } from '@shared/routes/routing'
 import { RouterLink } from '@angular/router'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { User } from '@core/store/user.interfaces'
 
 @Component({
   selector: 'app-movie-card',
@@ -52,8 +53,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
             <div>
               <button mat-raised-button color="primary">Oceń</button>
             </div>
-            <div>
-              <button mat-flat-button color="accent">Chcę obejrzeć</button>
+            <div *ngIf="loggedIn$ | async as user">
+              <button mat-flat-button color="accent" *ngIf="show.id as movie_id" (click)="addToWishList(user.userId, movie_id)">Chcę obejrzeć</button>
             </div>
           </div>
         </mat-card-content>
@@ -136,10 +137,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 })
 export class MovieCardComponent {
   @Input() showing$!: Observable<ShowingData>
+  @Input() loggedIn$!: Observable<User>
   @Output() movieSelected = new EventEmitter<string>();
   @Output() redirectToReservation = new EventEmitter<string>();
+  @Output() wishList = new EventEmitter<{ user_id: number, movie_id: number }>();
 
   redirectToReservationPage(id: number) {
     this.redirectToReservation.emit(`${Routing.RESERVATION}/${id}`);
+  }
+
+  addToWishList(user_id: number, movie_id: number) {
+    this.wishList.emit({ user_id, movie_id });
   }
 }

@@ -46,7 +46,7 @@ export interface ShowingAndMovieData {
 export interface ShowingById {
   id: number;
   start: string;
-  bookedseats: string[];
+  bookedseats?: string[];
   paidseats: string[];
   movieid: number;
   title: string;
@@ -66,4 +66,9 @@ export interface Ticket {
   name: string;
   price: number;
   description: string | null;
+}
+
+export interface addToWishlist {
+  movie_id: number;
+  user_id: number;
 }

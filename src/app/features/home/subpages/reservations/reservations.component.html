@@ -1,3 +1,7 @@
 <main>
-  <app-stepper [showing$]="showing$" [tickets$]="tickets$" (selectedSeat)="addToBookedSeats($event)"></app-stepper>
+  <app-stepper
+    [showing$]="showing$"
+    [tickets$]="tickets$"
+    (selectedSeat)="addToBookedSeats($event)"
+    (removeSeat)="removeFromBookedSeats($event)"></app-stepper>
 </main>

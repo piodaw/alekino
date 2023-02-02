@@ -23,7 +23,7 @@ export class AuthEffects {
         return this.authService.login(email, password).pipe(
           map(({ accessToken, user }) => {
             console.log('accessToken', accessToken, user)
-            this.cookieService.set('token', accessToken, 1)
+            this.cookieService.set('token', accessToken, 1, '/')
             this.router.navigate(['/'])
             return UserApiActions.getUserSuccess({ user })
           }),

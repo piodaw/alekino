@@ -91,12 +91,30 @@ export class HomeEffects {
     )
   })
 
+  removeFromBookedSeats$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ShowingsActions.removeShowingBookedSeats),
+      switchMap(({ showingId, seat }) => this.showingService.removeFromBookedSeats(showingId, seat)),
+      map((showing) => ShowingsApiActions.getShowingSuccess({ Showing: showing })),
+      catchError(() => of(ShowingsApiActions.getShowingFailure()))
+    )
+  })
+
   getTickets$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ReservationActions.getTickets),
       switchMap(() => this.reservationService.getTickets()),
       map((tickets) => ReservationApiActions.getTicketsSuccess({ tickets: tickets })),
       catchError(() => of(ReservationApiActions.getTicketsFailure()))
+    )
+  })
+
+  addToWishlist$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(MovieActions.addToWishlist),
+      switchMap(({ user_id, movie_id }) => this.movieService.addToWishlist(user_id, movie_id)),
+      map(() => MovieApiActions.addToWishlistSuccess()),
+      catchError(() => of(MovieApiActions.addToWishlistFailure()))
     )
   })
 }

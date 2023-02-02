@@ -11,7 +11,10 @@ export const MovieActions = createActionGroup({
   source: 'Movie',
   events: {
     'get movies': emptyProps(),
-    'update movies': props<{ movieId: string, updatedData: Partial<Movie> }>()
+    'update movies': props<{ movieId: string, updatedData: Partial<Movie> }>(),
+
+    'add to wishlist': props<{ user_id: number, movie_id: number }>(),
+    'remove from wishlist': props<{ wishlist_id: number }>()
   }
 })
 
@@ -23,6 +26,9 @@ export const MovieApiActions = createActionGroup({
 
     'update movies success': emptyProps(),
     'update movies failure': emptyProps(),
+
+    'add to wishlist success': emptyProps(),
+    'add to wishlist failure': emptyProps(),
   }
 })
 
@@ -33,7 +39,8 @@ export const ShowingsActions = createActionGroup({
 
     'get showing': props<{ showingId: number }>(),
 
-    'update showing booked seats': props<{ showingId: number, seat: string }>()
+    'update showing booked seats': props<{ showingId: number, seat: string }>(),
+    'remove showing booked seats': props<{ showingId: number, seat: string }>(),
   }
 })
 

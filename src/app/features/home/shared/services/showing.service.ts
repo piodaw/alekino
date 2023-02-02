@@ -30,4 +30,10 @@ export class ShowingService {
       seats: seat
     })
   }
+
+  removeFromBookedSeats(id: number, seat: string) {
+    return this.http.patch<ShowingById>(`${this.base_url}/showings/${id}/remove`, {
+      seats: seat
+    })
+  }
 }
