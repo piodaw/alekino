@@ -1,0 +1,4 @@
+<main>
+  <app-admin-date-picker (clickedDate)="dateHandler($event)"></app-admin-date-picker>
+  <app-repertoire [movies$]="movies$" [halls$]="halls$" [showings$]="showings$" [selectedDate$]="selectedDate$" (newShowingData)="createNewShowing($event)"></app-repertoire>
+</main>

@@ -4,7 +4,7 @@ import {
   MovieActions,
   MovieApiActions, ReservationActions, ReservationApiActions,
   ShowingsActions,
-  ShowingsApiActions
+  ShowingsApiActions, TicketActions, TicketApiActions
 } from 'src/app/features/home/store/home.actions'
 import { catchError, combineLatest, map, of, switchMap } from 'rxjs'
 import { compareAsc } from 'date-fns'
@@ -13,6 +13,8 @@ import { MovieService } from 'src/app/features/home/shared/services/movie.servic
 import { ShowingService } from 'src/app/features/home/shared/services/showing.service'
 import { ShowingWMovie } from '../shared/home.interfaces'
 import { ReservationService } from 'src/app/features/home/shared/services/reservation.service'
+import { MyTicketsService } from 'src/app/features/home/shared/services/my-tickets.service'
+import { Router } from '@angular/router'
 
 @Injectable()
 export class HomeEffects {
@@ -20,6 +22,8 @@ export class HomeEffects {
   private movieService = inject(MovieService)
   private showingService = inject(ShowingService)
   private reservationService = inject(ReservationService)
+  private myTicketsService = inject(MyTicketsService)
+  private router = inject(Router)
 
   getMovies$ = createEffect(() => {
     return this.actions$.pipe(
@@ -30,22 +34,13 @@ export class HomeEffects {
     )
   })
 
-  // getShowings$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(ShowingsActions.getShowings),
-  //     switchMap(({ date, filters, hall_id }) => this.showingService.getShowins(date, filters, hall_id)),
-  //     map((showing) => ShowingsApiActions.getShowingsSuccess({ ShowingData: showing })),
-  //     catchError(() => of(ShowingsApiActions.getShowingsFailure()))
-  //   )
-  // })
-
   getShowings$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ShowingsActions.getShowings),
-      switchMap(({ date, filters, hall_id }) =>
+      switchMap(({ date }) =>
         combineLatest([
           this.movieService.getMovies(),
-          this.showingService.getShowings(date, filters, hall_id)
+          this.showingService.getShowings(date)
         ])
       ),
       map(([movies, showings]) => {
@@ -115,6 +110,31 @@ export class HomeEffects {
       switchMap(({ user_id, movie_id }) => this.movieService.addToWishlist(user_id, movie_id)),
       map(() => MovieApiActions.addToWishlistSuccess()),
       catchError(() => of(MovieApiActions.addToWishlistFailure()))
+    )
+  })
+
+  getPromoCodes$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ReservationActions.getPromocodes),
+      switchMap(() => this.reservationService.getPromoCodes()),
+      map((promoCodes) => ReservationApiActions.getPromocodesSuccess({ promoCodes: promoCodes })),
+      catchError(() => of(ReservationApiActions.getPromocodesFailure()))
+    )
+  })
+
+  getTicketByTicketNoAndEmail$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(TicketActions.getTicket),
+      switchMap(({ ticket_no, email }) => this.myTicketsService.getTicketByTicketNoAndEmail(ticket_no, email)),
+      map((ticket) => {
+        if (ticket) {
+          this.router.navigate([`success/${ticket.ticket_no}`])
+          return TicketApiActions.getTicketSuccess()
+        } else {
+          return TicketApiActions.getTicketFailure()
+        }
+      }),
+      catchError(() => of(TicketApiActions.getTicketFailure()))
     )
   })
 }

@@ -1,0 +1,48 @@
+<mat-toolbar color="primary">
+  <span class="logo" [routerLink]="[routing.HOME]">Cinvelo</span>
+  <span class="spacer"></span>
+  <div class="icons-wrapper" *ngIf="loggedUser$ | async as user">
+    <button mat-icon-button [matTooltip]="'Wyszukaj bilet'" [matMenuTriggerFor]="ticketSearch">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      *ngIf="user.userId"
+      [matTooltip]="'Kontynuuj rezerwację'"
+      [matBadge]="isTicketInCart ? '&#8288;' : ''"
+      matBadgeColor="accent"
+      [routerLink]="createLinkToReservation()"
+    >
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
+    <mat-menu #ticketSearch yPosition="below">
+      <app-search-ticket-menu (ticketData)="ticketSearchHandler($event)"></app-search-ticket-menu>
+    </mat-menu>
+    <button mat-icon-button *ngIf="user.userId" [routerLink]="routing.WISHLIST" [matTooltip]="'Ulubione'">
+      <mat-icon>favorite</mat-icon>
+    </button>
+  </div>
+  <div *ngIf="loggedUser$ | async as user">
+    <button
+            mat-icon-button
+            class="initials"
+            matTooltip="Konto"
+            *ngIf="user.userId; else notLogged"
+            [matMenuTriggerFor]="userMenu">
+      <div *ngIf="user.role === 0; else admin">{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</div>
+      <ng-template #admin>
+        <div>
+          {{ user.firstName.charAt(0) }}
+        </div>
+      </ng-template>
+    </button>
+    <mat-menu #userMenu yPosition="below">
+      <app-user-menu [loggedUser$]="loggedUser$"></app-user-menu>
+    </mat-menu>
+    <ng-template #notLogged>
+      <button mat-icon-button [routerLink]="[routing.LOGIN]">
+        <mat-icon>login</mat-icon>
+      </button>
+    </ng-template>
+  </div>
+</mat-toolbar>

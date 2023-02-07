@@ -1,0 +1,12 @@
+<div class="settings-wrapper">
+  <div class="settings-menu">
+    <app-settings-menu (navigation)="nagivationHandler($event)"></app-settings-menu>
+  </div>
+  <div [ngSwitch]="page$ | async" class="settings-forms">
+    <app-settings-general [user$]="user$" *ngSwitchCase="0"></app-settings-general>
+    <app-settings-password *ngSwitchCase="1"></app-settings-password>
+    <app-settings-email *ngSwitchCase="2"></app-settings-email>
+    <app-settings-phone *ngSwitchCase="3"></app-settings-phone>
+    <app-settings-newsletter [newsletter$]="newsletter$" *ngSwitchCase="4"></app-settings-newsletter>
+  </div>
+</div>

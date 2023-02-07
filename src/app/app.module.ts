@@ -9,14 +9,14 @@ import { AppComponent } from 'src/app/app.component';
 import { API_URL, IS_PRODUCTION } from '@core/env.token';
 import { environment } from '../environment';
 import { RouterModule } from '@angular/router';
-import { noProductionGuard } from '@shared/no-production.guard';
 import { CookieService } from 'ngx-cookie-service'
 import { UserState } from '@core/store/user.interfaces'
 import { UserEffects } from '@core/store/user.effects'
 import { userReducer } from '@core/store/user.reducer'
-import { HeaderComponent } from '@shared/ui/header/header'
+import { HeaderComponent } from '@shared/ui/header/header.component'
 import { TokenInterceptorProvider } from '@shared/interceptors/token.interceptor'
-import { SideNavComponent } from '@shared/ui/side-nav/side-nav.component'
+import { AuthGuard } from '@shared/guards/loginGuard'
+import { AdminGuard } from '@shared/guards/AdminGuard'
 
 export interface AppState {
   user: UserState;
@@ -41,13 +41,14 @@ export interface AppState {
             loadChildren: () => import('src/app/features/home/home.module')
           },
           {
-            path: 'auth',
-            loadChildren: () => import('src/app/features/auth/auth.module')
+            path: 'admin',
+            canActivate: [AdminGuard],
+            loadChildren: () => import('src/app/features/admin/admin.module')
           },
           {
-            path: 'theme',
-            canMatch: [noProductionGuard],
-            loadComponent: () => import('@core/theme.component')
+            path: 'auth',
+            canActivate: [AuthGuard],
+            loadChildren: () => import('src/app/features/auth/auth.module')
           },
           {
             path: '**',
@@ -56,8 +57,7 @@ export interface AppState {
         ]
       }
     ]),
-    HeaderComponent,
-    SideNavComponent
+    HeaderComponent
   ],
   providers: [
     {

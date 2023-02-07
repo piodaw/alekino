@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   template: `
-    <app-header [open]="drawerOpen" (openChange)="drawerOpen = $event"></app-header>
-    <app-side-nav [open]="drawerOpen" (openChange)="drawerOpen = $event"></app-side-nav>
+    <app-header></app-header>
     <router-outlet></router-outlet>
   `,
   providers: [],

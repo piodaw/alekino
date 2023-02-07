@@ -22,7 +22,6 @@ export class AuthEffects {
         const { email, password } = loginData
         return this.authService.login(email, password).pipe(
           map(({ accessToken, user }) => {
-            console.log('accessToken', accessToken, user)
             this.cookieService.set('token', accessToken, 1, '/')
             this.router.navigate(['/'])
             return UserApiActions.getUserSuccess({ user })
@@ -39,8 +38,8 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(AuthActions.register),
       switchMap(({ registerData }) => {
-        const { firstName, lastName, phone, email, password } = registerData
-        return this.authService.register(firstName, lastName, phone, email, password).pipe(
+        const { firstName, lastName, phoneNumber, email, password } = registerData
+        return this.authService.register(firstName, lastName, phoneNumber, email, password).pipe(
           map(() => {
             this.router.navigate(['/auth/login'])
             return AuthApiActions.registerSuccess()

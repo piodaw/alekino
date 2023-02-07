@@ -2,7 +2,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store'
 
 import {
   Movie,
-  MovieResponse,
+  MovieResponse, PromoCodeData,
   ShowingById,
   ShowingData, TicketsData
 } from 'src/app/features/home/shared/home.interfaces'
@@ -59,6 +59,8 @@ export const ReservationActions = createActionGroup({
   source: 'Reservation',
   events: {
     'get tickets': emptyProps(),
+
+    'get promoCodes': emptyProps(),
   }
 })
 
@@ -67,5 +69,23 @@ export const ReservationApiActions = createActionGroup({
   events: {
     'get tickets success': props<{ tickets: TicketsData }>(),
     'get tickets failure': emptyProps(),
+
+    'get promoCodes success': props<{ promoCodes: PromoCodeData }>(),
+    'get promoCodes failure': emptyProps(),
+  }
+})
+
+export const TicketActions = createActionGroup({
+  source: 'Ticket',
+  events: {
+    'get ticket': props<{ ticket_no: number, email: string }>(),
+  }
+})
+
+export const TicketApiActions = createActionGroup({
+  source: 'Ticket API',
+  events: {
+    'get ticket success': emptyProps(),
+    'get ticket failure': emptyProps(),
   }
 })

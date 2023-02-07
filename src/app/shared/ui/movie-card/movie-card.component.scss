@@ -1,0 +1,87 @@
+.showing-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+mat-card {
+  background-color: var(--surface);
+  padding: 18px;
+  width: 90vw;
+}
+
+mat-card-content {
+  display: flex;
+}
+
+.img-wrapper {
+  box-shadow: 0 0 10px 0 rgba(255, 143, 198, 0.3);
+}
+
+.info-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 100px;
+  width: 600px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 600px;
+}
+
+.hours-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.hours {
+  width: 80px;
+  height: 40px;
+}
+
+.hour-button {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  gap: 8px;
+  width: 100%;
+}
+
+.rating-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 130px;
+}
+
+.rating {
+  font-size: 24px;
+}
+
+button {
+  width: 130px;
+}
+
+.mat-mdc-outlined-button:not(:disabled) {
+  border-color: var(--secondaryDark);
+}
+
+.show-more {
+  text-align: end;
+
+  & p {
+    color: var(--secondary);
+    cursor: pointer;
+  }
+}

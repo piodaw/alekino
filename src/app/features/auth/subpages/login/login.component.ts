@@ -3,11 +3,14 @@ import { MatInputModule } from '@angular/material/input'
 import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
 import { RouterLink } from '@angular/router'
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Store } from '@ngrx/store'
 
 import { AuthActions } from 'src/app/features/auth/store/auth.actions'
 import { Routing } from '@shared/routes/routing'
+import { emailValidator, whitespaceValidator } from '@shared/validators/form.validators'
+import { NgIf } from '@angular/common'
+import { errorsTree, getErrorMessage } from '@shared/form-errors/form.errors'
 
 @Component({
   selector: 'app-login',
@@ -19,7 +22,8 @@ import { Routing } from '@shared/routes/routing'
     MatButtonModule,
     MatIconModule,
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgIf
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -31,6 +35,11 @@ export class LoginComponent {
   routing = Routing
 
   loginForm = this.createLoginForm()
+
+  errorMessage(formControlName: 'email' | 'password') {
+    console.log(formControlName)
+    return getErrorMessage(formControlName, this.loginForm)
+  }
 
   login() {
     this.loginForm.markAllAsTouched();
@@ -46,13 +55,16 @@ export class LoginComponent {
     return this.formBuilder.group({
       email: this.formBuilder.control('', [
         Validators.required,
-        Validators.minLength(10),
+        Validators.minLength(6),
         Validators.maxLength(100),
+        whitespaceValidator,
+        emailValidator
       ]),
       password: this.formBuilder.control('', [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(100),
+        whitespaceValidator
       ]),
     });
   }

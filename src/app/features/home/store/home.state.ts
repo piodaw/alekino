@@ -1,5 +1,5 @@
 import {
-  MovieResponse,
+  MovieResponse, PromoCodeData,
   ShowingAndMovieData,
   ShowingData,
   ShowingResponse,
@@ -38,4 +38,8 @@ export const initialShowingByIdState: ShowingAndMovieData = {
 
 export const initialTicketsState: TicketsData = {
   tickets: []
+}
+
+export const initialPromoCodeState: PromoCodeData = {
+  promoCodes: []
 }

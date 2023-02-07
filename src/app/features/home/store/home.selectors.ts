@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store'
 
 import {
-  MovieResponse,
+  MovieResponse, PromoCodeData,
   ShowingAndMovieData,
   ShowingData,
   TicketsData
@@ -11,6 +11,7 @@ const selectMoviesState = createFeatureSelector<MovieResponse>('movies')
 const selectShowingsState = createFeatureSelector<ShowingData>('showings')
 const selectShowingAndMovieState = createFeatureSelector<ShowingAndMovieData>('showingsById')
 const selectTicketsState = createFeatureSelector<TicketsData>('tickets')
+const selectPromoCodesState = createFeatureSelector<PromoCodeData>('promoCodes')
 
 export const selectMovies = createSelector(selectMoviesState, (state) => state)
 
@@ -19,3 +20,5 @@ export const selectShowings = createSelector(selectShowingsState, (state) => sta
 export const selectShowingAndMovie = createSelector(selectShowingAndMovieState, (state) => state.showing)
 
 export const selectTickets = createSelector(selectTicketsState, (state) => state.tickets)
+
+export const selectPromoCodes = createSelector(selectPromoCodesState, (state) => state.promoCodes)

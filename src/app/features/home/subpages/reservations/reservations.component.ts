@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { StepperComponent } from '@shared/ui/stepper/stepper.component';
 import { ReservationActions, ShowingsActions } from '../../store/home.actions'
-import { selectShowingAndMovie, selectTickets } from '../../store/home.selectors'
+import { selectPromoCodes, selectShowingAndMovie, selectTickets } from '../../store/home.selectors'
 import { ReservationsStore } from './store/reservations.store';
 
 @Component({
@@ -21,18 +21,25 @@ import { ReservationsStore } from './store/reservations.store';
 export class ReservationsComponent implements OnInit {
   private store = inject(Store)
   private activeRoute = inject(ActivatedRoute);
+  private reservationStore = inject(ReservationsStore)
 
   showing$ = this.store.select(selectShowingAndMovie)
   tickets$ = this.store.select(selectTickets)
+  promoCodes$ = this.store.select(selectPromoCodes)
 
   ngOnInit() {
     this.activeRoute.params.subscribe((params) => {
       this.store.dispatch(ShowingsActions.getShowing({ showingId: +params['id'] }))
+      this.reservationStore.setState((state) => ({
+        ...state,
+        showingId: +params['id']
+      }))
+      this.reservationStore.checkIfShowingIdIsTheSameAsInCookies(+params['id'])
     })
 
     this.store.dispatch(ReservationActions.getTickets())
+    this.store.dispatch(ReservationActions.getPromocodes())
   }
-
   addToBookedSeats({ showingId, seat }: { showingId: number, seat: string }) {
     this.store.dispatch(ShowingsActions.updateShowingBookedSeats({showingId, seat }))
   }

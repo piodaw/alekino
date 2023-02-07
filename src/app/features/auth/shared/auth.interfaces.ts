@@ -10,7 +10,7 @@ export interface RegisterData {
   password: string;
   firstName: string;
   lastName: string;
-  phone: string;
+  phoneNumber: string;
 }
 
 export interface LoginResponse {

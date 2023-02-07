@@ -5,9 +5,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { HallComponent } from './hall/hall.component';
 import { Observable } from 'rxjs';
-import { ShowingById, Ticket } from 'src/app/features/home/shared/home.interfaces';
+
+import { HallComponent } from './hall/hall.component';
+import { PromoCode, ShowingById, Ticket } from 'src/app/features/home/shared/home.interfaces'
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { PaymentComponent } from './payment/payment.component';
 
@@ -34,11 +35,11 @@ import { PaymentComponent } from './payment/payment.component';
           (selectedSeat)="seatHandler($event)"
           (removedSeat)="removeSeatHandler($event)"></app-hall>
       </mat-step>
-      <mat-step>
+      <mat-step [editable]="false">
         <ng-template matStepLabel>Wprowadź dane</ng-template>
-        <app-contact-form></app-contact-form>
+        <app-contact-form [showing$]="showing$" [promoCodes$]="promoCodes$"></app-contact-form>
       </mat-step>
-      <mat-step>
+      <mat-step [editable]="false">
         <ng-template matStepLabel>Płatność</ng-template>
         <app-payment></app-payment>
       </mat-step>
@@ -48,6 +49,10 @@ import { PaymentComponent } from './payment/payment.component';
     `
       .mat-mdc-form-field {
         margin-top: 16px;
+      }
+
+      ::ng-deep .mat-horizontal-stepper-header {
+        pointer-events: none !important;
       }
 
       mat-stepper {
@@ -66,6 +71,7 @@ import { PaymentComponent } from './payment/payment.component';
 export class StepperComponent {
   @Input() showing$!: Observable<ShowingById>;
   @Input() tickets$!: Observable<Ticket[]>;
+  @Input() promoCodes$!: Observable<PromoCode[]>;
   @Output() selectedSeat = new EventEmitter<{ seat: string; showingId: number }>();
   @Output() removeSeat = new EventEmitter<{ seat: string; showingId: number }>();
 

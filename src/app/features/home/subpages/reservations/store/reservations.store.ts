@@ -1,106 +1,210 @@
+import { inject, Injectable } from '@angular/core'
+import { ComponentStore } from '@ngrx/component-store'
+import { map, Observable, switchMap, tap, timer } from 'rxjs'
+import { ReservationService } from 'src/app/features/home/shared/services/reservation.service'
+import { CookieService } from 'ngx-cookie-service'
+import { addMinutes } from 'date-fns'
+import { Router } from '@angular/router'
+import { Routing } from '@shared/routes/routing'
+
 export interface ReservationState {
+  selectedTickets: Ticket[]
+  userData: User
+  totalPrice: number
+  blikCode: string
+  showingId: number
+}
+
+interface Ticket {
   ticket: string;
   ticket_type_id: number;
   name: string;
-  price: string | number;
-  description: string | null; 
+  price: number;
+  description: string | null;
+  showingId?: number;
 }
 
-import { Injectable } from '@angular/core';
-import { ComponentStore } from '@ngrx/component-store';
+export interface User {
+  userId: number | null;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  newsletter: boolean;
+}
 
 @Injectable()
-export class ReservationsStore extends ComponentStore<ReservationState[]> {
+export class ReservationsStore extends ComponentStore<ReservationState> {
+  private reservationService = inject(ReservationService)
+  private cookieService = inject(CookieService)
+  private router = inject(Router)
+
   constructor() {
-    super([]);
+    super({
+      selectedTickets: [],
+      userData: {
+        userId: null,
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        newsletter: false,
+      },
+      blikCode: '',
+      totalPrice: 0,
+      showingId: 0,
+    });
   }
 
-  readonly selectedSeats = this.select((state) => state);
+  readonly removeSeatFromSelectedTickets = this.updater((state, seat: string) => {
+    return {
+      ...state,
+      selectedTickets: state.selectedTickets.filter((ticket) => ticket.ticket !== seat),
+    };
+  })
+
+  readonly removeSeatFromCookies = this.effect((seat$: Observable<string>) => {
+    return seat$.pipe(
+      map((seat) => {
+        const selectedTickets = this.cookieService.get('selectedTickets');
+        if (selectedTickets.length > 1) {
+          const updatedTickets = JSON.parse(selectedTickets).filter((ticket: Ticket) => ticket.ticket !== seat);
+          const expires = addMinutes(new Date(), 15);
+          const expiresInDays = (expires.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000);
+          this.cookieService.set('selectedTickets', JSON.stringify(updatedTickets), expiresInDays, '/');
+        } else {
+          this.cookieService.delete('selectedTickets', '/');
+        }
+      })
+    )
+  })
+
+  readonly addSeatToSelectedTickets = this.updater((state, seat: Ticket) => {
+    return {
+      ...state,
+      selectedTickets: [...state.selectedTickets, seat],
+    };
+  })
+
+  readonly checkIfShowingIdIsTheSameAsInCookies = this.effect((showingId$: Observable<number>) => {
+    return showingId$.pipe(
+      map((showingId) => {
+        const selectedTickets = this.cookieService.get('selectedTickets');
+        if (selectedTickets) {
+          const parsedTickets = JSON.parse(selectedTickets);
+          if (parsedTickets[0].showingId !== showingId) {
+            this.cookieService.delete('selectedTickets', '/');
+          }
+        }
+      })
+    )
+  })
+
+  readonly updateTicketType = this.updater((state, ticket: Ticket) => {
+    return {
+      ...state,
+      selectedTickets: state.selectedTickets.map((item) => {
+        if (item.ticket === ticket.ticket) {
+          return ticket
+        }
+        return item
+      }),
+    };
+  })
+
+  readonly checkIfUserEmailIsInNewsletter = this.effect((email$: Observable<string>) => {
+    return email$.pipe(
+      switchMap((email) => this.reservationService.checkIfUserEmailIsInNewsletter(email)),
+      tap((response) => {
+        this.updateUser({
+          ...this.get().userData,
+          newsletter: response.newsletter,
+        })
+      })
+    )
+  })
+
+  readonly addSelectedTicketsToCookies = this.effect((selectedTickets$: Observable<Ticket[]>) => {
+    return selectedTickets$.pipe(
+      map((selectedTickets) => {
+        selectedTickets.forEach((ticket) => {
+          ticket['showingId'] = this.get().showingId;
+        })
+        const expires = addMinutes(new Date(), 15);
+        const expiresInDays = (expires.getTime() - new Date().getTime()) / (24 * 60 * 60 * 1000);
+        this.cookieService.set('selectedTickets', JSON.stringify(selectedTickets), expiresInDays, '/');
+      })
+    )
+  })
+
+  readonly getSelectedTicketsFromCookies = this.updater((state) => {
+    const selectedTickets = this.cookieService.get('selectedTickets');
+    if (selectedTickets) {
+      return {
+        ...state,
+        selectedTickets: JSON.parse(selectedTickets),
+      };
+    }
+    return state;
+  })
+
+  readonly addTotalPrice = this.updater((state, totalPrice: number) => {
+    return {
+      ...state,
+      totalPrice,
+    };
+  })
+
+  readonly addContactData = this.updater((state, userData: User) => {
+    return {
+      ...state,
+      userData,
+    };
+  })
+
+  readonly getMe = this.effect(() => {
+    return this.reservationService.getMe().pipe(
+      tap((user) => {
+        return this.updateUser(user)
+      })
+    );
+  })
+
+  readonly updateUser = this.updater((state, userData: User) => {
+    return {
+      ...state,
+      userData,
+    };
+  })
+
+  readonly completeReservation = this.effect((reservationData$: Observable<ReservationState>) => {
+    return reservationData$.pipe(
+      map((reservationData) => {
+        const { selectedTickets, userData, blikCode, totalPrice, showingId } = reservationData;
+        const seats = selectedTickets.map((ticket) => ticket.ticket);
+        return {
+          showingId,
+          seats,
+          user_id: userData.userId,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          phone: userData.phone,
+          newsletter: userData.newsletter,
+          blikCode,
+          totalPrice,
+          ticketNo: Math.floor(Math.random() * 1000000000),
+        };
+      }),
+      switchMap((reservation) => this.reservationService.completeReservation(reservation)),
+      tap((response: any) => {
+        this.cookieService.delete('selectedTickets', '/');
+        this.cookieService.set('ticketNo', response.message.ticketno, 1, '/');
+
+        if (this.cookieService.get('ticketNo')) {
+          this.router.navigate([`${Routing.SUCCESS}/${response.message.ticketno}`]);
+        }
+      }
+    ));
+  })
 }
-
-// how to use it ?
-// import { ReservationsStore } from './reservations.store';
-
-// @Component({
-//   selector: 'app-hall',
-//   standalone: true,
-//   providers: [ReservationsStore],
-//   template: `
-//     <div class="reservation" *ngIf="showing$ | async as showing">
-//       <div class="info-wrapper">
-//         <p>
-//           {{ showing.title }}, sala nr {{ showing.hallno }}, {{ showing.start.split(' ')[0] }}, godz.
-//           {{ showing.start.split(' ')[1] }}
-//         </p>
-//       </div>
-//       <div class="screen-wrapper">
-//         <div class="screen"></div>
-//         <p>Ekran</p>
-//       </div>
-//       <div class="hall">
-//         <div class="hall-wrapper" *ngFor="let row of showing.rows">
-//           <div class="rows">{{ row }}</div>
-//           <div
-//             class="columns"
-//             *ngFor="let column of showing.columns"
-//             (click)="addToBookedSeats(row, column, showing.id)"
-//             [ngClass]="[
-//               showing.bookedseats?.includes(row + column) ? 'reserved' : '',
-//               selectedSeats.includes(row + column) ? 'selected' : ''
-//             ]">
-//             {{ column }}
-//           </div>
-//         </div>
-//       </div>
-//       <div class="reservation-wrapper">
-//         <div class="reservation-info">
-//           <p>Wybrane miejsca:</p>
-//           <p>{{ selectedSeats }}</p>
-//         </div>
-//         <div class="reservation-info">
-//           <p>Wybrane bilety:</p>
-//           <p>{{ selectedTickets }}</p>
-//         </div>
-//         <div class="reservation-info">
-//           <p>Łączna kwota:</p>
-//           <p>{{ totalPrice }}</p>
-//         </div>
-//       </div>
-//       <div class="reservation-buttons">
-//         <button mat-raised-button color="primary" (click)="clearSeats()">Wyczyść</button>
-//         <button mat-raised-button color="primary" (click)="clearTickets()">Wyczyść</button>
-//         <button mat-raised-button color="primary" (click)="clearAll()">Wyczyść wszystko</button>
-//       </div>
-//     </div>
-//   `,
-//   styleUrls: ['reservations.component.scss'],
-// })
-// export class ReservationsComponent implements OnInit {
-//   private store = inject(Store)
-//   private activeRoute = inject(ActivatedRoute);
-//   private reservationsStore = inject(ReservationsStore);
-
-//   showing$ = this.store.select(selectShowingAndMovie)
-//   tickets$ = this.store.select(selectTickets)
-
-//   readonly selectedSeats = this.reservationsStore.select((state) => state.selectedSeats);
-//   readonly selectedTickets = this.reservationsStore.select((state) => state.selectedTickets);
-//   readonly totalPrice = this.reservationsStore.select((state) => state.totalPrice);
-
-//   constructor() {}
-
-//   ngOnInit(): void {
-//     this.activeRoute.params.subscribe((params) => {
-//       this.store.dispatch(loadShowing({ id: params.id }));
-//       this.store.dispatch(loadTickets({ id: params.id }));
-//     });
-
-//     this.tickets$.subscribe((tickets) => {
-//       this.reservationsStore.setState({
-//         ...this.reservationsStore.getState(),
-//         tickets,
-//       });
-
-//       this.reservationsStore.setState({
-//         ...this.reservationsStore.getState(),
-//         selectedTickets: tickets.map((ticket) => ticket.name),

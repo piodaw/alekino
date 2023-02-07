@@ -1,0 +1,40 @@
+<div class="showing-card-wrapper" *ngIf="showing$ | async as showing">
+  <mat-card *ngFor="let show of showing.showings">
+    <mat-card-content>
+      <div class="img-wrapper">
+        <img [ngSrc]="show.img!" [alt]="show.title" width="150" height="200">
+      </div>
+      <div class="info-wrapper">
+        <div class="info">
+          <h3>{{ show.title }}</h3>
+          <div>
+            <p>{{ show.genre }} | {{ show.duration }} min | {{ show.age }}</p>
+          </div>
+          <p>{{ showFullDescriptions[show.id!] ? show.description : show.shortdescription }}</p>
+          <div class="show-more">
+            <p (click)="toggleShowMore(show.id!)">{{ showFullDescriptions[show.id!] ? 'Pokaż mniej' : 'Pokaż więcej' }}</p>
+          </div>
+        </div>
+        <div class="hours-wrapper">
+          <button class="hours" mat-stroked-button color="accent" *ngFor="let hours of show.showings" (click)="redirectToReservationPage(hours.id)">
+            <div class="hour-button">
+              <span>{{ hours.start.split(" ")[1] }}</span>
+              <span>Sala: {{ hours.hallno }}</span>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="button-wrapper">
+        <div class="rating-wrapper">
+          <p class="rating">{{ show.rating }}/10</p>
+        </div>
+        <div>
+          <button mat-raised-button color="primary">Oceń</button>
+        </div>
+        <div *ngIf="loggedIn$ | async as user">
+          <button mat-flat-button color="accent" *ngIf="show.id as movie_id" (click)="addToWishList(user.userId, movie_id)">Chcę obejrzeć</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

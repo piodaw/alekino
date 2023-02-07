@@ -7,24 +7,24 @@
           <mat-form-field appearance="outline">
             <mat-label>Adres e-mail</mat-label>
             <input matInput type="email" formControlName="email" placeholder="Adres e-mail" required>
-            <mat-error></mat-error>
+            <mat-error *ngIf="errorMessage('email') as message">{{ message }}</mat-error>
           </mat-form-field>
         </div>
         <div class="password-container">
           <mat-form-field appearance="outline">
             <mat-label>Hasło</mat-label>
-            <input matInput type="password" formControlName="password" placeholder="Hasło" required>
-            <button class="icon-wrapper" matSuffix type="button" mat-icon-button>
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <input matInput [type]="!hide ? 'text' : 'password'" formControlName="password" placeholder="Hasło" required>
+            <button class="icon-wrapper" matSuffix type="button" (click)="hide = !hide" mat-icon-button>
+              <mat-icon>{{!hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
-            <mat-error></mat-error>
+            <mat-error *ngIf="errorMessage('password') as message">{{ message }}</mat-error>
           </mat-form-field>
         </div>
       </div>
       <button class="submit" type="submit" mat-raised-button>
         Zaloguj się
       </button>
-    <div>
+    <div class="link-wrapper">
       <p>Nie masz jeszcze konta?</p>
       <a [routerLink]="[routing.REGISTER]">Zarejestruj się</a>
     </div>

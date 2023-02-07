@@ -1,0 +1,54 @@
+<main>
+  <div class="register-wrapper">
+    <h2>Rejestracja</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="input-wrapper">
+        <div class="email-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Adres e-mail</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Adres e-mail" required>
+            <mat-error *ngIf="errorMessage('email') as message">{{ message }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="firstName-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Imię</mat-label>
+            <input matInput type="text" formControlName="firstName" placeholder="Imię" required>
+            <mat-error *ngIf="errorMessage('firstName') as message">{{ message }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="lastName-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Nazwisko</mat-label>
+            <input matInput type="text" formControlName="lastName" placeholder="Nazwisko" required>
+            <mat-error *ngIf="errorMessage('lastName') as message">{{ message }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="phone-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Numer telefonu</mat-label>
+            <input matInput type="phone" formControlName="phoneNumber" placeholder="Numer telefonu" required>
+            <mat-error *ngIf="errorMessage('phoneNumber') as message">{{ message }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="password-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Hasło</mat-label>
+            <input matInput [type]="!hide ? 'text' : 'password'" formControlName="password" placeholder="Hasło" required>
+            <button class="icon-wrapper" matSuffix type="button" (click)="hide = !hide" mat-icon-button>
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="errorMessage('password') as message">{{ message }}</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <button class="submit" type="submit" mat-raised-button>
+        Zarejestruj się
+      </button>
+      <div class="link-wrapper">
+        <p>Masz już konto?</p>
+        <a [routerLink]="[routing.REGISTER]">Zaloguj się</a>
+      </div>
+    </form>
+  </div>
+</main>

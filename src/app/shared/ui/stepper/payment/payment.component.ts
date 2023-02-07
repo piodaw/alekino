@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
+import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
+import { map } from 'rxjs'
+
+import { ReservationsStore } from 'src/app/features/home/subpages/reservations/store/reservations.store'
 
 @Component({
   selector: 'app-payment',
@@ -20,16 +23,16 @@ import { MatStepperModule } from '@angular/material/stepper';
   ],
   template: `
     <div>
-      <form>
+      <form [formGroup]="paymentForm" (ngSubmit)="submitPaymentForm()">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Kod blik</mat-label>
-          <input matInput placeholder="Kod blik" required />
+          <input matInput placeholder="Kod blik" formControlName="blikCode" />
         </mat-form-field>
+        <div class="button-wrapper">
+          <button mat-stroked-button color="warn" type="button" matStepperPrevious>Wróć</button>
+          <button mat-raised-button type="submit" color="primary">Zapłać</button>
+        </div>
       </form>
-      <div class="button-wrapper">
-        <button mat-stroked-button color="warn" matStepperPrevious>Wróć</button>
-        <button mat-raised-button color="primary" matStepperNext>Zapłać</button>
-      </div>
     </div>
   `,
   styles: [
@@ -48,5 +51,32 @@ import { MatStepperModule } from '@angular/material/stepper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentComponent {
-  toggleValue = false;
+  private reservationStore = inject(ReservationsStore)
+  private formBuilder = inject(NonNullableFormBuilder)
+
+  paymentForm = this.createPaymentForm()
+
+  submitPaymentForm() {
+    this.paymentForm.markAllAsTouched()
+
+    if (this.paymentForm.invalid) {
+      console.log('invalid')
+      return
+    }
+
+    this.reservationStore.setState((state) => ({
+      ...state,
+      blikCode: this.paymentForm.getRawValue().blikCode
+    }))
+
+    this.reservationStore.completeReservation(this.reservationData$)
+  }
+
+  readonly reservationData$ = this.reservationStore.state$.pipe(map(state => state))
+
+  private createPaymentForm() {
+    return this.formBuilder.group({
+      blikCode: this.formBuilder.control('', [Validators.required])
+    })
+  }
 }

@@ -1,12 +1,12 @@
 import { createReducer, on } from '@ngrx/store'
 
 import {
-  initialMovieState,
+  initialMovieState, initialPromoCodeState,
   initialShowingByIdState,
   initialShowingMoviesState, initialTicketsState
 } from 'src/app/features/home/store/home.state'
 import { MovieApiActions, ReservationApiActions, ShowingsApiActions } from 'src/app/features/home/store/home.actions'
-import { MovieResponse, ShowingAndMovieData, ShowingData, TicketsData } from '../shared/home.interfaces'
+import { MovieResponse, PromoCodeData, ShowingAndMovieData, ShowingData, TicketsData } from '../shared/home.interfaces'
 
 export const MovieReducer = createReducer(
   initialMovieState,
@@ -33,5 +33,12 @@ export const TicketsReducer = createReducer(
   initialTicketsState,
   on(ReservationApiActions.getTicketsSuccess, (state, { tickets }): TicketsData => (
     { ...state, ...tickets }
+  ))
+)
+
+export const PromoCodeReducer = createReducer(
+  initialPromoCodeState,
+  on(ReservationApiActions.getPromocodesSuccess, (state, { promoCodes }): PromoCodeData => (
+    { ...state, ...promoCodes }
   ))
 )

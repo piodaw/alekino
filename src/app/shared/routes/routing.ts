@@ -9,7 +9,7 @@ export const Routing = {
   RESERVATION: '/reservation',
   TICKETS: '/tickets',
   SETTINGS: '/settings',
-  ADMIN: '/admin',
+  ADMIN: '/admin/movies',
   WISHLIST: '/wishlist',
   ADMIN_TICKETS: '/admin/tickets',
   ADMIN_USERS: '/admin/users',
@@ -20,4 +20,5 @@ export const Routing = {
   UPDATE_HALL: '/admin/update-hall',
   REPERTOIRE: '/admin/repertoire',
   PROMO_CODES: '/admin/promo-codes',
+  NEWSLETTER: '/admin/newsletter',
 }

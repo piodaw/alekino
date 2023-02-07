@@ -6,7 +6,7 @@ import { StoreModule } from '@ngrx/store'
 import { HomeComponent } from 'src/app/features/home/home.component';
 import { HomePageComponent } from './subpages/home-page/home-page.component';
 import {
-  MovieReducer,
+  MovieReducer, PromoCodeReducer,
   ShowingsByIdReducer,
   ShowingsReducer,
   TicketsReducer
@@ -14,6 +14,9 @@ import {
 import { HomeEffects } from 'src/app/features/home/store/home.effects'
 import { ReservationsComponent } from './subpages/reservations/reservations.component';
 import { WishlistComponent } from './subpages/wishlist/wishlist.component';
+import { SuccessComponent } from 'src/app/features/home/subpages/success/success.component'
+import { MyTicketsComponent } from 'src/app/features/home/subpages/my-tickets/my-tickets.component'
+import { SettingsComponent } from 'src/app/features/home/subpages/settings/settings.component'
 
 @NgModule({
   imports: [
@@ -21,6 +24,7 @@ import { WishlistComponent } from './subpages/wishlist/wishlist.component';
     StoreModule.forFeature('showings', ShowingsReducer),
     StoreModule.forFeature('showingsById', ShowingsByIdReducer),
     StoreModule.forFeature('tickets', TicketsReducer),
+    StoreModule.forFeature('promoCodes', PromoCodeReducer),
     EffectsModule.forFeature([HomeEffects]),
     RouterModule.forChild([
       {
@@ -35,12 +39,24 @@ import { WishlistComponent } from './subpages/wishlist/wishlist.component';
           {
             path: 'wishlist',
             component: WishlistComponent
+          },
+          {
+            path: 'settings',
+            component: SettingsComponent
           }
         ],
       },
       {
         path: 'reservation/:id',
         component: ReservationsComponent
+      },
+      {
+        path: 'success/:id',
+        component: SuccessComponent
+      },
+      {
+        path: 'tickets',
+        component: MyTicketsComponent
       }
     ]),
   ],

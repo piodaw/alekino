@@ -1,0 +1,34 @@
+.hall-card {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  padding: 48px;
+  justify-items: center;
+}
+
+.hall-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 220px;
+  width: 220px;
+  background-color: var(--surface);
+  box-shadow: 0 0 6px 0 rgb(255, 143, 198);
+  border-radius: 8px;
+  position: relative;
+
+  &:hover {
+    filter: brightness(2);
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}

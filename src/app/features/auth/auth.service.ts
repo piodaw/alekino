@@ -12,7 +12,6 @@ export class AuthService {
   private base_url = inject(API_URL)
 
   login(email: string, password: string) {
-    console.log(email, password)
     return this.http.post<LoginResponse>(`${this.base_url}/auth/login`, { email, password })
   }
 
@@ -23,7 +22,7 @@ export class AuthService {
     email: string,
     password: string
   ) {
-    return this.http.post(`${this.base_url}/auth/register`, {
+    return this.http.post(`${this.base_url}/users`, {
       firstName,
       lastName,
       email,

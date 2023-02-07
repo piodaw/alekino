@@ -6,7 +6,7 @@ export const initialUserState: UserState = {
     firstName: '',
     lastName: '',
     email: '',
-    phoneNumber: '',
+    phone: '',
     role: 0
   }
 };

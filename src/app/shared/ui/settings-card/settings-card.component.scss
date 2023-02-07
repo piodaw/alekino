@@ -1,0 +1,21 @@
+.settings-wrapper {
+  width: 800px;
+  height: 400px;
+  background-color: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 0 rgb(255, 143, 198);
+}
+
+.settings-menu {
+  flex-basis: 20%;
+  border-right: 1px solid var(--info);
+  height: 100%;
+}
+
+.settings-forms {
+  flex-basis: 80%;
+  height: 100%;
+}

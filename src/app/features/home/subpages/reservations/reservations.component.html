@@ -2,6 +2,9 @@
   <app-stepper
     [showing$]="showing$"
     [tickets$]="tickets$"
+    [promoCodes$]="promoCodes$"
     (selectedSeat)="addToBookedSeats($event)"
-    (removeSeat)="removeFromBookedSeats($event)"></app-stepper>
+    (removeSeat)="removeFromBookedSeats($event)"
+  >
+  </app-stepper>
 </main>

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http'
 
 import { API_URL } from '@core/env.token'
 import { ShowingById, ShowingResponse } from 'src/app/features/home/shared/home.interfaces'
+import { ShowingData } from 'src/app/features/admin/shared/admin.interceptors'
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,12 @@ export class ShowingService {
   private http = inject(HttpClient)
   private base_url = inject(API_URL)
 
-  getShowings(date: string, filters: string, hall_id: number) {
+  getShowings(date: string) {
     return this.http.get<ShowingResponse>(`${this.base_url}/showings`, {
       params: {
         date,
-        filters: `["${filters}"]`,
-        hall_id,
+        filters: `["day", "week", "year"]`,
+        hall_id: 1,
       }
     })
   }

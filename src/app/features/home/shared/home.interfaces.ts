@@ -72,3 +72,13 @@ export interface addToWishlist {
   movie_id: number;
   user_id: number;
 }
+
+export interface PromoCodeData {
+  promoCodes: PromoCode[];
+}
+
+export interface PromoCode {
+  promo_id: number;
+  promo_code: string;
+  value: number;
+}

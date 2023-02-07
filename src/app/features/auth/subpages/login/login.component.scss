@@ -3,15 +3,26 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  width: 100vw;
+  min-height: calc(100vh - var(--header-height));
+  margin-top: var(--header-height);
+}
+
+h2, .link-wrapper {
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: var(--secondary);
 }
 
 .login-wrapper {
-  width: 400px;
+  width: 350px;
   height: 350px;
   padding: 32px;
   background-color: var(--surface);
+  box-shadow: 0 0 6px 0 rgb(255, 143, 198);
+  border-radius: 8px;
 }
 
 form {
@@ -19,7 +30,7 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   height: 100%;
 }
 
@@ -29,6 +40,11 @@ form {
   align-items: center;
   justify-content: center;
   width: 80%;
+  gap: 6px;
+}
+
+mat-error {
+  font-size: 14px;
 }
 
 .email-container,
