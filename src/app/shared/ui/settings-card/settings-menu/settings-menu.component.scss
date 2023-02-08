@@ -6,6 +6,10 @@ mat-list {
   padding: 0;
 }
 
+mat-list-item {
+  cursor: pointer !important;
+}
+
 mat-list-item:hover {
   background-color: #FF8FC633;
   transition: all 0.2s ease-in-out;

@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core'
+import { format } from 'date-fns'
 
 import { AdminDatePickerComponent } from '@shared/ui/admin-date-picker/admin-date-picker.component'
 import { AdminRepertoireStore } from 'src/app/features/admin/subpages/repertoire/store/admin-repertoire.store'
 import { AsyncPipe, JsonPipe } from '@angular/common'
 import { RepertoireComponent } from '@shared/ui/repertoire/repertoire.component'
-import { format } from 'date-fns'
 
 @Component({
   selector: 'app-admin-repertoire',
@@ -20,7 +20,7 @@ import { format } from 'date-fns'
     RepertoireComponent
   ]
 })
-export class AdminRepertoireComponent {
+export class AdminRepertoireComponent implements OnInit {
   private adminRepertoireStore = inject(AdminRepertoireStore)
 
   readonly movies$ = this.adminRepertoireStore.select(state => state.movies)
@@ -40,7 +40,6 @@ export class AdminRepertoireComponent {
   createNewShowing({ hour, hall_id, movie_id }: { hour: string, hall_id: number, movie_id: number }) {
     this.selectedDate$.subscribe(date => {
       const start = `${format(new Date(date), 'yyyy-dd-MM')} ${hour}`
-      console.log(start)
       this.adminRepertoireStore.createShowing({ start, hall_id, movie_id })
     }).unsubscribe()
   }

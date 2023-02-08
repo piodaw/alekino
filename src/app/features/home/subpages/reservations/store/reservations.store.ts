@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core'
 import { ComponentStore } from '@ngrx/component-store'
-import { map, Observable, switchMap, tap, timer } from 'rxjs'
+import { map, Observable, switchMap, tap } from 'rxjs'
 import { ReservationService } from 'src/app/features/home/shared/services/reservation.service'
 import { CookieService } from 'ngx-cookie-service'
 import { addMinutes } from 'date-fns'
@@ -56,7 +56,7 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
     });
   }
 
-  readonly removeSeatFromSelectedTickets = this.updater((state, seat: string) => {
+  readonly removeSeatFromSelectedTickets = this.updater((state, seat: string): ReservationState => {
     return {
       ...state,
       selectedTickets: state.selectedTickets.filter((ticket) => ticket.ticket !== seat),
@@ -79,7 +79,7 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
     )
   })
 
-  readonly addSeatToSelectedTickets = this.updater((state, seat: Ticket) => {
+  readonly addSeatToSelectedTickets = this.updater((state, seat: Ticket): ReservationState => {
     return {
       ...state,
       selectedTickets: [...state.selectedTickets, seat],
@@ -100,7 +100,7 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
     )
   })
 
-  readonly updateTicketType = this.updater((state, ticket: Ticket) => {
+  readonly updateTicketType = this.updater((state, ticket: Ticket): ReservationState => {
     return {
       ...state,
       selectedTickets: state.selectedTickets.map((item) => {
@@ -137,7 +137,7 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
     )
   })
 
-  readonly getSelectedTicketsFromCookies = this.updater((state) => {
+  readonly getSelectedTicketsFromCookies = this.updater((state): ReservationState => {
     const selectedTickets = this.cookieService.get('selectedTickets');
     if (selectedTickets) {
       return {
@@ -148,14 +148,14 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
     return state;
   })
 
-  readonly addTotalPrice = this.updater((state, totalPrice: number) => {
+  readonly addTotalPrice = this.updater((state, totalPrice: number): ReservationState => {
     return {
       ...state,
       totalPrice,
     };
   })
 
-  readonly addContactData = this.updater((state, userData: User) => {
+  readonly addContactData = this.updater((state, userData: User): ReservationState => {
     return {
       ...state,
       userData,
@@ -170,7 +170,7 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
     );
   })
 
-  readonly updateUser = this.updater((state, userData: User) => {
+  readonly updateUser = this.updater((state, userData: User): ReservationState => {
     return {
       ...state,
       userData,
@@ -197,7 +197,7 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
         };
       }),
       switchMap((reservation) => this.reservationService.completeReservation(reservation)),
-      tap((response: any) => {
+      tap((response) => {
         this.cookieService.delete('selectedTickets', '/');
         this.cookieService.set('ticketNo', response.message.ticketno, 1, '/');
 

@@ -4,6 +4,8 @@ import { SettingsCardComponent } from '@shared/ui/settings-card/settings-card.co
 import { SettingsStore } from 'src/app/features/home/subpages/settings/store/settings.store'
 import { Store } from '@ngrx/store'
 import { selectLoggedUser } from '@core/store/user.selectors'
+import { UserData } from './settings.interfaces'
+import { take } from 'rxjs'
 
 
 @Component({
@@ -33,5 +35,15 @@ export class SettingsComponent {
         this.settingsStore.checkIfUserHasNewsletter(user.email)
       })
     }
+  }
+
+  updateUser(user: Partial<UserData>) {
+    this.user$.pipe(take(1)).subscribe(loggedUser => {
+      this.settingsStore.updateUserData({ ...loggedUser, ...user })
+    })
+  }
+
+  updateNewsletter(value: boolean) {
+    console.log(value)
   }
 }

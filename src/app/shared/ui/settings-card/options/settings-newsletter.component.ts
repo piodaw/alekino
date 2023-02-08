@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { MatInputModule } from '@angular/material/input'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatButtonModule } from '@angular/material/button'
@@ -60,6 +60,7 @@ import { Observable } from 'rxjs'
 })
 export class SettingsNewsletterComponent implements OnInit {
   @Input() newsletter$!: Observable<boolean>
+  @Output() formData = new EventEmitter<{ newsletter: boolean }>()
 
   private formBuilder = inject(NonNullableFormBuilder)
 
@@ -72,7 +73,7 @@ export class SettingsNewsletterComponent implements OnInit {
   }
 
   updateNewsletter() {
-    console.log(this.newsletterForm.getRawValue())
+    this.formData.emit(this.newsletterForm.getRawValue())
   }
 
   private createNewsletterForm() {

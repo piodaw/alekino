@@ -9,7 +9,7 @@ import { SettingsEmailComponent } from '@shared/ui/settings-card/options/setting
 import { SettingsPhoneComponent } from '@shared/ui/settings-card/options/settings-phone.component'
 import { SettingsNewsletterComponent } from '@shared/ui/settings-card/options/settings-newsletter.component'
 import { User } from '@core/store/user.interfaces'
-
+import { UserData } from 'src/app/features/home/subpages/settings/settings.interfaces'
 
 @Component({
   selector: 'app-settings-card',
@@ -34,8 +34,18 @@ export class SettingsCardComponent {
   @Input() page$!: Observable<number>
   @Input() user$!: Observable<User>
   @Input() newsletter$!: Observable<boolean>
+  @Output() formData = new EventEmitter<Partial<UserData>>()
+  @Output() newsletter = new EventEmitter<boolean>()
 
   nagivationHandler(id: number) {
     this.navigation.emit(id)
+  }
+
+  newsletterHandler(value: { newsletter: boolean }) {
+    this.newsletter.emit(value.newsletter)
+  }
+
+  formDataHandler(data: Partial<User>) {
+    this.formData.emit(data)
   }
 }

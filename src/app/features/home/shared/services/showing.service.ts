@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http'
 
 import { API_URL } from '@core/env.token'
 import { ShowingById, ShowingResponse } from 'src/app/features/home/shared/home.interfaces'
-import { ShowingData } from 'src/app/features/admin/shared/admin.interceptors'
 
 @Injectable({
   providedIn: 'root'

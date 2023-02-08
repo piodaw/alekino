@@ -17,6 +17,7 @@ import { HeaderComponent } from '@shared/ui/header/header.component'
 import { TokenInterceptorProvider } from '@shared/interceptors/token.interceptor'
 import { AuthGuard } from '@shared/guards/loginGuard'
 import { AdminGuard } from '@shared/guards/AdminGuard'
+import { ToastrModule } from 'ngx-toastr';
 
 export interface AppState {
   user: UserState;
@@ -27,6 +28,7 @@ export interface AppState {
   imports: [
     BrowserModule,
     HttpClientModule,
+    ToastrModule.forRoot(),
     StoreModule.forRoot({
       user: userReducer
     }),

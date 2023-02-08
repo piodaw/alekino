@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core'
 import { MatInputModule } from '@angular/material/input'
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button'
 import { Observable } from 'rxjs'
 
 import { User } from '@core/store/user.interfaces'
+import { UserData } from 'src/app/features/home/subpages/settings/settings.interfaces'
 
 @Component({
   selector: 'app-settings-general',
@@ -67,18 +68,14 @@ import { User } from '@core/store/user.interfaces'
 })
 export class SettingsGeneralComponent implements OnInit {
   @Input() user$!: Observable<User>
+  @Output() formData = new EventEmitter<Partial<UserData>>()
 
   private formBuilder = inject(NonNullableFormBuilder)
 
   updateUserForm = this.createUserForm()
 
   ngOnInit() {
-    this.user$.subscribe(user => {
-      this.updateUserForm.patchValue({
-        firstName: user.firstName,
-        lastName: user.lastName
-      })
-    })
+    this.getUserData()
   }
 
   updateUser() {
@@ -88,13 +85,22 @@ export class SettingsGeneralComponent implements OnInit {
       return
     }
 
-    console.log(this.updateUserForm.getRawValue())
+    this.formData.emit(this.updateUserForm.getRawValue())
   }
 
   private createUserForm() {
     return this.formBuilder.group({
       firstName: this.formBuilder.control('', [Validators.required]),
       lastName: this.formBuilder.control('', [Validators.required])
+    })
+  }
+
+  private getUserData() {
+    return this.user$.subscribe(user => {
+      this.updateUserForm.patchValue({
+        firstName: user.firstName,
+        lastName: user.lastName
+      })
     })
   }
 }

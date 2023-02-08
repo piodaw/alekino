@@ -4,7 +4,7 @@ import { User } from '@core/store/user.interfaces'
 export const UserActions = createActionGroup({
   source: 'User',
   events: {
-    'get user': props<{ user: User }>()
+    'get user': emptyProps()
   }
 })
 

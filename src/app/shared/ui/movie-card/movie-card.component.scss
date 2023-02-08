@@ -79,9 +79,9 @@ button {
 
 .show-more {
   text-align: end;
+  color: var(--secondary);
 
   & p {
-    color: var(--secondary);
     cursor: pointer;
   }
 }

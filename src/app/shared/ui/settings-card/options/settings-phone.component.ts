@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Output } from '@angular/core'
 import { MatInputModule } from '@angular/material/input'
 import { MatButtonModule } from '@angular/material/button'
-import { ReactiveFormsModule } from '@angular/forms'
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { UserData } from 'src/app/features/home/subpages/settings/settings.interfaces'
 
 @Component({
   selector: 'app-settings-phone',
@@ -14,10 +15,10 @@ import { ReactiveFormsModule } from '@angular/forms'
   template: `
     <div class="general-form-wrapper">
       <h2>Edytuj numer telefonu</h2>
-      <form>
+      <form [formGroup]="phoneForm" (ngSubmit)="updatePhone()">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Nowy numer telefonu</mat-label>
-          <input matInput placeholder="Numer telefonu">
+          <input matInput placeholder="Numer telefonu" formControlName="phone">
           <mat-error></mat-error>
         </mat-form-field>
         <div class="button-wrapper">
@@ -58,4 +59,25 @@ import { ReactiveFormsModule } from '@angular/forms'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsPhoneComponent {
+  @Output() formData = new EventEmitter<Partial<UserData>>()
+
+  private formBuilder = inject(NonNullableFormBuilder)
+
+  phoneForm = this.createPhoneForm()
+
+  updatePhone() {
+    this.phoneForm.markAllAsTouched()
+
+    if (this.phoneForm.invalid) {
+      return
+    }
+
+    this.formData.emit(this.phoneForm.value)
+  }
+
+  private createPhoneForm() {
+    return this.formBuilder.group({
+      phone: this.formBuilder.control('', [Validators.required])
+    })
+  }
 }

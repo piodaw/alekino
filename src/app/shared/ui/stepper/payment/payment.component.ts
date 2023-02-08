@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
-import { map } from 'rxjs'
+import { map } from 'rxjs';
 
-import { ReservationsStore } from 'src/app/features/home/subpages/reservations/store/reservations.store'
+import { ReservationsStore } from 'src/app/features/home/subpages/reservations/store/reservations.store';
 
 @Component({
   selector: 'app-payment',
@@ -19,14 +19,14 @@ import { ReservationsStore } from 'src/app/features/home/subpages/reservations/s
     MatSlideToggleModule,
     FormsModule,
     MatButtonModule,
-    MatStepperModule
+    MatStepperModule,
   ],
   template: `
     <div>
       <form [formGroup]="paymentForm" (ngSubmit)="submitPaymentForm()">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Kod blik</mat-label>
-          <input matInput placeholder="Kod blik" formControlName="blikCode" />
+          <input matInput placeholder="Kod blik" formControlName="blikCode" (keypress)="preventMoreNumbers($event)" />
         </mat-form-field>
         <div class="button-wrapper">
           <button mat-stroked-button color="warn" type="button" matStepperPrevious>Wróć</button>
@@ -51,32 +51,37 @@ import { ReservationsStore } from 'src/app/features/home/subpages/reservations/s
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentComponent {
-  private reservationStore = inject(ReservationsStore)
-  private formBuilder = inject(NonNullableFormBuilder)
+  private reservationStore = inject(ReservationsStore);
+  private formBuilder = inject(NonNullableFormBuilder);
 
-  paymentForm = this.createPaymentForm()
+  paymentForm = this.createPaymentForm();
 
-  submitPaymentForm() {
-    this.paymentForm.markAllAsTouched()
-
-    if (this.paymentForm.invalid) {
-      console.log('invalid')
-      return
+  preventMoreNumbers(event: KeyboardEvent) {
+    if (this.paymentForm.getRawValue().blikCode.length >= 6) {
+      event.preventDefault();
     }
-
-    this.reservationStore.setState((state) => ({
-      ...state,
-      blikCode: this.paymentForm.getRawValue().blikCode
-    }))
-
-    this.reservationStore.completeReservation(this.reservationData$)
   }
 
-  readonly reservationData$ = this.reservationStore.state$.pipe(map(state => state))
+  submitPaymentForm() {
+    this.paymentForm.markAllAsTouched();
+
+    if (this.paymentForm.invalid) {
+      return;
+    }
+
+    this.reservationStore.setState(state => ({
+      ...state,
+      blikCode: this.paymentForm.getRawValue().blikCode,
+    }));
+
+    this.reservationStore.completeReservation(this.reservationData$);
+  }
+
+  readonly reservationData$ = this.reservationStore.state$.pipe(map(state => state));
 
   private createPaymentForm() {
     return this.formBuilder.group({
-      blikCode: this.formBuilder.control('', [Validators.required])
-    })
+      blikCode: this.formBuilder.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]),
+    });
   }
 }

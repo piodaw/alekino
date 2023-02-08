@@ -1,3 +1,11 @@
 <main>
-  <app-settings-card [user$]="user$" [newsletter$]="newsletter$" [page$]="page$" (navigation)="navigationHandler($event)"></app-settings-card>
+  <app-settings-card
+    [user$]="user$"
+    [newsletter$]="newsletter$"
+    [page$]="page$"
+    (navigation)="navigationHandler($event)"
+    (formData)="updateUser($event)"
+    (newsletter)="updateNewsletter($event)"
+    >
+  </app-settings-card>
 </main>

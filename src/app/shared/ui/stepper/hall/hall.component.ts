@@ -1,23 +1,16 @@
 import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
-import { map, Observable, of, take } from 'rxjs'
+import { map, Observable, take } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 
-import { ShowingById, Ticket } from 'src/app/features/home/shared/home.interfaces'
+import { ShowingById, Ticket } from 'src/app/features/home/shared/home.interfaces';
 import { ReservationsStore } from 'src/app/features/home/subpages/reservations/store/reservations.store';
-import { CookieService } from 'ngx-cookie-service'
 
 export interface SelectedTicket {
   ticket: string;
@@ -79,7 +72,10 @@ export interface SelectedTicket {
           </div>
           <mat-form-field class="ticket-select" appearance="fill" color="accent">
             <mat-label>Rodzaj biletu</mat-label>
-            <mat-select [compareWith]="compareFn" (ngModelChange)="ticketType(ticket, $event)" [formControlName]="ticket">
+            <mat-select
+              [compareWith]="compareFn"
+              (ngModelChange)="ticketType(ticket, $event)"
+              [formControlName]="ticket">
               <mat-option *ngFor="let ticket of tickets$ | async" [value]="ticket">
                 {{ ticket.name }}
               </mat-option>
@@ -99,13 +95,12 @@ export interface SelectedTicket {
           </div>
         </div>
         <div class="button-wrapper" *ngIf="selectedTickets$ | async as seat">
-          <button 
+          <button
             mat-raised-button
             type="submit"
             color="primary"
             matStepperNext
-            [disabled]="seat.length < selectedSeats.length || seat.length === 0"
-          >
+            [disabled]="seat.length < selectedSeats.length || seat.length === 0">
             Dalej
           </button>
         </div>
@@ -127,7 +122,6 @@ export class HallComponent implements OnInit {
 
   selectedSeats: string[] = [];
 
-
   seatsFormGroup = new FormGroup({});
 
   ngOnInit() {
@@ -135,15 +129,17 @@ export class HallComponent implements OnInit {
       this.seatsFormGroup.addControl(`${seat}`, new FormControl('', Validators.required));
     });
 
-    this.reservationsStore.getSelectedTicketsFromCookies()
+    this.reservationsStore.getSelectedTicketsFromCookies();
 
-    this.selectedTickets$.subscribe(tickets => {
-      tickets.forEach(ticket => {
-        this.seatsFormGroup.addControl(`${ticket.ticket}`, new FormControl('', Validators.required));
-        this.selectedSeats.push(ticket.ticket)
-        this.seatsFormGroup.patchValue({ [ticket.ticket]: ticket })
+    this.selectedTickets$
+      .subscribe(tickets => {
+        tickets.forEach(ticket => {
+          this.seatsFormGroup.addControl(`${ticket.ticket}`, new FormControl('', Validators.required));
+          this.selectedSeats.push(ticket.ticket);
+          this.seatsFormGroup.patchValue({ [ticket.ticket]: ticket });
+        });
       })
-    }).unsubscribe();
+      .unsubscribe();
   }
 
   compareFn(o1: Ticket, o2: Ticket): boolean {
@@ -153,7 +149,7 @@ export class HallComponent implements OnInit {
   addToBookedSeats(row: string, column: string, showingId: number) {
     const seat = row + column;
     this.showing$.pipe(take(1)).subscribe(showing => {
-      if (!showing.bookedseats!.includes(seat)) {
+      if (!showing.bookedseats?.includes(seat)) {
         this.selectedSeats.push(seat);
         this.seatsFormGroup.addControl(seat, new FormControl('', Validators.required));
         this.selectedSeat.emit({ seat, showingId });
@@ -164,7 +160,7 @@ export class HallComponent implements OnInit {
         this.removeFromBookedSeats(seat, showingId);
         return;
       }
-    })
+    });
   }
 
   removeTicketFromSelectedTickets(seat: string, showingId: number) {
@@ -182,7 +178,7 @@ export class HallComponent implements OnInit {
   ticketType(ticket: string, event: Ticket) {
     let ticketExists = false;
 
-    console.log(this.seatsFormGroup.getRawValue())
+    console.log(this.seatsFormGroup.getRawValue());
 
     this.reservationsStore.state$.pipe(take(1)).subscribe(state => {
       state.selectedTickets.forEach(selectedTicket => {
@@ -191,7 +187,7 @@ export class HallComponent implements OnInit {
           this.reservationsStore.updateTicketType({ ticket, ...event });
         }
       });
-    })
+    });
 
     if (!ticketExists) {
       this.reservationsStore.addSeatToSelectedTickets({ ticket, ...event });

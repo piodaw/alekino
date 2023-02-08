@@ -20,6 +20,12 @@ export interface PostReservationData {
   newsletter: boolean
 }
 
+interface reservationResponse {
+  message: {
+    ticketno: string
+  }
+}
+
 interface checkIfUserEmailIsInNewsletterData {
   newsletter: boolean
 }
@@ -57,7 +63,7 @@ export class ReservationService {
 
   completeReservation(data: PostReservationData) {
     const { showingId, seats, user_id, ticketNo, blikCode, firstName, lastName, phone, totalPrice, email, newsletter } = data
-    return this.http.post<PostReservationData>(`${this.base_url}/reservations`, {
+    return this.http.post<reservationResponse>(`${this.base_url}/reservations`, {
       showing_id: showingId,
       seats,
       user_id: user_id || null,

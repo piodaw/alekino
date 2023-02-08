@@ -5,6 +5,7 @@ import { catchError, filter, Observable, switchMap, tap } from 'rxjs'
 import { Newsletter } from 'src/app/features/admin/shared/admin.interceptors'
 import { MyTicketsService } from 'src/app/features/home/shared/services/my-tickets.service'
 import { User } from '@core/store/user.interfaces'
+import { ToastFacadeService } from '@shared/services/toast.facade.service'
 
 export interface MyTicketsResponse {
   count: number;
@@ -30,6 +31,7 @@ export interface MyTicketsState {
 export class MyTicketsStore extends ComponentStore<MyTicketsState> {
 
   private myTicketsService = inject(MyTicketsService)
+  private toastService = inject(ToastFacadeService)
 
   constructor() {
     super({
@@ -78,13 +80,13 @@ export class MyTicketsStore extends ComponentStore<MyTicketsState> {
         return this.myTicketsService.refundTicket(ticketNo).pipe(
           tapResponse(
             (res) => {
-              console.log(res.message)
+              this.toastService.showSuccess(res.message, 'success')
               this.patchState({
                 tickets
               })
             },
-            (err: any) => {
-              console.log(err.error.message)
+            (err: { error: Error }) => {
+              this.toastService.showError(err.error.message, 'error')
             }
           ),
         )
