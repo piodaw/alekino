@@ -1,8 +1,10 @@
 <div class="showing-card-wrapper" *ngIf="showing$ | async as showing">
   <mat-card *ngFor="let show of showing.showings">
     <mat-card-content>
-      <div class="img-wrapper">
-        <img [ngSrc]="show.img!" [alt]="show.title" width="150" height="200">
+      <div class="img-container">
+        <div class="img-wrapper">
+          <img [ngSrc]="show.img!" [alt]="show.title" width="150" height="200">
+        </div>
       </div>
       <div class="info-wrapper">
         <div class="info">

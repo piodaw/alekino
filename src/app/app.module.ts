@@ -18,8 +18,9 @@ import { TokenInterceptorProvider } from '@shared/interceptors/token.interceptor
 import { AuthGuard } from '@shared/guards/loginGuard'
 import { AdminGuard } from '@shared/guards/AdminGuard'
 import { ToastrModule } from 'ngx-toastr';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { loaderInterceptorProvider } from '@shared/interceptors/loader.interceptor'
+import { SpinnerComponent } from '@shared/ui/spinner/spinner.component'
+import { NgScrollbarModule } from 'ngx-scrollbar'
 
 export interface AppState {
   user: UserState;
@@ -62,7 +63,8 @@ export interface AppState {
       }
     ]),
     HeaderComponent,
-    MatProgressSpinnerModule
+    SpinnerComponent,
+    NgScrollbarModule
   ],
   providers: [
     {

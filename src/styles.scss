@@ -51,7 +51,7 @@ $cinema-theme: mat.define-dark-theme((
   --primaryDark: #3A2E7F;
   --secondary: rgba(255, 143, 198);
   --secondaryLight: #FFA5D1;
-  --secondaryDark: #B2648A;
+  --secondaryDark: rgba(178, 100, 138);
   --success: #4caf50;
   --successLight: #81C784;
   --successDark: #388E3C;
@@ -62,7 +62,7 @@ $cinema-theme: mat.define-dark-theme((
   --warningLight: #FFB74D;
   --warningDark: #F57C00;
   --info: #2196f3;
-  --infoLight: rgba(100, 181, 246, 0.2);
+  --infoLight: rgba(100, 181, 246);
   --infoDark: #1976D2;
   --background: #000;
   --surface: #17082A;

@@ -16,7 +16,7 @@ import { selectLoggedUser } from '@core/store/user.selectors'
 import { User } from '@core/store/user.interfaces'
 import {
   allowOnlyLettersValidator,
-  allowOnlyNumbersValidator, emailMatchValidator,
+  allowOnlyNumbersValidator,
   emailValidator,
   whitespaceValidator
 } from '@shared/validators/form.validators'

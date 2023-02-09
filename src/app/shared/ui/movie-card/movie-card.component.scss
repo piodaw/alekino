@@ -15,7 +15,14 @@ mat-card-content {
   display: flex;
 }
 
+.img-container {
+  display: flex;
+  align-items: center;
+}
+
 .img-wrapper {
+  height: 200px;
+  width: 150px;
   box-shadow: 0 0 10px 0 rgba(255, 143, 198, 0.3);
 }
 

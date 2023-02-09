@@ -2,13 +2,16 @@ import { ChangeDetectionStrategy, Component, EventEmitter, inject, OnInit, Outpu
 import { eachDayOfInterval, endOfISOWeek, format, parse, startOfISOWeek } from 'date-fns'
 import { NgClass, NgForOf } from '@angular/common'
 import { ActivatedRoute, Router } from '@angular/router'
+import { MatButtonModule } from '@angular/material/button'
 
 @Component({
   selector: 'app-date-picker',
   standalone: true,
   template: `
     <ul>
-      <li [ngClass]="{ 'selected': day === selectedDate }" *ngFor="let day of days" (click)="selectDate(day)">{{ day }}</li>
+      <li *ngFor="let day of days">
+        <button [ngClass]="{ 'selected': day === selectedDate }" mat-button [disabled]="checkIfDateIsPast(day)" (click)="selectDate(day)">{{ day }}</button>
+      </li>
     </ul>
 
   `,
@@ -19,13 +22,14 @@ import { ActivatedRoute, Router } from '@angular/router'
       flex-wrap: wrap;
     }
     
-    li {
+    button {
       background-color: var(--secondaryDark);
       color: white;
       padding: 10px;
       margin: 10px;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 14px;
     }
     
     .selected {
@@ -34,7 +38,8 @@ import { ActivatedRoute, Router } from '@angular/router'
   `],
   imports: [
     NgForOf,
-    NgClass
+    NgClass,
+    MatButtonModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -58,6 +63,10 @@ export class DatePickerComponent implements OnInit {
     this.selectedDate = day;
     this.daySelected.emit(day);
     this.dateSelected.emit(this.dates[this.days.indexOf(day)]);
+  }
+
+  checkIfDateIsPast(day: string) {
+    return this.days.indexOf(day) < this.days.indexOf(this.currentDay);
   }
 
   ngOnInit() {
