@@ -5,7 +5,7 @@
   </mat-form-field>
   <div>
     <div class="table-container">
-      <ng-scrollbar [autoHeightDisabled]="false" class="my-scrollbar">
+      <!-- <ng-scrollbar [autoHeightDisabled]="false" class="my-scrollbar"> -->
         <table mat-table [dataSource]="dataSource" matSort>
           <ng-container
                   *ngFor="let column of displayedColumns.includes('actions') || displayedColumns.includes('userActions')
@@ -41,7 +41,7 @@
             <td class="mat-cell" colspan="4">Nie znaleziono danych o filtrze: "{{input.value}}"</td>
           </tr>
         </table>
-      </ng-scrollbar>
+      <!-- </ng-scrollbar> -->
     </div>
     <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
   </div>

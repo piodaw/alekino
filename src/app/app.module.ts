@@ -20,7 +20,7 @@ import { AdminGuard } from '@shared/guards/AdminGuard'
 import { ToastrModule } from 'ngx-toastr';
 import { loaderInterceptorProvider } from '@shared/interceptors/loader.interceptor'
 import { SpinnerComponent } from '@shared/ui/spinner/spinner.component'
-import { NgScrollbarModule } from 'ngx-scrollbar'
+import { NgScrollbarModule } from 'ngx-scrollbar';
 
 export interface AppState {
   user: UserState;
@@ -31,6 +31,7 @@ export interface AppState {
   imports: [
     BrowserModule,
     HttpClientModule,
+    NgScrollbarModule,
     ToastrModule.forRoot(),
     StoreModule.forRoot({
       user: userReducer
@@ -63,8 +64,7 @@ export interface AppState {
       }
     ]),
     HeaderComponent,
-    SpinnerComponent,
-    NgScrollbarModule
+    SpinnerComponent
   ],
   providers: [
     {

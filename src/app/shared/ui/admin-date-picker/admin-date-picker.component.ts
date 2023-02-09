@@ -27,7 +27,6 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     .dates-wrapper {
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
       height: calc(100vh - var(--header-height));
     }
 
