@@ -6,8 +6,8 @@ import {
   ShowingsActions,
   ShowingsApiActions, TicketActions, TicketApiActions
 } from 'src/app/features/home/store/home.actions'
-import { catchError, combineLatest, map, of, switchMap } from 'rxjs'
-import { addMinutes, compareAsc } from 'date-fns'
+import { catchError, combineLatest, filter, map, of, switchMap } from 'rxjs'
+import { addMinutes, compareAsc, format } from 'date-fns'
 
 import { MovieService } from 'src/app/features/home/shared/services/movie.service'
 import { ShowingService } from 'src/app/features/home/shared/services/showing.service'
@@ -44,6 +44,18 @@ export class HomeEffects {
   getShowings$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ShowingsActions.getShowings),
+      map(({ date }) => {
+        const currentDate = new Date()
+        const selectedDate = new Date(date)
+        if (compareAsc(selectedDate, currentDate) === -1) {
+          this.router.navigate([], {
+            queryParams: { date: format(currentDate, 'dd/MM') },
+          })
+          return { date: currentDate.toISOString() }
+        } else {
+          return { date }
+        }
+      }),
       switchMap(({ date }) =>
         combineLatest([
           this.movieService.getMovies(),
