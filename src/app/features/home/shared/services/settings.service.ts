@@ -12,7 +12,6 @@ export class SettingsService {
   private base_url = inject(API_URL)
 
   updateUserData(data: Partial<UserData>) {
-    console.log(data)
     return this.http.patch<{ message: string }>(`${this.base_url}/users/${data.userId}`, {
       newEmail: data.newEmail,
       newPassword: data.newPassword,

@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 
 import { API_URL } from '@core/env.token'
-import { ShowingById, ShowingResponse } from 'src/app/features/home/shared/home.interfaces'
+import { ShowingAndMovieData, ShowingById, ShowingResponse } from 'src/app/features/home/shared/home.interfaces'
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class ShowingService {
   }
 
   getShowingById(showingId: number) {
-    return this.http.get<ShowingById>(`${this.base_url}/showings/${showingId}/movie`)
+    return this.http.get<ShowingAndMovieData>(`${this.base_url}/showings/${showingId}/movie`)
   }
 
   addToBookedSeats(id: number, seat: string) {

@@ -31,7 +31,7 @@ import { MatDividerModule } from '@angular/material/divider'
         <mat-divider></mat-divider>
         <div class="seat-wrapper">
           <div class="seat" *ngFor="let seat of ticket.seats">
-            <p>miejsce {{ seat.split('').join('-') }}</p>
+            <p>miejsce {{ seat.split('')[0] }}-{{ seat.slice(1,3) }}</p>
           </div>
         </div>
         <div class="price">

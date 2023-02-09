@@ -33,7 +33,6 @@ export class HomePageComponent {
   }
 
   handleSelectedDate(selectedDate: string) {
-    console.log(selectedDate)
     this.store.dispatch(ShowingsActions.getShowings(
       {
         date: selectedDate,

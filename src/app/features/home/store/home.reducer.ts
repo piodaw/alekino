@@ -6,7 +6,7 @@ import {
   initialShowingMoviesState, initialTicketsState
 } from 'src/app/features/home/store/home.state'
 import { MovieApiActions, ReservationApiActions, ShowingsApiActions } from 'src/app/features/home/store/home.actions'
-import { MovieResponse, PromoCodeData, ShowingAndMovieData, ShowingData, TicketsData } from '../shared/home.interfaces'
+import { MovieResponse, PromoCodeData, ShowingById, ShowingData, TicketsData } from '../shared/home.interfaces'
 
 export const MovieReducer = createReducer(
   initialMovieState,
@@ -24,9 +24,9 @@ export const ShowingsReducer = createReducer(
 
 export const ShowingsByIdReducer = createReducer(
   initialShowingByIdState,
-  on(ShowingsApiActions.getShowingSuccess, (state, { Showing }): ShowingAndMovieData => (
-    { ...state, ...Showing }
-  ))
+  on(ShowingsApiActions.getShowingSuccess, (state, { Showing }): ShowingById => {
+    return { ...state, ...Showing }
+  })
 )
 
 export const TicketsReducer = createReducer(

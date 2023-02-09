@@ -4,7 +4,7 @@ import { API_URL } from '@core/env.token'
 
 import {
   Hall,
-  HallResponse, HallUpdate, HellByIdResponse
+  HallResponse, HellByIdResponse
 } from 'src/app/features/admin/shared/admin.interceptors'
 
 export interface CreateHallResponse {

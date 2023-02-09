@@ -12,23 +12,22 @@
         </th>
       </tr>
       </thead>
-      <tbody>
-      <tr *ngFor="let hour of hours; let index">
-        <td class="hour">{{ hour }}</td>
-        <td *ngFor="let hall of halls$ | async">
-          <button
-                  (click)="addToRepertoire(hour, hall.id)"
-                  [ngClass]="(isHourAvailable(hour, hall.id) | async) === true ? 'reserved' : ''"
-                  [disabled]="(isHourAvailable(hour, hall.id) | async) === true ? 'reserved' : ''"
-          >
-            <mat-icon *ngIf="(isHourAvailable(hour, hall.id) | async) !== true; else reserved">check</mat-icon>
-            <ng-template #reserved>
-              <mat-icon>close</mat-icon>
-            </ng-template>
-          </button>
-        </td>
-      </tr>
-      </tbody>
+        <tbody>
+          <tr *ngFor="let hour of hours; let index">
+            <td class="hour">{{ hour }}</td>
+            <td *ngFor="let hall of halls$ | async">
+              <button
+                      (click)="addToRepertoire(hour, hall.id)"
+                      [ngClass]="(isHourAvailable(hour, hall.id) | async) === true ? 'reserved' : ''"
+                      [disabled]="(isHourAvailable(hour, hall.id) | async) === true ? 'reserved' : ''"
+              >
+                <mat-icon *ngIf="(isHourAvailable(hour, hall.id) | async) !== true; else reserved">check</mat-icon>
+                <ng-template #reserved>
+                  <mat-icon>close</mat-icon>
+                </ng-template>
+              </button>
+            </td>
+          </tbody>
     </table>
   </div>
 </div>

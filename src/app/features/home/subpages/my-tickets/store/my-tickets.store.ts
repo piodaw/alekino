@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core'
 import { ComponentStore, tapResponse } from '@ngrx/component-store'
-import { catchError, filter, Observable, switchMap, tap } from 'rxjs'
+import { filter, Observable, switchMap, tap } from 'rxjs'
 
-import { Newsletter } from 'src/app/features/admin/shared/admin.interceptors'
 import { MyTicketsService } from 'src/app/features/home/shared/services/my-tickets.service'
 import { User } from '@core/store/user.interfaces'
 import { ToastFacadeService } from '@shared/services/toast.facade.service'

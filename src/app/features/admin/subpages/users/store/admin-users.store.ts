@@ -1,29 +1,27 @@
-import { inject, Injectable } from '@angular/core'
-import { ComponentStore } from '@ngrx/component-store'
+import { inject, Injectable } from '@angular/core';
+import { ComponentStore } from '@ngrx/component-store';
 
-import { User } from 'src/app/features/admin/shared/admin.interceptors'
-import { AdminUsersService } from 'src/app/features/admin/services/admin-users.service'
-import { map } from 'rxjs'
+import { User } from 'src/app/features/admin/shared/admin.interceptors';
+import { AdminUsersService } from 'src/app/features/admin/services/admin-users.service';
+import { map } from 'rxjs';
 
 export interface AdminUsersState {
-  users: User[]
+  users: User[];
 }
 
 @Injectable()
 export class AdminUserStore extends ComponentStore<AdminUsersState> {
-  private adminUsersService = inject(AdminUsersService)
+  private adminUsersService = inject(AdminUsersService);
 
   constructor() {
     super({
-      users: []
+      users: [],
     });
   }
 
   readonly getUsers = this.effect(() => {
-    return this.adminUsersService.getUsers().pipe(
-      map((data) => this.updateUsers(data.users))
-    )
-  })
+    return this.adminUsersService.getUsers().pipe(map(data => this.updateUsers(data.users)));
+  });
 
-  readonly updateUsers = this.updater((state, users: User[]) => ({ ...state, users }))
+  readonly updateUsers = this.updater((state, users: User[]): AdminUsersState => ({ ...state, users }));
 }

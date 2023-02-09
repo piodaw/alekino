@@ -37,7 +37,7 @@
       </ng-template>
     </button>
     <mat-menu #userMenu yPosition="below">
-      <app-user-menu [loggedUser$]="loggedUser$"></app-user-menu>
+      <app-user-menu [loggedUser$]="loggedUser$" (logout)="logoutHandler()"></app-user-menu>
     </mat-menu>
     <ng-template #notLogged>
       <button mat-icon-button [routerLink]="[routing.LOGIN]">

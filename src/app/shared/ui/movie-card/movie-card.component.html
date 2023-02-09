@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="hours-wrapper">
-          <button class="hours" mat-stroked-button color="accent" *ngFor="let hours of show.showings" (click)="redirectToReservationPage(hours.id)">
+          <button class="hours" mat-stroked-button color="accent" *ngFor="let hours of show.showings" (click)="redirectToReservationPage(hours.id)" [disabled]="isHourPast(hours.start)">
             <div class="hour-button">
               <span>{{ hours.start.split(" ")[1] }}</span>
               <span>Sala: {{ hours.hallno }}</span>

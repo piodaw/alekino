@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core'
 import { ComponentStore } from '@ngrx/component-store'
 
-import { PromoCode, Reservation } from 'src/app/features/admin/shared/admin.interceptors'
+import { PromoCode } from 'src/app/features/admin/shared/admin.interceptors'
 import { AdminPromoCodesService } from 'src/app/features/admin/services/admin-promo-codes.service'
 import { tap } from 'rxjs'
 
@@ -25,7 +25,7 @@ export class AdminPromoCodesStore extends ComponentStore<AdminPromoCodesState> {
     )
   })
 
-  readonly setPromoCodes = this.updater((state, promoCodes: PromoCode[]) => {
+  readonly setPromoCodes = this.updater((state, promoCodes: PromoCode[]): AdminPromoCodesState => {
     return {
       ...state,
       promoCodes

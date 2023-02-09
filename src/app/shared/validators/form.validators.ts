@@ -1,4 +1,4 @@
-import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms'
+import { AbstractControl } from '@angular/forms'
 
 export function whitespaceValidator(control: AbstractControl) {
   const whitespaceRegex = /\s/g;

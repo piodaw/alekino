@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core'
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service'
 import { Routing } from '@shared/routes/routing'
 

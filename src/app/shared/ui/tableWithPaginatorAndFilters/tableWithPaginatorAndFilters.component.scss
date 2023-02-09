@@ -1,7 +1,13 @@
 .table-container {
   width: 100%;
   max-height: calc(100vh - var(--header-height) - 112px);
+  min-height: calc(100vh - var(--header-height) - 112px);
   overflow: auto;
+}
+
+table {
+  max-height: calc(100vh - var(--header-height) - 112px);
+  min-height: calc(100vh - var(--header-height) - 112px);
 }
 
 tr {

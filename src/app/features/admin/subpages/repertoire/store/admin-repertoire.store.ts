@@ -5,8 +5,6 @@ import { filter, map, Observable, switchMap, tap } from 'rxjs'
 import { Hall, Movie, Showing, ShowingData } from 'src/app/features/admin/shared/admin.interceptors'
 import { AdminRepertoireService } from 'src/app/features/admin/services/admin-repertoire.service'
 import { Store } from '@ngrx/store'
-import { ReservationActions, ShowingsActions } from 'src/app/features/home/store/home.actions'
-import { format } from 'date-fns'
 
 export interface AdminRepertoireState {
   movies: Movie[];
@@ -64,28 +62,28 @@ export class AdminRepertoireStore extends ComponentStore<AdminRepertoireState> {
     ))
   })
 
-  readonly updateMovies = this.updater((state, movies: Movie[]) => {
+  readonly updateMovies = this.updater((state, movies: Movie[]): AdminRepertoireState => {
     return {
       ...state,
       movies
     }
   })
 
-  readonly updateHalls = this.updater((state, halls: Hall[]) => {
+  readonly updateHalls = this.updater((state, halls: Hall[]): AdminRepertoireState => {
     return {
       ...state,
       halls
     }
   })
 
-  readonly updateShowings = this.updater((state, showings: Showing[]) => {
+  readonly updateShowings = this.updater((state, showings: Showing[]): AdminRepertoireState => {
     return {
       ...state,
       showings
     }
   })
 
-  readonly updateSelectedDate = this.updater((state, selectedDate: string) => {
+  readonly updateSelectedDate = this.updater((state, selectedDate: string): AdminRepertoireState => {
     return {
       ...state,
       selectedDate

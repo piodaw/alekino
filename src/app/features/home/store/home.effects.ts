@@ -6,7 +6,7 @@ import {
   ShowingsActions,
   ShowingsApiActions, TicketActions, TicketApiActions
 } from 'src/app/features/home/store/home.actions'
-import { catchError, combineLatest, filter, map, of, switchMap } from 'rxjs'
+import { catchError, combineLatest, map, of, switchMap } from 'rxjs'
 import { addMinutes, compareAsc, format } from 'date-fns'
 
 import { MovieService } from 'src/app/features/home/shared/services/movie.service'
@@ -17,6 +17,7 @@ import { MyTicketsService } from 'src/app/features/home/shared/services/my-ticke
 import { Router } from '@angular/router'
 import { CookieService } from 'ngx-cookie-service'
 import { ToastFacadeService } from '@shared/services/toast.facade.service'
+import { Routing } from '@shared/routes/routing'
 
 @Injectable()
 export class HomeEffects {
@@ -89,7 +90,13 @@ export class HomeEffects {
     return this.actions$.pipe(
       ofType(ShowingsActions.getShowing),
       switchMap(({ showingId }) => this.showingService.getShowingById(showingId)),
-      map((showing) => ShowingsApiActions.getShowingSuccess({ Showing: showing })),
+      map(({showing}) => {
+        if (compareAsc(new Date(showing.start), new Date()) === -1) {
+          this.router.navigate([Routing.HOME])
+          return ShowingsApiActions.getShowingFailure()
+        }
+        return ShowingsApiActions.getShowingSuccess({ Showing: showing })
+      }),
       catchError(() => {
         this.toastService.showError('Nie udało się pobrać seansu', 'Błąd')
         return of(ShowingsApiActions.getShowingFailure())
@@ -137,15 +144,16 @@ export class HomeEffects {
   addToWishlist$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(MovieActions.addToWishlist),
-      switchMap(({ user_id, movie_id }) => this.movieService.addToWishlist(user_id, movie_id)),
-      map(() => {
-        this.toastService.showSuccess('Dodano do ulubionych', 'Sukces')
-        return MovieApiActions.addToWishlistSuccess()
-      }),
-      catchError(() => {
-        this.toastService.showError('Nie udało się dodać do ulubionych', 'Błąd')
-        return of(MovieApiActions.addToWishlistFailure())
-      })
+      switchMap(({ user_id, movie_id }) => this.movieService.addToWishlist(user_id, movie_id).pipe(
+        map(() => {
+          this.toastService.showSuccess('Dodano do ulubionych', 'Sukces')
+          return MovieApiActions.addToWishlistSuccess()
+        }),
+        catchError((error) => {
+          this.toastService.showError(error.error.message, 'Błąd')
+          return of(MovieApiActions.addToWishlistFailure())
+        })
+      )),
     )
   })
 

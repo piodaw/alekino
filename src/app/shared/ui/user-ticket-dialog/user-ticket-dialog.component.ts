@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, Component, Inject, inject } from '@angular/core'
-import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common'
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
-import { MatButtonModule } from '@angular/material/button'
-import { Observable } from 'rxjs'
+import { ChangeDetectionStrategy, Component, Inject, inject } from '@angular/core';
+import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { Observable } from 'rxjs';
 
-import { SuccessCardComponent } from '@shared/ui/success-card/success-card.component'
-import { Ticket } from 'src/app/features/home/subpages/success/store/success.store'
-import { QRCodeModule } from 'angularx-qrcode'
-import { MatListModule } from '@angular/material/list'
+import { SuccessCardComponent } from '@shared/ui/success-card/success-card.component';
+import { Ticket } from 'src/app/features/home/subpages/success/store/success.store';
+import { QRCodeModule } from 'angularx-qrcode';
+import { MatListModule } from '@angular/material/list';
 
 export interface DialogData {
-  ticket$: Observable<Ticket>
+  ticket$: Observable<Ticket>;
 }
 
 @Component({
@@ -28,14 +28,18 @@ export interface DialogData {
             <p>{{ ticket.start }} | Sala {{ ticket.hallno }}</p>
           </div>
           <div>
-            <qrcode [qrdata]="'https://twojbilet.pl'" [width]="256" [colorLight]="'#17082AFF'" [colorDark]="'#FF8FC6'"></qrcode>
+            <qrcode
+              [qrdata]="'https://twojbilet.pl'"
+              [width]="256"
+              [colorLight]="'#17082AFF'"
+              [colorDark]="'#FF8FC6'"></qrcode>
           </div>
           <div class="total-price-wrapper">
             <span class="total-price-title">Podsumowanie:</span>
             <mat-divider></mat-divider>
             <div class="seat-wrapper">
               <div class="seat" *ngFor="let seat of ticket.seats">
-                <p>miejsce {{ seat.split('').join('-') }}</p>
+                <p>miejsce {{ seat.split('')[0] }}-{{ seat.slice(1,3) }}</p>
               </div>
             </div>
             <div class="price">
@@ -52,77 +56,79 @@ export interface DialogData {
       </div>
     </div>
   `,
-  styles: [`
-    .ticket-wrapper {
-       width: 400px;
-       height: 500px;
-       background-color: var(--surface);
-       display: flex;
-       flex-direction: column;
-       align-items: center;
-       justify-content: center;
-       border-radius: 8px;
-       box-shadow: 0 0 10px 0 rgb(255, 143, 198);
-     }
-    
-    .h1-wrapper {
-      margin: 24px 0 8px 0;
-    }
+  styles: [
+    `
+      .ticket-wrapper {
+        width: 400px;
+        height: 520px;
+        background-color: var(--surface);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        box-shadow: 0 0 10px 0 rgb(255, 143, 198);
+      }
 
-    .total-price-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+      .h1-wrapper {
+        margin: 24px 0 8px 0;
+      }
 
-    .total-price-title {
-      width: 300px;
-      margin-bottom: 6px;
-      color: var(--text-secondary);
-    }
+      .total-price-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-    .mat-mdc-dialog-content {
-      max-height: 75vh;
-    }
+      .total-price-title {
+        width: 300px;
+        margin-bottom: 6px;
+        color: var(--text-secondary);
+      }
 
-    mat-divider {
-      width: 324px;
-      border-top-color: rgba(255, 255, 255, 0.5);
-    }
+      .mat-mdc-dialog-content {
+        max-height: 75vh;
+      }
 
-    .seat-wrapper {
-      max-height: 80px;
-      overflow: auto;
-    }
+      mat-divider {
+        width: 324px;
+        border-top-color: rgba(255, 255, 255, 0.5);
+      }
 
-    .seat {
-      width: 300px;
-      margin: 12px 0;
-      font-weight: 600;
-    }
+      .seat-wrapper {
+        max-height: 80px;
+        overflow: auto;
+      }
 
-    .price {
-      display: flex;
-      justify-content: space-between;
-      width: 300px;
-      background-color: var(--primary);
-      padding: 12px;
-      border-radius: 8px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-    
-    .button-wrapper {
-      display: flex;
-      justify-content: space-evenly;
-      width: 100%;
-      margin: 24px;
-    }
-    
-    button {
-      width: 90px;
-    }
-  `],
+      .seat {
+        width: 300px;
+        margin: 12px 0;
+        font-weight: 600;
+      }
+
+      .price {
+        display: flex;
+        justify-content: space-between;
+        width: 300px;
+        background-color: var(--primary);
+        padding: 12px;
+        border-radius: 8px;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      .button-wrapper {
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+        margin: 24px;
+      }
+
+      button {
+        width: 90px;
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgForOf,
@@ -133,13 +139,12 @@ export interface DialogData {
     SuccessCardComponent,
     QRCodeModule,
     MatListModule,
-    JsonPipe
-  ]
+    JsonPipe,
+  ],
 })
 export class UserTicketDialogComponent {
-
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-  private dialogRef = inject(MatDialogRef)
+  private dialogRef = inject(MatDialogRef);
 
   onNoClick() {
     this.dialogRef.close();
@@ -148,11 +153,11 @@ export class UserTicketDialogComponent {
   refund(ticketNo: number) {
     this.dialogRef.close({
       refund: true,
-      ticketNo
-    })
+      ticketNo,
+    });
   }
 
   submit() {
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 }

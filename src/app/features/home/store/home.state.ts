@@ -1,6 +1,6 @@
 import {
   MovieResponse, PromoCodeData,
-  ShowingAndMovieData,
+  ShowingById,
   ShowingData,
   ShowingResponse,
   TicketsData
@@ -20,8 +20,7 @@ export const initialShowingMoviesState: ShowingData = {
   showings: []
 }
 
-export const initialShowingByIdState: ShowingAndMovieData = {
-  showing: {
+export const initialShowingByIdState: ShowingById = {
     id: 0,
     start: '',
     bookedseats: [],
@@ -33,7 +32,6 @@ export const initialShowingByIdState: ShowingAndMovieData = {
     hallno: 0,
     columns: [],
     rows: []
-  }
 }
 
 export const initialTicketsState: TicketsData = {

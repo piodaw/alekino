@@ -2,7 +2,7 @@ import { CanActivate, Router } from '@angular/router'
 import { Store } from '@ngrx/store'
 import { inject, Injectable } from '@angular/core'
 import { selectLoggedUser } from '@core/store/user.selectors'
-import { map, Observable } from 'rxjs'
+import { map } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'

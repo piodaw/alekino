@@ -178,8 +178,6 @@ export class HallComponent implements OnInit {
   ticketType(ticket: string, event: Ticket) {
     let ticketExists = false;
 
-    console.log(this.seatsFormGroup.getRawValue());
-
     this.reservationsStore.state$.pipe(take(1)).subscribe(state => {
       state.selectedTickets.forEach(selectedTicket => {
         if (selectedTicket.ticket === ticket) {

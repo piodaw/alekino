@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
 import { Observable } from 'rxjs'
 import { RouterLink } from '@angular/router'
 import { AsyncPipe, JsonPipe, NgForOf, NgIf, NgOptimizedImage } from '@angular/common'
@@ -28,7 +28,7 @@ import { User } from '@core/store/user.interfaces'
   styleUrls: ['movie-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MovieCardComponent {
+export class MovieCardComponent implements OnInit {
   @Input() showing$!: Observable<ShowingData>
   @Input() loggedIn$!: Observable<User>
   @Output() movieSelected = new EventEmitter<string>();
@@ -41,11 +41,19 @@ export class MovieCardComponent {
     this.showFullDescriptions[showId] = !this.showFullDescriptions[showId];
   }
 
+  isHourPast(hour: string) {
+    const now = new Date();
+    const showTime = new Date(hour);
+    return now > showTime;
+  }
+
   ngOnInit() {
     this.showing$
       .subscribe(shows => {
         shows.showings.forEach(show => {
-          this.showFullDescriptions[show.id!] = false;
+          if (show.id) {
+            this.showFullDescriptions[show.id] = false;
+          }
         });
       });
   }

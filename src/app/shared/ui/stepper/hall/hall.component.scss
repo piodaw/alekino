@@ -35,7 +35,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 60%;
+  width: 50%;
 }
 
 .hall-wrapper {
@@ -74,7 +74,7 @@ form {
 
 .tickets-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 

@@ -36,7 +36,7 @@ export interface ShowingData {
 }
 
 export interface ShowingWMovie extends Movie {
-  showings: Showing[]
+  showings: Showing[];
 }
 
 export interface ShowingAndMovieData {
@@ -81,4 +81,17 @@ export interface PromoCode {
   promo_id: number;
   promo_code: string;
   value: number;
+}
+
+export interface WishListResponse {
+  wishlist: WishList[];
+}
+
+export interface WishList {
+  id: number;
+  movie_id: number;
+  user_id: number;
+  title: string;
+  img: string;
+  description: string;
 }

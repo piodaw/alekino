@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core'
 import { NgClass, NgForOf } from '@angular/common'
 import { addDays, format } from 'date-fns'
 
@@ -25,6 +25,7 @@ import { addDays, format } from 'date-fns'
       display: flex;
       flex-direction: column;
       overflow-y: auto;
+      overflow-x: hidden;
       height: calc(100vh - var(--header-height));
     }
 
@@ -67,7 +68,7 @@ import { addDays, format } from 'date-fns'
     NgClass
   ],
 })
-export class AdminDatePickerComponent {
+export class AdminDatePickerComponent implements OnInit {
   @Output() clickedDate = new EventEmitter<string>()
   dates = Array(14)
     .fill(0)

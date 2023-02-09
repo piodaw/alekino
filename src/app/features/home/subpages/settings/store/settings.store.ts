@@ -1,12 +1,10 @@
 import { inject, Injectable } from '@angular/core'
 import { ComponentStore, tapResponse } from '@ngrx/component-store'
 import { map, Observable, switchMap, tap } from 'rxjs'
-import { CookieService } from 'ngx-cookie-service'
-import { Router } from '@angular/router'
+import { Store } from '@ngrx/store'
 
 import { ReservationService } from 'src/app/features/home/shared/services/reservation.service'
 import { SettingsService } from '../../../shared/services/settings.service'
-import { Store } from '@ngrx/store'
 import { UserActions } from '@core/store/user.actions'
 import { UserData } from '../settings.interfaces'
 import { ToastFacadeService } from '@shared/services/toast.facade.service'
@@ -22,8 +20,6 @@ export class SettingsStore extends ComponentStore<SettingsState> {
   private settingsService = inject(SettingsService)
   private toastService = inject(ToastFacadeService)
   private store = inject(Store)
-  private cookieService = inject(CookieService)
-  private router = inject(Router)
 
   constructor() {
     super({
@@ -61,7 +57,6 @@ export class SettingsStore extends ComponentStore<SettingsState> {
       switchMap((data) => this.settingsService.updateUserData(data).pipe(
         tapResponse(
           (res) => {
-            console.log(res.message)
             this.toastService.showSuccess(res.message, 'Sukces')
             this.store.dispatch(UserActions.getUser())
           },

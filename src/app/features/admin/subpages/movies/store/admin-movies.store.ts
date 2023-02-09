@@ -25,7 +25,7 @@ export class AdminMoviesStore extends ComponentStore<AdminMoviesState> {
     )
   })
 
-  readonly setMovies = this.updater((state, movies: Movie[]) => {
+  readonly setMovies = this.updater((state, movies: Movie[]): AdminMoviesState => {
     return {
       ...state,
       movies

@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectLoggedUser } from '@core/store/user.selectors';
 import { AsyncPipe, NgIf } from '@angular/common';
@@ -39,6 +39,7 @@ import { TicketActions } from 'src/app/features/home/store/home.actions'
 export class HeaderComponent {
   private store = inject(Store);
   private cookieService = inject(CookieService);
+  private router = inject(Router);
 
   routing = Routing;
   loggedUser$ = this.store.select(selectLoggedUser);
@@ -57,9 +58,13 @@ export class HeaderComponent {
     this.store.dispatch(TicketActions.getTicket({ ticket_no: +formData.ticketNumber, email: formData.email }))
   }
 
-  logout() {
-    this.cookieService.delete('token');
-    window.location.reload();
+  logoutHandler() {
+    this.router.navigate(['/']).then(
+      () => {
+        window.location.reload();
+        this.cookieService.delete('token');
+      }
+    )
   }
 
   get isTicketInCart() {

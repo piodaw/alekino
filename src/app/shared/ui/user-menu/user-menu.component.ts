@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core'
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -6,7 +6,6 @@ import { RouterLink } from '@angular/router';
 import { AsyncPipe, NgIf } from '@angular/common';
 
 import { Routing } from '@shared/routes/routing';
-import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs'
 import { User } from '@core/store/user.interfaces'
 import { MatListModule } from '@angular/material/list'
@@ -26,7 +25,7 @@ import { MatListModule } from '@angular/material/list'
           <mat-icon>settings</mat-icon>
           <p>Ustawienia</p>
         </button>
-        <button mat-menu-item (click)="logout()">
+        <button mat-menu-item (click)="logoutHandler()">
           <mat-icon>exit_to_app</mat-icon>
           <p>Wyloguj się</p>
         </button>
@@ -61,7 +60,7 @@ import { MatListModule } from '@angular/material/list'
           <p>Newsletter</p>
         </button>
         <mat-divider></mat-divider>
-        <button mat-menu-item (click)="logout()">
+        <button mat-menu-item (click)="logoutHandler()">
           <mat-icon>exit_to_app</mat-icon>
           <p>Wyloguj się</p>
         </button>
@@ -86,12 +85,11 @@ import { MatListModule } from '@angular/material/list'
 })
 export class UserMenuComponent {
   @Input() loggedUser$!: Observable<User>
-  private cookieService = inject(CookieService);
+  @Output() logout = new EventEmitter()
 
   routing = Routing;
 
-  logout() {
-    this.cookieService.delete('token');
-    window.location.reload();
+  logoutHandler() {
+    this.logout.emit()
   }
 }

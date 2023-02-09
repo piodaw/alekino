@@ -35,11 +35,11 @@ import { PaymentComponent } from './payment/payment.component';
           (selectedSeat)="seatHandler($event)"
           (removedSeat)="removeSeatHandler($event)"></app-hall>
       </mat-step>
-      <mat-step [editable]="false">
+      <mat-step>
         <ng-template matStepLabel>Wprowadź dane</ng-template>
         <app-contact-form [showing$]="showing$" [promoCodes$]="promoCodes$"></app-contact-form>
       </mat-step>
-      <mat-step [editable]="false">
+      <mat-step>
         <ng-template matStepLabel>Płatność</ng-template>
         <app-payment></app-payment>
       </mat-step>

@@ -5,7 +5,6 @@ import { ReservationService } from 'src/app/features/home/shared/services/reserv
 import { CookieService } from 'ngx-cookie-service'
 import { Router } from '@angular/router'
 import { Routing } from '@shared/routes/routing'
-import * as crypto from 'crypto'
 
 export interface SuccessState {
   ticket: Ticket
@@ -60,7 +59,7 @@ export class SuccessStore extends ComponentStore<SuccessState> {
     ))
   })
 
-  readonly updateTicket = this.updater((state, ticket: Ticket) => {
+  readonly updateTicket = this.updater((state, ticket: Ticket): SuccessState => {
     return {
       ...state,
       ticket

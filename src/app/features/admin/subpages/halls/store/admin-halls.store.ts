@@ -56,14 +56,14 @@ export class AdminHallsStore extends ComponentStore<AdminHallsState> {
     ))
   })
 
-  readonly updateHalls = this.updater((state, halls: Hall[]) => {
+  readonly updateHalls = this.updater((state, halls: Hall[]): AdminHallsState => {
     return {
       ...state,
       halls
     }
   })
 
-  readonly updateHall = this.updater((state, hall: Hall) => {
+  readonly updateHall = this.updater((state, hall: Hall): AdminHallsState => {
     return {
       ...state,
       hall
