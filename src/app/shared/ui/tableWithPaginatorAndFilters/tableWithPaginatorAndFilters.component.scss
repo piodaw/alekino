@@ -2,7 +2,6 @@
   width: 100%;
   max-height: calc(100vh - var(--header-height) - 112px);
   min-height: calc(100vh - var(--header-height) - 112px);
-  overflow: auto;
 }
 
 table {
@@ -16,7 +15,7 @@ tr {
   align-items: center;
   padding: 0 16px;
   height: 48px;
-  border-bottom: 1px solid #0000001A;
+  border-bottom: 1px solid #0000001a;
 }
 
 tr > * {
@@ -25,7 +24,8 @@ tr > * {
   align-items: center;
 }
 
-th, td {
+th,
+td {
   border: 0 !important;
 }
 

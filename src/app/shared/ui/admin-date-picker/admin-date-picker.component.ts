@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core'
 import { NgClass, NgForOf } from '@angular/common'
 import { addDays, format } from 'date-fns'
+import { NgScrollbarModule } from 'ngx-scrollbar';
 
 @Component({
   selector: 'app-admin-date-picker',
   standalone: true,
   template: `
     <div class="dates-wrapper">
+      <ng-scrollbar [autoHeightDisabled]="false" class="my-scrollbar">
       <button
               *ngFor="let date of dates"
               class="dates"
@@ -18,13 +20,13 @@ import { addDays, format } from 'date-fns'
         </div>
         <div class="year">{{ date.split("-")[2] }}</div>
       </button>
+    </ng-scrollbar>
     </div>
   `,
   styles: [`
     .dates-wrapper {
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
       overflow-x: hidden;
       height: calc(100vh - var(--header-height));
     }
@@ -65,7 +67,8 @@ import { addDays, format } from 'date-fns'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     NgForOf,
-    NgClass
+    NgClass,
+    NgScrollbarModule
   ],
 })
 export class AdminDatePickerComponent implements OnInit {

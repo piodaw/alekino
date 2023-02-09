@@ -1,33 +1,35 @@
 <div class="repertiore-wrapper">
   <div class="table-wrapper">
-    <table>
-      <thead>
-      <tr>
-        <th class="hour">
-          <mat-icon>access_time</mat-icon>
-        </th>
-        <th *ngFor="let hall of halls$ | async">
-          <div>sala nr {{ hall.hallno }}</div>
-          <span>Pojemność: {{ hall.capacity }}</span>
-        </th>
-      </tr>
-      </thead>
-        <tbody>
-          <tr *ngFor="let hour of hours; let index">
-            <td class="hour">{{ hour }}</td>
-            <td *ngFor="let hall of halls$ | async">
-              <button
-                      (click)="addToRepertoire(hour, hall.id)"
-                      [ngClass]="(isHourAvailable(hour, hall.id) | async) === true ? 'reserved' : ''"
-                      [disabled]="(isHourAvailable(hour, hall.id) | async) === true ? 'reserved' : ''"
-              >
-                <mat-icon *ngIf="(isHourAvailable(hour, hall.id) | async) !== true; else reserved">check</mat-icon>
-                <ng-template #reserved>
-                  <mat-icon>close</mat-icon>
-                </ng-template>
-              </button>
-            </td>
-          </tbody>
-    </table>
+    <ng-scrollbar [autoHeightDisabled]="false" class="my-scrollbar">
+      <table>
+        <thead>
+        <tr>
+          <th class="hour">
+            <mat-icon>access_time</mat-icon>
+          </th>
+          <th *ngFor="let hall of halls$ | async">
+            <div>sala nr {{ hall.hallno }}</div>
+            <span>Pojemność: {{ hall.capacity }}</span>
+          </th>
+        </tr>
+        </thead>
+          <tbody>
+            <tr *ngFor="let hour of hours; let index">
+              <td class="hour">{{ hour }}</td>
+              <td *ngFor="let hall of halls$ | async">
+                <button
+                        (click)="addToRepertoire(hour, hall.id)"
+                        [ngClass]="(isHourAvailable(hour, hall.id) | async) === true ? 'reserved' : ''"
+                        [disabled]="(isHourAvailable(hour, hall.id) | async) === true ? 'reserved' : ''"
+                >
+                  <mat-icon *ngIf="(isHourAvailable(hour, hall.id) | async) !== true; else reserved">check</mat-icon>
+                  <ng-template #reserved>
+                    <mat-icon>close</mat-icon>
+                  </ng-template>
+                </button>
+              </td>
+            </tbody>
+      </table>
+    </ng-scrollbar>
   </div>
 </div>

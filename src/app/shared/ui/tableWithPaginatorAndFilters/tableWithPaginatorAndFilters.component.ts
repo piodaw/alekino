@@ -10,6 +10,7 @@ import { Movie, Newsletter, PromoCode, Reservation, User } from 'src/app/feature
 import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
 import { Tickets } from 'src/app/features/home/subpages/my-tickets/store/my-tickets.store'
+import { NgScrollbarModule } from 'ngx-scrollbar'
 
 @Component({
   selector: 'app-table-paginator-filters',
@@ -24,7 +25,8 @@ import { Tickets } from 'src/app/features/home/subpages/my-tickets/store/my-tick
     MatFormFieldModule,
     NgForOf,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    NgScrollbarModule
   ]
 })
 export class TableWithPaginatorAndFilterComponent implements AfterViewInit, OnInit {

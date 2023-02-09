@@ -8,6 +8,7 @@ import { hours } from '@shared/ui/repertoire/constants/hours'
 import { Hall, Movie, Showing } from 'src/app/features/admin/shared/admin.interceptors'
 import { RepertoireDialogComponent } from '@shared/ui/repertoire-dialog/repertoire-dialog.component'
 import { isAfter, isToday, parse } from 'date-fns'
+import { NgScrollbarModule } from 'ngx-scrollbar'
 
 @Component({
   selector: 'app-repertoire',
@@ -22,7 +23,8 @@ import { isAfter, isToday, parse } from 'date-fns'
     NgIf,
     MatIconModule,
     RepertoireDialogComponent,
-    MatDialogModule
+    MatDialogModule,
+    NgScrollbarModule
   ],
 })
 export class RepertoireComponent {
