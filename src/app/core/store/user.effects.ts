@@ -6,12 +6,15 @@ import { Router } from '@angular/router'
 
 import { UserActions, UserApiActions } from '@core/store/user.actions'
 import { UserService } from '@core/store/user.service'
+import { ToastFacadeService } from '@shared/services/toast.facade.service'
+import { Routing } from '@shared/routes/routing'
 
 @Injectable()
 export class UserEffects {
   private actions$ = inject(Actions);
   private cookieService = inject(CookieService);
   private userService = inject(UserService);
+  private toastService = inject(ToastFacadeService);
   private router = inject(Router);
 
   getUser$ = createEffect(() => {
@@ -24,8 +27,8 @@ export class UserEffects {
           map(response => UserApiActions.getUserSuccess({ user: response })));
       }),
       catchError(() => {
-        // this.router.navigate([APP_PATH.AUTH]);
-        // this.toastService.showError('Nie udało się pobrać użytkownika', 'Błąd');
+        this.router.navigate([Routing.HOME]);
+        this.toastService.showError('Sesja wygasła', 'Błąd');
         this.cookieService.delete('token');
         return of(UserApiActions.getUserFailure());
       })

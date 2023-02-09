@@ -7,10 +7,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectLoggedUser } from '@core/store/user.selectors';
-import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { CookieService } from 'ngx-cookie-service';
 
 import { Routing } from '@shared/routes/routing';
-import { CookieService } from 'ngx-cookie-service';
 import { UserMenuComponent } from '@shared/ui/user-menu/user-menu.component'
 import { MatBadgeModule } from '@angular/material/badge'
 import { SearchTicketMenuComponent } from '@shared/ui/search-ticket-menu/search-ticket-menu.component'
@@ -30,7 +30,6 @@ import { TicketActions } from 'src/app/features/home/store/home.actions'
     RouterLink,
     NgIf,
     AsyncPipe,
-    JsonPipe,
     MatMenuModule,
     UserMenuComponent,
     MatBadgeModule,

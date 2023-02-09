@@ -73,8 +73,8 @@ export class RegisterComponent {
       ]),
       phoneNumber: this.formBuilder.control('', [
         Validators.required,
-        Validators.minLength(7),
-        Validators.maxLength(20),
+        Validators.minLength(9),
+        Validators.maxLength(9),
         whitespaceValidator,
         phoneValidator
       ]),

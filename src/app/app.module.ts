@@ -18,6 +18,8 @@ import { TokenInterceptorProvider } from '@shared/interceptors/token.interceptor
 import { AuthGuard } from '@shared/guards/loginGuard'
 import { AdminGuard } from '@shared/guards/AdminGuard'
 import { ToastrModule } from 'ngx-toastr';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { loaderInterceptorProvider } from '@shared/interceptors/loader.interceptor'
 
 export interface AppState {
   user: UserState;
@@ -59,7 +61,8 @@ export interface AppState {
         ]
       }
     ]),
-    HeaderComponent
+    HeaderComponent,
+    MatProgressSpinnerModule
   ],
   providers: [
     {
@@ -71,7 +74,8 @@ export interface AppState {
       useValue: environment.production,
     },
     CookieService,
-    TokenInterceptorProvider
+    TokenInterceptorProvider,
+    loaderInterceptorProvider
   ],
   bootstrap: [AppComponent],
 })

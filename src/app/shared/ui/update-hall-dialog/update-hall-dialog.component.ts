@@ -9,6 +9,7 @@ import { Observable, of } from 'rxjs'
 import { Hall } from 'src/app/features/admin/shared/admin.interceptors'
 import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatInputModule } from '@angular/material/input'
+import { allowOnlyNumbersValidator } from '@shared/validators/form.validators'
 
 export interface DialogData {
   hall$: Observable<Hall>
@@ -22,7 +23,7 @@ export interface DialogData {
     <div class="dialog-wrapper" *ngIf="data.hall$ | async as hall">
       <div>
         <p class="info">Podgląd sali</p>
-        <div>
+        <div class="hall-container">
           <div class="hall">
             <div class="hall-wrapper" *ngFor="let row of rowsArray">
               <div class="rows">{{ row }}</div>
@@ -38,11 +39,11 @@ export interface DialogData {
           <div class="inputs-wrapper">
             <mat-form-field appearance="outline" color="accent">
               <mat-label>Liczba rzędów</mat-label>
-              <input matInput type="number" placeholder="Liczba rzędów" formControlName="rows">
+              <input matInput type="number" placeholder="Liczba rzędów" (input)="rowMaxValue($event)" formControlName="rows">
             </mat-form-field>
             <mat-form-field appearance="outline" color="accent">
               <mat-label>Liczba kolumn</mat-label>
-              <input matInput type="number" placeholder="Liczba kolumn" formControlName="columns">
+              <input matInput type="number" placeholder="Liczba kolumn" (input)="columnMaxValue($event)" formControlName="columns">
             </mat-form-field>
           </div>
           <div class="button-wrapper" mat-dialog-actions>
@@ -61,6 +62,12 @@ export interface DialogData {
       justify-content: center;
       align-items: center;
       padding: 12px;
+    }
+    
+    .hall-container {
+      max-height: 400px;
+      max-width: 800px;
+      overflow: auto;
     }
     
     .info {
@@ -153,6 +160,30 @@ export class UpdateHallDialogComponent {
     })
   }
 
+  rowMaxValue(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (+target.value >= 26) {
+      target.value = '26';
+      this.updateHall.get('rows')?.setValue(26);
+    }
+    if (+target.value <= 1) {
+      target.value = '1';
+      this.updateHall.get('rows')?.setValue(1);
+    }
+  }
+
+  columnMaxValue(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (+target.value >= 28) {
+      target.value = '28';
+      this.updateHall.get('columns')?.setValue(28);
+    }
+    if (+target.value <= 1) {
+      target.value = '1';
+      this.updateHall.get('columns')?.setValue(1);
+    }
+  }
+
   onNoClick() {
     this.dialogRef.close();
   }
@@ -169,9 +200,9 @@ export class UpdateHallDialogComponent {
 
   private updateHallForm() {
     return this.formBuilder.group({
-      hall_id: [0, Validators.required],
-      rows: [0, Validators.required],
-      columns: [0, Validators.required]
+      hall_id: this.formBuilder.control(0),
+      rows: this.formBuilder.control(0, [Validators.required, Validators.max(26), Validators.min(1), allowOnlyNumbersValidator]),
+      columns: this.formBuilder.control(0, [Validators.required, Validators.max(28), Validators.min(1), allowOnlyNumbersValidator])
     })
   }
 }

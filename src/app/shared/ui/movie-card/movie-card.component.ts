@@ -9,8 +9,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { ShowingData } from 'src/app/features/home/shared/home.interfaces'
 import { Routing } from '@shared/routes/routing'
 import { User } from '@core/store/user.interfaces'
-import { animate, state, style, transition, trigger } from '@angular/animations'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 @Component({
   selector: 'app-movie-card',
@@ -43,7 +41,6 @@ export class MovieCardComponent {
     this.showFullDescriptions[showId] = !this.showFullDescriptions[showId];
   }
 
-  // retrieve the shows from the Observable
   ngOnInit() {
     this.showing$
       .subscribe(shows => {

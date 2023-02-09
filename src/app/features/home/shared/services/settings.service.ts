@@ -14,8 +14,8 @@ export class SettingsService {
   updateUserData(data: Partial<UserData>) {
     console.log(data)
     return this.http.patch<{ message: string }>(`${this.base_url}/users/${data.userId}`, {
-      email: data.newEmail,
-      password: data.newPassword,
+      newEmail: data.newEmail,
+      newPassword: data.newPassword,
       oldEmail: data.oldEmail,
       oldPassword: data.oldPassword,
       firstName: data.firstName,

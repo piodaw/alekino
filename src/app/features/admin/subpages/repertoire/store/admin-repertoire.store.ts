@@ -4,6 +4,9 @@ import { filter, map, Observable, switchMap, tap } from 'rxjs'
 
 import { Hall, Movie, Showing, ShowingData } from 'src/app/features/admin/shared/admin.interceptors'
 import { AdminRepertoireService } from 'src/app/features/admin/services/admin-repertoire.service'
+import { Store } from '@ngrx/store'
+import { ReservationActions, ShowingsActions } from 'src/app/features/home/store/home.actions'
+import { format } from 'date-fns'
 
 export interface AdminRepertoireState {
   movies: Movie[];
@@ -15,6 +18,7 @@ export interface AdminRepertoireState {
 @Injectable()
 export class AdminRepertoireStore extends ComponentStore<AdminRepertoireState> {
   private repertoireService = inject(AdminRepertoireService)
+  private store = inject(Store)
 
   constructor() {
     super({

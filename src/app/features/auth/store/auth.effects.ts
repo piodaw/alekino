@@ -7,6 +7,7 @@ import { catchError, map, of, switchMap } from 'rxjs'
 import { AuthService } from '../'
 import { AuthActions, AuthApiActions } from 'src/app/features/auth/store/auth.actions'
 import { UserApiActions } from '@core/store/user.actions'
+import { ToastFacadeService } from '@shared/services/toast.facade.service'
 
 @Injectable()
 export class AuthEffects {
@@ -14,6 +15,7 @@ export class AuthEffects {
   private cookieService = inject(CookieService)
   private authService = inject(AuthService)
   private router = inject(Router)
+  private toastService = inject(ToastFacadeService)
 
   login$ = createEffect(() => {
     return this.actions$.pipe(
@@ -27,6 +29,7 @@ export class AuthEffects {
             return UserApiActions.getUserSuccess({ user })
           }),
           catchError(() => {
+            this.toastService.showError('Niepoprawny login lub hasło', 'Błąd')
             return of(AuthApiActions.loginFailure())
           })
         )
@@ -45,6 +48,7 @@ export class AuthEffects {
             return AuthApiActions.registerSuccess()
           }),
           catchError(() => {
+            this.toastService.showError('Nie udało się zarejestrować', 'Błąd')
             return of(AuthApiActions.registerFailure())
           })
         )

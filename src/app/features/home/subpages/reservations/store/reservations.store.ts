@@ -29,7 +29,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   newsletter: boolean;
 }
 
@@ -47,7 +47,7 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
         firstName: '',
         lastName: '',
         email: '',
-        phone: '',
+        phoneNumber: '',
         newsletter: false,
       },
       blikCode: '',
@@ -189,7 +189,7 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
           firstName: userData.firstName,
           lastName: userData.lastName,
           email: userData.email,
-          phone: userData.phone,
+          phone: userData.phoneNumber,
           newsletter: userData.newsletter,
           blikCode,
           totalPrice,

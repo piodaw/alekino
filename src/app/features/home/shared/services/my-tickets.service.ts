@@ -17,11 +17,11 @@ export class MyTicketsService {
 
   getTicketByTicketNoAndEmail(ticket_no: number, email: string) {
     return this.http.post<{ ticket_no: number }>(`${this.base_url}/reservations/ticket`, {
-      ticket_no,
+      ticket_no: String(ticket_no),
       email
     }, {
       headers: {
-        ticket_no: ticket_no.toString()
+        ticket_no: String(ticket_no),
       }
     })
   }

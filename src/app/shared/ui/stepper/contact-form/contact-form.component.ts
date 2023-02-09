@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core'
-import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AbstractControl, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +14,13 @@ import { ReservationsStore } from 'src/app/features/home/subpages/reservations/s
 import { Store } from '@ngrx/store'
 import { selectLoggedUser } from '@core/store/user.selectors'
 import { User } from '@core/store/user.interfaces'
+import {
+  allowOnlyLettersValidator,
+  allowOnlyNumbersValidator, emailMatchValidator,
+  emailValidator,
+  whitespaceValidator
+} from '@shared/validators/form.validators'
+import { getErrorMessage } from '@shared/form-errors/form.errors'
 
 @Component({
   selector: 'app-contact-form',
@@ -53,23 +60,27 @@ import { User } from '@core/store/user.interfaces'
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Imię</mat-label>
           <input matInput placeholder="Imię" formControlName="firstName" />
-          <mat-error></mat-error>
+          <mat-error *ngIf="errorMessage('firstName') as message">{{ message }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Nazwisko</mat-label>
           <input matInput placeholder="Nazwisko" formControlName="lastName" />
+          <mat-error *ngIf="errorMessage('lastName') as message">{{ message }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Telefon</mat-label>
-          <input matInput placeholder="Telefon" formControlName="phone" />
+          <input matInput placeholder="Telefon" formControlName="phoneNumber" />
+          <mat-error *ngIf="errorMessage('phoneNumber') as message">{{ message }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Adres e-mail</mat-label>
           <input matInput type="email" placeholder="Adres e-mail" formControlName="email" />
+          <mat-error *ngIf="errorMessage('email') as message">{{ message }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">
           <mat-label>Powtórz adres e-mail</mat-label>
           <input matInput type="email" placeholder="Powtórz adres e-mail" formControlName="emailRepeat" />
+          <mat-error *ngIf="errorMessage('emailRepeat') as message">{{ message }}</mat-error>
         </mat-form-field>
         <mat-slide-toggle [checked]="toggleValue" (change)="toggleValue = !toggleValue" color="accent" formControlName="newsletter">
           Zgoda na otrzymywanie newslettera
@@ -158,7 +169,7 @@ export class ContactFormComponent implements OnInit {
         this.contactForm.patchValue({
           firstName: user?.firstName,
           lastName: user?.lastName,
-          phone: user?.phone,
+          phoneNumber: user?.phone,
           email: user?.email,
           emailRepeat: user?.email,
           newsletter: userData?.newsletter
@@ -169,6 +180,10 @@ export class ContactFormComponent implements OnInit {
         }
       })
     })
+  }
+
+  errorMessage(formControlName: 'firstName' | 'lastName' | 'phoneNumber' | 'email' | 'emailRepeat') {
+    return getErrorMessage(formControlName, this.contactForm)
   }
 
   promoCodeHandler(promo: string) {
@@ -199,7 +214,7 @@ export class ContactFormComponent implements OnInit {
         userId: user?.userId || null,
         firstName: this.contactForm.getRawValue().firstName,
         lastName: this.contactForm.getRawValue().lastName,
-        phone: this.contactForm.getRawValue().phone,
+        phoneNumber: this.contactForm.getRawValue().phoneNumber,
         email: this.contactForm.getRawValue().email,
         newsletter: this.contactForm.getRawValue().newsletter,
       })
@@ -209,11 +224,11 @@ export class ContactFormComponent implements OnInit {
   private createContactForm() {
     return this.formBuilder.group({
       user_id: null,
-      firstName: this.formBuilder.control('', [Validators.required]),
-      lastName: this.formBuilder.control('', [Validators.required]),
-      phone: this.formBuilder.control('', [Validators.required]),
-      email: this.formBuilder.control('', [Validators.required, Validators.email]),
-      emailRepeat: this.formBuilder.control('', [Validators.required, Validators.email]),
+      firstName: this.formBuilder.control('', [Validators.required, whitespaceValidator, Validators.maxLength(50), Validators.minLength(2), allowOnlyLettersValidator]),
+      lastName: this.formBuilder.control('', [Validators.required, whitespaceValidator, Validators.maxLength(50), Validators.minLength(2), allowOnlyLettersValidator]),
+      phoneNumber: this.formBuilder.control('', [Validators.required, whitespaceValidator, Validators.minLength(9), Validators.maxLength(9), allowOnlyNumbersValidator]),
+      email: this.formBuilder.control('', [Validators.required, emailValidator, whitespaceValidator, Validators.maxLength(50), Validators.minLength(6)]),
+      emailRepeat: this.formBuilder.control('', [Validators.required, emailValidator, whitespaceValidator, Validators.maxLength(50), Validators.minLength(6)]),
       newsletter: this.formBuilder.control(false),
       discountCode: this.formBuilder.control(''),
     })

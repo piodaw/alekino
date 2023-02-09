@@ -58,17 +58,18 @@ export class SettingsStore extends ComponentStore<SettingsState> {
 
   readonly updateUserData = this.effect((data$: Observable<Partial<UserData>>) => {
     return data$.pipe(
-      switchMap((data) => this.settingsService.updateUserData(data)),
-      tapResponse(
-        (res) => {
-          console.log(res.message)
-          this.toastService.showSuccess(res.message, 'Sukces')
-          this.store.dispatch(UserActions.getUser())
-        },
-        () => {
-          this.toastService.showError("Nie udało się zmienić danych", 'Błąd')
-        }
-      )
+      switchMap((data) => this.settingsService.updateUserData(data).pipe(
+        tapResponse(
+          (res) => {
+            console.log(res.message)
+            this.toastService.showSuccess(res.message, 'Sukces')
+            this.store.dispatch(UserActions.getUser())
+          },
+          (error: any) => {
+            this.toastService.showError(error.error.message, 'Błąd')
+          }
+        )
+      ))
     )
   })
 }

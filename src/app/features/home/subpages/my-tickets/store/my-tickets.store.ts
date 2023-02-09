@@ -80,13 +80,13 @@ export class MyTicketsStore extends ComponentStore<MyTicketsState> {
         return this.myTicketsService.refundTicket(ticketNo).pipe(
           tapResponse(
             (res) => {
-              this.toastService.showSuccess(res.message, 'success')
+              this.toastService.showSuccess(res.message, 'Sukces')
               this.patchState({
                 tickets
               })
             },
             (err: { error: Error }) => {
-              this.toastService.showError(err.error.message, 'error')
+              this.toastService.showError(err.error.message, 'Błąd')
             }
           ),
         )
