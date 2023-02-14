@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button'
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { emailValidator } from '@shared/validators/form.validators'
 import { UserData } from 'src/app/features/home/subpages/settings/settings.interfaces'
+import { UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-settings-email',
@@ -11,24 +13,26 @@ import { UserData } from 'src/app/features/home/subpages/settings/settings.inter
   imports: [
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UpperCasePipe,
+    TranslateModule
   ],
   template: `
     <div class="general-form-wrapper">
-      <h2>Edytuj adres email</h2>
+      <h2>{{ 'Edytuj adres email' | uppercase | translate }}</h2>
       <form [formGroup]="updateEmailForm" (ngSubmit)="updateEmail()">
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Stary adres email</mat-label>
-          <input matInput placeholder="Email" formControlName="oldEmail">
+          <mat-label>{{ 'Stary adres email' | uppercase | translate }}</mat-label>
+          <input matInput [placeholder]="'Email' | uppercase | translate" formControlName="oldEmail">
           <mat-error></mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Nowy adres email</mat-label>
-          <input matInput placeholder="Email" formControlName="newEmail">
+          <mat-label>{{ 'Nowy adres email' | uppercase | translate }}</mat-label>
+          <input matInput [placeholder]="'Email' | uppercase | translate" formControlName="newEmail">
           <mat-error></mat-error>
         </mat-form-field>
         <div class="button-wrapper">
-          <button mat-raised-button color="primary">Zapisz</button>
+          <button mat-raised-button color="primary">{{ 'Zapisz' | uppercase | translate }}</button>
         </div>
       </form>
     </div>

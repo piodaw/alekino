@@ -2,6 +2,7 @@
   width: 100%;
   max-height: calc(100vh - var(--header-height) - 112px);
   min-height: calc(100vh - var(--header-height) - 112px);
+  overflow: overlay;
 }
 
 table {
@@ -27,6 +28,7 @@ tr > * {
 th,
 td {
   border: 0 !important;
+  justify-content: center;
 }
 
 .mat-mdc-form-field {
@@ -38,4 +40,8 @@ td {
   ::ng-deep.mat-mdc-form-field-subscript-wrapper {
     display: none;
   }
+}
+
+::ng-deep.mat-sort-header-container {
+  margin-left: 20px;
 }

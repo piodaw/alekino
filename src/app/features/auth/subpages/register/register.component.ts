@@ -8,9 +8,10 @@ import { Store } from '@ngrx/store'
 
 import { Routing } from '@shared/routes/routing'
 import { controlName, getErrorMessage } from '@shared/form-errors/form.errors'
-import { NgIf } from '@angular/common'
+import { NgIf, UpperCasePipe } from '@angular/common'
 import { emailValidator, phoneValidator, whitespaceValidator } from '@shared/validators/form.validators'
 import { AuthActions } from 'src/app/features/auth/store/auth.actions'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-register',
@@ -23,7 +24,9 @@ import { AuthActions } from 'src/app/features/auth/store/auth.actions'
     MatIconModule,
     RouterLink,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    UpperCasePipe,
+    TranslateModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -1,0 +1,103 @@
+<h1 mat-dialog-title>{{ data.isEdit ? 'Aktualizuj dane filmu' : 'Podaj dane filmu' | uppercase | translate }}</h1>
+<div class="dialog-wrapper" *ngIf="data.isEdit; else addForm">
+  <form [formGroup]="movieForm">
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>{{ 'Tytuł' | uppercase | translate }}</mat-label>
+      <input matInput [placeholder]="'Podaj tytuł' | uppercase | translate" formControlName="title">
+      <mat-error *ngIf="errorMessage('title') as message">{{ message | uppercase | translate }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>{{ 'Opis' | uppercase | translate }}</mat-label>
+      <textarea
+        matInput
+        [placeholder]="'Podaj opis' | uppercase | translate"
+        formControlName="description"
+        cdkTextareaAutosize="true"
+      >
+      </textarea>
+      <mat-error *ngIf="errorMessage('description') as message">{{ message | uppercase | translate }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>{{ 'Ograniczenia wiekowe' | uppercase | translate }}</mat-label>
+      <input matInput [placeholder]="'Wybierz ograniczenie wiekowe' | uppercase | translate" formControlName="age">
+      <mat-error *ngIf="errorMessage('age') as message">{{ message | uppercase | translate }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>{{ 'Zdjęcie' | uppercase | translate }}</mat-label>
+      <input matInput [placeholder]="'Podaj link do zdjęcia' | uppercase | translate" formControlName="img">
+      <mat-error *ngIf="errorMessage('img') as message">{{ message | uppercase | translate }}</mat-error>
+    </mat-form-field>
+    <mat-slide-toggle color="accent" formControlName="isPremiere">
+      {{ 'Premiera' | uppercase | translate }}
+    </mat-slide-toggle>
+    <div class="button-wrapper">
+      <button mat-raised-button color="primary" (click)="submit()">{{ 'Aktualizuj' | uppercase | translate }}</button>
+    </div>
+  </form>
+</div>
+<ng-template #addForm>
+  <div class="dialog-wrapper">
+    <form [formGroup]="movieForm">
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>{{ 'Tytuł' | uppercase | translate }}</mat-label>
+        <input matInput [placeholder]="'Podaj tytuł' | uppercase | translate" formControlName="title">
+        <mat-error *ngIf="errorMessage('title') as message">{{ message | uppercase | translate }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>{{ 'Opis' | uppercase | translate }}</mat-label>
+        <textarea
+                matInput
+                [placeholder]="'Podaj opis' | uppercase | translate"
+                formControlName="description"
+                cdkTextareaAutosize="true"
+        >
+      </textarea>
+        <mat-error *ngIf="errorMessage('description') as message">{{ message | uppercase | translate }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>{{ 'Czas trwania' | uppercase | translate }}</mat-label>
+        <input matInput [placeholder]="'Podaj czas trwania' | uppercase | translate" formControlName="duration">
+        <mat-error *ngIf="errorMessage('duration') as message">{{ message | uppercase | translate }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>{{ 'Gatunek' | uppercase | translate }}</mat-label>
+        <mat-chip-grid #chipGrid formControlName="genre">
+          <mat-chip-row *ngFor="let genre of movieForm.getRawValue().genre" (removed)="remove(genre)">
+            {{genre}}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input [placeholder]="'Podaj gatunek' | uppercase | translate"
+               [matChipInputFor]="chipGrid"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="add($event)"
+        />
+        <mat-error *ngIf="errorMessage('genre') as message">{{ message | uppercase | translate }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>{{ 'Ograniczenia wiekowe' | uppercase | translate }}</mat-label>
+        <input matInput [placeholder]="'Wybierz ograniczenie wiekowe' | uppercase | translate" formControlName="age">
+        <mat-error *ngIf="errorMessage('age') as message">{{ message | uppercase | translate }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>{{ 'Ocena' | uppercase | translate }}</mat-label>
+        <input matInput type="number" [placeholder]="'Podaj ocenę' | uppercase | translate" formControlName="rating">
+        <mat-error *ngIf="errorMessage('rating') as message">{{ message | uppercase | translate }}</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" color="accent">
+        <mat-label>{{ 'Zdjęcie' | uppercase | translate }}</mat-label>
+        <input matInput [placeholder]="'Podaj link do zdjęcia' | uppercase | translate" formControlName="img">
+        <mat-error *ngIf="errorMessage('img') as message">{{ message | uppercase | translate }}</mat-error>
+      </mat-form-field>
+      <mat-slide-toggle color="accent" formControlName="isPremiere">
+        {{ 'Premiera' | uppercase | translate }}
+      </mat-slide-toggle>
+      <div class="button-wrapper">
+        <button mat-raised-button color="primary" (click)="submit()">{{ 'Dodaj' | uppercase | translate }}</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

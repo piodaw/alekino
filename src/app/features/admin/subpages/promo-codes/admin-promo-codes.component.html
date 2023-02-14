@@ -1,3 +1,16 @@
 <main>
-  <app-table-paginator-filters [data$]="promoCodes$" [displayedColumns]="columnsToDisplay"></app-table-paginator-filters>
+  <app-table-paginator-filters
+    [data$]="promoCodes$"
+    [displayedColumns]="columnsToDisplay"
+    [isAddButtonVisible]="true"
+    (deleteId)="deletePromoCode($event)"
+    (editId)="editPromoCode($event)"
+  >
+  </app-table-paginator-filters>
+  <button class="addButton" mat-fab [matMenuTriggerFor]="promocodeMenu">
+    <mat-icon>add</mat-icon>
+  </button>
+  <mat-menu #promocodeMenu>
+    <app-admin-promo-menu (promocodeData)="promocodeHandler($event)"></app-admin-promo-menu>
+  </mat-menu>
 </main>

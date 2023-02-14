@@ -1,4 +1,4 @@
-import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf, UpperCasePipe } from '@angular/common'
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,14 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { ShowingById, Ticket } from 'src/app/features/home/shared/home.interfaces';
 import { ReservationsStore } from 'src/app/features/home/subpages/reservations/store/reservations.store';
-
-export interface SelectedTicket {
-  ticket: string;
-  ticket_type_id: number;
-  name: string;
-  price: number;
-  description: string | null;
-}
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-hall',
@@ -37,18 +30,21 @@ export interface SelectedTicket {
     FormsModule,
     MatSelectModule,
     MatIconModule,
+    UpperCasePipe,
+    TranslateModule
   ],
   template: `
     <div class="reservation" *ngIf="showing$ | async as showing">
       <div class="info-wrapper">
         <p>
-          {{ showing.title }}, sala nr {{ showing.hallno }}, {{ showing.start.split(' ')[0] }}, godz.
+          {{ showing.title }}, {{ 'sala' | uppercase | translate }} {{ 'nr' | uppercase | translate }} {{ showing.hallno }}, {{ showing.start.split(' ')[0] }},
+          {{ 'godz.' | uppercase | translate }}
           {{ showing.start.split(' ')[1] }}
         </p>
       </div>
       <div class="screen-wrapper">
         <div class="screen"></div>
-        <p>Ekran</p>
+        <p>{{ 'Ekran' | uppercase | translate }}</p>
       </div>
       <div class="hall">
         <div class="hall-wrapper" *ngFor="let row of showing.rows">
@@ -68,10 +64,10 @@ export interface SelectedTicket {
       <form [formGroup]="seatsFormGroup" (ngSubmit)="firstStep()">
         <div class="tickets-wrapper" *ngFor="let ticket of selectedSeats; let i = index">
           <div class="ticket-info">
-            <p>Rząd {{ ticket[0] }} Miejsce {{ ticket.slice(1) }}</p>
+            <p>{{ 'Rząd' | uppercase | translate }} {{ ticket[0] }} {{ 'Miejsce' | uppercase | translate }} {{ ticket.slice(1) }}</p>
           </div>
           <mat-form-field class="ticket-select" appearance="fill" color="accent">
-            <mat-label>Rodzaj biletu</mat-label>
+            <mat-label>{{ 'Rodzaj biletu' | uppercase | translate }}</mat-label>
             <mat-select
               [compareWith]="compareFn"
               (ngModelChange)="ticketType(ticket, $event)"
@@ -101,7 +97,7 @@ export interface SelectedTicket {
             color="primary"
             matStepperNext
             [disabled]="seat.length < selectedSeats.length || seat.length === 0">
-            Dalej
+            {{ 'Dalej' | uppercase | translate }}
           </button>
         </div>
       </form>

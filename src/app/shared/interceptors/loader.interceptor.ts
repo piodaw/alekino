@@ -15,7 +15,7 @@ class LoaderInterceptor implements HttpInterceptor {
   }
 }
 
-export const loaderInterceptorProvider = {
+export const LoaderInterceptorProvider = {
   provide: HTTP_INTERCEPTORS,
   useClass: LoaderInterceptor,
   multi: true,

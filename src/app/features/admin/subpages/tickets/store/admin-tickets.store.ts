@@ -3,7 +3,7 @@ import { ComponentStore } from '@ngrx/component-store';
 
 import { AdminTicketService } from 'src/app/features/admin/services/admin-ticket.service';
 import { map } from 'rxjs';
-import { Reservation } from 'src/app/features/admin/shared/admin.interceptors';
+import { Reservation } from 'src/app/features/admin/shared/admin.interfaces';
 
 export interface AdminTicketsState {
   reservations: Reservation[];

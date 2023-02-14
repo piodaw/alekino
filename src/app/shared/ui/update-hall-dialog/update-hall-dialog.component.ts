@@ -1,28 +1,35 @@
 import { ChangeDetectionStrategy, Component, Inject, inject, OnInit } from '@angular/core'
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common'
+import { AsyncPipe, NgForOf, NgIf, UpperCasePipe } from '@angular/common'
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
 import { MatButtonModule } from '@angular/material/button'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatSelectModule } from '@angular/material/select'
 import { Observable, of } from 'rxjs'
 
-import { Hall } from 'src/app/features/admin/shared/admin.interceptors'
+import { Hall } from 'src/app/features/admin/shared/admin.interfaces'
 import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatInputModule } from '@angular/material/input'
 import { allowOnlyNumbersValidator } from '@shared/validators/form.validators'
+import { TranslateModule } from '@ngx-translate/core'
 
 export interface DialogData {
   hall$: Observable<Hall>
+}
+
+interface HallForm {
+  hall_id: number
+  rows: number
+  columns: number
 }
 
 @Component({
   selector: 'app-repertoire-dialog',
   standalone: true,
   template: `
-    <h1 mat-dialog-title>Edytuj salę</h1>
+    <h1 mat-dialog-title>{{ 'Edytuj salę' | uppercase | translate }}</h1>
     <div class="dialog-wrapper" *ngIf="data.hall$ | async as hall">
       <div>
-        <p class="info">Podgląd sali</p>
+        <p class="info">{{ 'Podgląd sali' | uppercase | translate }}</p>
         <div class="hall-container">
           <div class="hall">
             <div class="hall-wrapper" *ngFor="let row of rowsArray">
@@ -38,18 +45,18 @@ export interface DialogData {
         <form [formGroup]="updateHall" (ngSubmit)="submit()">
           <div class="inputs-wrapper">
             <mat-form-field appearance="outline" color="accent">
-              <mat-label>Liczba rzędów</mat-label>
-              <input matInput type="number" placeholder="Liczba rzędów" (input)="rowMaxValue($event)" formControlName="rows">
+              <mat-label>{{ 'Liczba rzędów' | uppercase | translate }}</mat-label>
+              <input matInput type="number" [placeholder]="'Liczba rzędów' | uppercase | translate" (input)="rowMaxValue($event)" formControlName="rows">
             </mat-form-field>
             <mat-form-field appearance="outline" color="accent">
-              <mat-label>Liczba kolumn</mat-label>
-              <input matInput type="number" placeholder="Liczba kolumn" (input)="columnMaxValue($event)" formControlName="columns">
+              <mat-label>{{ 'Liczba kolumn' | uppercase | translate }}</mat-label>
+              <input matInput type="number" [placeholder]="'Liczba kolumn' | uppercase | translate" (input)="columnMaxValue($event)" formControlName="columns">
             </mat-form-field>
           </div>
           <div class="button-wrapper" mat-dialog-actions>
-            <button mat-stroked-button color="warn" type="button" (click)="onNoClick()">Anuluj</button>
-            <button mat-raised-button color="warn" type="button" (click)="removeHall(hall.id)">Usuń</button>
-            <button mat-raised-button color="primary" type="submit">Potwierdź</button>
+            <button mat-stroked-button color="warn" type="button" (click)="onNoClick()">{{ 'Anuluj' | uppercase | translate }}</button>
+            <button mat-raised-button color="warn" type="button" (click)="removeHall(hall.id)">{{ 'Usuń' | uppercase | translate }}</button>
+            <button mat-raised-button color="primary" type="submit">{{ 'Potwierdź' | uppercase | translate }}</button>
           </div>
         </form>
       </div>
@@ -132,7 +139,9 @@ export interface DialogData {
     AsyncPipe,
     FormsModule,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    UpperCasePipe,
+    TranslateModule
   ]
 })
 export class UpdateHallDialogComponent implements OnInit {
@@ -154,7 +163,8 @@ export class UpdateHallDialogComponent implements OnInit {
       })
     })
 
-    this.updateHall.valueChanges.subscribe((value: any) => {
+    this.updateHall.valueChanges.subscribe((value: Partial<HallForm>) => {
+      if (value.rows === undefined || value.columns === undefined) return;
       this.rowsArray = Array.from({length: value.rows}, (_, i) => this.alphabet[i]);
       this.columnsArray = Array.from({length: value.columns}, (_, i) => i + 1);
     })

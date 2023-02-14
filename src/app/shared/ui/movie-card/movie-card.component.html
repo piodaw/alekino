@@ -4,6 +4,9 @@
       <div class="img-container">
         <div class="img-wrapper">
           <img [ngSrc]="show.img!" [alt]="show.title" width="150" height="200">
+          <div [ngClass]="{premiere: show.ispremiere}" [ngStyle]="{'display':show.ispremiere ? 'flex' : 'none' }">
+            <p>{{ 'premiera' | uppercase | translate }}</p>
+          </div>
         </div>
       </div>
       <div class="info-wrapper">
@@ -14,14 +17,14 @@
           </div>
           <p>{{ showFullDescriptions[show.id!] ? show.description : show.shortdescription }}</p>
           <div class="show-more">
-            <p (click)="toggleShowMore(show.id!)">{{ showFullDescriptions[show.id!] ? 'Pokaż mniej' : 'Pokaż więcej' }}</p>
+            <p (click)="toggleShowMore(show.id!)">{{ showFullDescriptions[show.id!] ? ('Pokaż mniej' | uppercase | translate) : ('Pokaż więcej' | uppercase | translate) }}</p>
           </div>
         </div>
         <div class="hours-wrapper">
           <button class="hours" mat-stroked-button color="accent" *ngFor="let hours of show.showings" (click)="redirectToReservationPage(hours.id)" [disabled]="isHourPast(hours.start)">
             <div class="hour-button">
               <span>{{ hours.start.split(" ")[1] }}</span>
-              <span>Sala: {{ hours.hallno }}</span>
+              <span>{{ 'sala' | uppercase | translate }}: {{ hours.hallno }}</span>
             </div>
           </button>
         </div>
@@ -31,12 +34,28 @@
           <p class="rating">{{ show.rating }}/10</p>
         </div>
         <div>
-          <button mat-raised-button color="primary">Oceń</button>
+          <button mat-raised-button color="primary" [matMenuTriggerFor]="ratingMenu">{{ 'Oceń' | uppercase | translate }}</button>
         </div>
         <div *ngIf="loggedIn$ | async as user">
-          <button mat-flat-button color="accent" *ngIf="show.id as movie_id" (click)="addToWishList(user.userId, movie_id)">Chcę obejrzeć</button>
+          <button mat-flat-button color="accent" *ngIf="show.id as movie_id" (click)="addToWishList(user.userId, movie_id)">
+            {{ 'Chcę obejrzeć' | uppercase | translate }}
+          </button>
         </div>
       </div>
     </mat-card-content>
+    <mat-menu #ratingMenu="matMenu">
+      <ng-template matMenuContent>
+        <div class="star-rating" *ngIf="loggedIn$ | async as user">
+          <div *ngIf="user.userId; else notLogged">
+            <mat-icon *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" [ngClass]="{'filled': i <= rating[show.id!]}" (click)="rateMovie(user.userId, show.id!, i)" (mouseover)="onMouseEnter(show.id!, i)">
+              star
+            </mat-icon>
+          </div>
+          <ng-template #notLogged>
+            <p>{{ 'Zaloguj się, aby móc ocenić film' | uppercase | translate}}</p>
+          </ng-template>
+        </div>
+      </ng-template>
+    </mat-menu>
   </mat-card>
 </div>

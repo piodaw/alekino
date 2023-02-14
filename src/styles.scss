@@ -105,6 +105,37 @@ $cinema-theme: mat.define-dark-theme(
   font-family: inherit;
 }
 
+body {
+  overflow: overlay;
+}
+
+::-webkit-scrollbar {
+  position: absolute;
+  width: 8px;
+  right: -10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 7px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(112, 112, 112, 0.8);
+  border-radius: 7px;
+  transition: background 150ms ease-in-out;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+main {
+  width: 100% !important;
+}
+
 html,
 body {
   min-height: calc(100% - var(--headerAndFooter-height));

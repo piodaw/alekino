@@ -2,3 +2,10 @@ main {
   min-height: calc(100vh - var(--headerAndFooter-height));
   margin-top: var(--header-height);
 }
+
+.addButton {
+  position: absolute;
+  right: 25px;
+  bottom: 60px;
+  color: var(--text-primary);
+}

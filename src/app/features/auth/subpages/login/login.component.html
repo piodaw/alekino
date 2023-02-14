@@ -1,32 +1,32 @@
 <main>
   <div class="login-wrapper">
-    <h2>Zaloguj się</h2>
+    <h2>{{ 'Zaloguj się' | uppercase | translate }}</h2>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <div class="input-wrapper">
         <div class="email-container">
           <mat-form-field appearance="outline">
-            <mat-label>Adres e-mail</mat-label>
-            <input matInput type="email" formControlName="email" placeholder="Adres e-mail" required>
-            <mat-error *ngIf="errorMessage('email') as message">{{ message }}</mat-error>
+            <mat-label>{{ 'Adres e-mail' | uppercase | translate }}</mat-label>
+            <input matInput type="email" formControlName="email" [placeholder]="'Adres e-mail' | uppercase | translate" required>
+            <mat-error *ngIf="errorMessage('email') as message">{{ message | uppercase | translate }}</mat-error>
           </mat-form-field>
         </div>
         <div class="password-container">
           <mat-form-field appearance="outline">
-            <mat-label>Hasło</mat-label>
-            <input matInput [type]="!hide ? 'text' : 'password'" formControlName="password" placeholder="Hasło" required>
+            <mat-label>{{ 'Hasło' | uppercase | translate }}</mat-label>
+            <input matInput [type]="!hide ? 'text' : 'password'" formControlName="password" [placeholder]="'Hasło' | uppercase | translate" required>
             <button class="icon-wrapper" matSuffix type="button" (click)="hide = !hide" mat-icon-button>
               <mat-icon>{{!hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
-            <mat-error *ngIf="errorMessage('password') as message">{{ message }}</mat-error>
+            <mat-error *ngIf="errorMessage('password') as message">{{ message | uppercase | translate }}</mat-error>
           </mat-form-field>
         </div>
       </div>
       <button class="submit" type="submit" mat-raised-button>
-        Zaloguj się
+        {{ 'Zaloguj się' | uppercase | translate }}
       </button>
     <div class="link-wrapper">
-      <p>Nie masz jeszcze konta?</p>
-      <a [routerLink]="[routing.REGISTER]">Zarejestruj się</a>
+      <p>{{ 'Nie masz jeszcze konta?' | uppercase | translate }}</p>
+      <a [routerLink]="[routing.REGISTER]">{{ 'Zarejestruj się' | uppercase | translate }}</a>
     </div>
     </form>
   </div>

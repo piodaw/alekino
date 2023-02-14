@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http'
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { RouterModule } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service'
+import { ToastrModule } from 'ngx-toastr';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader'
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core'
 
 import { AppComponent } from 'src/app/app.component';
 import { API_URL, IS_PRODUCTION } from '@core/env.token';
 import { environment } from '../environment';
-import { RouterModule } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service'
 import { UserState } from '@core/store/user.interfaces'
 import { UserEffects } from '@core/store/user.effects'
 import { userReducer } from '@core/store/user.reducer'
@@ -17,13 +20,16 @@ import { HeaderComponent } from '@shared/ui/header/header.component'
 import { TokenInterceptorProvider } from '@shared/interceptors/token.interceptor'
 import { AuthGuard } from '@shared/guards/loginGuard'
 import { AdminGuard } from '@shared/guards/AdminGuard'
-import { ToastrModule } from 'ngx-toastr';
-import { loaderInterceptorProvider } from '@shared/interceptors/loader.interceptor'
 import { SpinnerComponent } from '@shared/ui/spinner/spinner.component'
-import { NgScrollbarModule } from 'ngx-scrollbar';
+import { UserGuard } from '@shared/guards/UserGuard'
+import { LoaderInterceptorProvider } from '@shared/interceptors/loader.interceptor'
 
 export interface AppState {
   user: UserState;
+}
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
@@ -31,7 +37,14 @@ export interface AppState {
   imports: [
     BrowserModule,
     HttpClientModule,
-    NgScrollbarModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+      defaultLanguage: 'pl'
+    }),
     ToastrModule.forRoot(),
     StoreModule.forRoot({
       user: userReducer
@@ -44,6 +57,7 @@ export interface AppState {
         children: [
           {
             path: '',
+            canActivate: [UserGuard],
             loadChildren: () => import('src/app/features/home/home.module')
           },
           {
@@ -77,7 +91,7 @@ export interface AppState {
     },
     CookieService,
     TokenInterceptorProvider,
-    loaderInterceptorProvider
+    LoaderInterceptorProvider
   ],
   bootstrap: [AppComponent],
 })

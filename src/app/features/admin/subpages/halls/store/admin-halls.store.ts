@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core'
 import { ComponentStore } from '@ngrx/component-store'
 import { Observable, switchMap, tap } from 'rxjs'
 
-import { Hall, HallUpdate } from 'src/app/features/admin/shared/admin.interceptors'
+import { Hall, HallUpdate } from 'src/app/features/admin/shared/admin.interfaces'
 import { AdminHallsService } from 'src/app/features/admin/services/admin-halls.service'
 
 export interface AdminHallsState {

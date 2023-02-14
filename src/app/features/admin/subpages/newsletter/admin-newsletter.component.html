@@ -2,5 +2,7 @@
   <app-table-paginator-filters
           [data$]="newsletter$"
           [displayedColumns]="displayedColumns"
+          (deleteId)="deleteHandler($event)"
+          (editId)="editHandler($event)"
   ></app-table-paginator-filters>
 </main>

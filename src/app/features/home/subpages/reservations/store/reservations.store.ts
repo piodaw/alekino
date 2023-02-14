@@ -25,11 +25,21 @@ interface Ticket {
 }
 
 export interface User {
-  userId: number | null;
+  userId: number;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
+  newsletter: boolean;
+  isUserLoggedIn?: boolean;
+}
+
+export interface UserResponse {
+  userId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
   newsletter: boolean;
 }
 
@@ -43,12 +53,13 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
     super({
       selectedTickets: [],
       userData: {
-        userId: null,
+        userId: 0,
         firstName: '',
         lastName: '',
         email: '',
         phoneNumber: '',
         newsletter: false,
+        isUserLoggedIn: false,
       },
       blikCode: '',
       totalPrice: 0,
@@ -155,17 +166,30 @@ export class ReservationsStore extends ComponentStore<ReservationState> {
     };
   })
 
-  readonly addContactData = this.updater((state, userData: User): ReservationState => {
-    return {
-      ...state,
-      userData,
-    };
+  readonly addContactData = this.effect((contactData$: Observable<User>) => {
+    return contactData$.pipe(
+      map((contactData) => {
+        console.log(contactData.firstName)
+        this.patchState({
+          userData: contactData,
+        })
+      })
+    )
   })
 
   readonly getMe = this.effect(() => {
     return this.reservationService.getMe().pipe(
       tap((user) => {
-        return this.updateUser(user)
+        return this.updateUser({
+          ...this.get().userData,
+          userId: user.userId,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          phoneNumber: user.phone,
+          newsletter: user.newsletter,
+          isUserLoggedIn: true,
+        })
       })
     );
   })

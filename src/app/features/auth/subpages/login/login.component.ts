@@ -5,11 +5,12 @@ import { MatIconModule } from '@angular/material/icon'
 import { RouterLink } from '@angular/router'
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Store } from '@ngrx/store'
+import { NgIf, UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 import { AuthActions } from 'src/app/features/auth/store/auth.actions'
 import { Routing } from '@shared/routes/routing'
 import { emailValidator, whitespaceValidator } from '@shared/validators/form.validators'
-import { NgIf } from '@angular/common'
 import { getErrorMessage } from '@shared/form-errors/form.errors'
 
 @Component({
@@ -23,7 +24,9 @@ import { getErrorMessage } from '@shared/form-errors/form.errors'
     MatIconModule,
     RouterLink,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    UpperCasePipe,
+    TranslateModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

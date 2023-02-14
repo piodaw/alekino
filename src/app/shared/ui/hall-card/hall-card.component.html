@@ -1,15 +1,15 @@
 <div class="hall-card" *ngIf="halls$ | async as halls">
   <div class="hall-wrapper" *ngFor="let hall of halls">
-    <p>Sala</p>
+    <p>{{ 'Sala' | uppercase | translate }}</p>
     <h1>{{ hall.hallno }}</h1>
-    <p>Ilość miejsc: {{ hall.capacity }}</p>
+    <p>{{ 'Ilość miejsc' | uppercase | translate }}: {{ hall.capacity }}</p>
     <div class="edit-button">
-      <button mat-raised-button color="primary" (click)="updateHall(hall.id)">Edytuj</button>
+      <button mat-raised-button color="primary" (click)="updateHall(hall.id)">{{ 'Edytuj' | uppercase | translate }}</button>
     </div>
   </div>
 </div>
 <div class="button-wrapper">
   <button mat-raised-button color="primary" (click)="createHall()">
-    Utwórz nową salę
+    {{ 'Utwórz nową salę' | uppercase | translate }}
   </button>
 </div>

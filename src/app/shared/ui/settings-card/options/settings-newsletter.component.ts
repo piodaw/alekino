@@ -4,6 +4,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatButtonModule } from '@angular/material/button'
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { Observable } from 'rxjs'
+import { UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-settings-newsletter',
@@ -12,15 +14,17 @@ import { Observable } from 'rxjs'
     MatInputModule,
     MatSlideToggleModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UpperCasePipe,
+    TranslateModule
   ],
   template: `
     <div class="general-form-wrapper">
-      <h2>Edytuj zgody</h2>
+      <h2>{{ 'Edytuj zgody' | uppercase | translate }}</h2>
       <form [formGroup]="newsletterForm" (ngSubmit)="updateNewsletter()">
-        <mat-slide-toggle formControlName="newsletter">Zgoda na otrzymywanie newslettera</mat-slide-toggle>
+        <mat-slide-toggle formControlName="newsletter">{{ 'Zgoda na otrzymywanie newslettera' | uppercase | translate }}</mat-slide-toggle>
         <div class="button-wrapper">
-          <button mat-raised-button color="primary">Zapisz</button>
+          <button mat-raised-button color="primary">{{ 'Zapisz' | uppercase | translate }}</button>
         </div>
       </form>
     </div>

@@ -3,7 +3,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
 import { MatIconModule } from '@angular/material/icon'
 import { Links } from '@shared/ui/footer/constants/links'
 import { RouterLink } from '@angular/router'
-import { NgForOf } from '@angular/common'
+import { NgForOf, UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-footer',
@@ -24,7 +25,7 @@ import { NgForOf } from '@angular/common'
         </div>
         <div class="nav-wrapper">
           <a *ngFor="let route of routes" [routerLink]="route.Link">
-            {{ route.title }}
+            {{ route.title | uppercase | translate }}
           </a>
         </div>
       </div>
@@ -79,7 +80,9 @@ import { NgForOf } from '@angular/common'
   imports: [
     MatIconModule,
     RouterLink,
-    NgForOf
+    NgForOf,
+    UpperCasePipe,
+    TranslateModule
 
   ]
 })

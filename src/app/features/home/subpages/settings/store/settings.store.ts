@@ -6,8 +6,10 @@ import { Store } from '@ngrx/store'
 import { ReservationService } from 'src/app/features/home/shared/services/reservation.service'
 import { SettingsService } from '../../../shared/services/settings.service'
 import { UserActions } from '@core/store/user.actions'
-import { UserData } from '../settings.interfaces'
+import { NewsletterData, UserData } from '../settings.interfaces'
 import { ToastFacadeService } from '@shared/services/toast.facade.service'
+import { CookieService } from 'ngx-cookie-service'
+import { ErrorResponse } from 'src/app/features/admin/shared/admin.interfaces'
 
 export interface SettingsState {
   page: number;
@@ -19,6 +21,7 @@ export class SettingsStore extends ComponentStore<SettingsState> {
   private reservationService = inject(ReservationService)
   private settingsService = inject(SettingsService)
   private toastService = inject(ToastFacadeService)
+  private cookieService = inject(CookieService)
   private store = inject(Store)
 
   constructor() {
@@ -58,13 +61,52 @@ export class SettingsStore extends ComponentStore<SettingsState> {
         tapResponse(
           (res) => {
             this.toastService.showSuccess(res.message, 'Sukces')
+            if (res.accessToken) {
+              this.cookieService.set('token', res.accessToken, 1, '/')
+            }
             this.store.dispatch(UserActions.getUser())
           },
-          (error: any) => {
+          (error: ErrorResponse) => {
             this.toastService.showError(error.error.message, 'Błąd')
           }
         )
       ))
+    )
+  })
+
+  readonly updateNewsletter = this.effect((data$: Observable<NewsletterData>) => {
+    return data$.pipe(
+      switchMap((data) => {
+        if (data.newsletter) {
+          return this.settingsService.addUserToNewsletter(data.email).pipe(
+            tapResponse(
+              (res) => {
+                this.toastService.showSuccess("Pomyślnie dodano do newslettera", 'Sukces')
+                this.patchState({
+                  newsletter: true
+                })
+              },
+              (error: ErrorResponse) => {
+                this.toastService.showError(error.error.message, 'Błąd')
+              }
+            )
+          )
+        } else {
+          return this.settingsService.removeUserFromNewsletter(data.email).pipe(
+            tapResponse(
+              (res) => {
+                this.toastService.showSuccess("Pomyślnie usunięto z newslettera", 'Sukces')
+                this.patchState({
+                  newsletter: false
+                })
+              },
+              (error: ErrorResponse) => {
+                this.toastService.showError(error.error.message, 'Błąd')
+              }
+            )
+          )
+        }
+      })
     )
   })
 }

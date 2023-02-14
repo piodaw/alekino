@@ -2,13 +2,13 @@
   <span class="logo" [routerLink]="[routing.HOME]">Cinvelo</span>
   <span class="spacer"></span>
   <div class="icons-wrapper" *ngIf="loggedUser$ | async as user">
-    <button mat-icon-button [matTooltip]="'Wyszukaj bilet'" [matMenuTriggerFor]="ticketSearch">
+    <button mat-icon-button [matTooltip]="'Wyszukaj bilet' | uppercase | translate" [matMenuTriggerFor]="ticketSearch">
       <mat-icon>search</mat-icon>
     </button>
     <button
       mat-icon-button
       *ngIf="user.userId"
-      [matTooltip]="'Kontynuuj rezerwację'"
+      [matTooltip]="'Kontynuuj rezerwację' | uppercase | translate"
       [matBadge]="isTicketInCart ? '&#8288;' : ''"
       matBadgeColor="accent"
       [routerLink]="createLinkToReservation()"
@@ -18,15 +18,24 @@
     <mat-menu #ticketSearch yPosition="below">
       <app-search-ticket-menu (ticketData)="ticketSearchHandler($event)"></app-search-ticket-menu>
     </mat-menu>
-    <button mat-icon-button *ngIf="user.userId" [routerLink]="routing.WISHLIST" [matTooltip]="'Ulubione'">
+    <button mat-icon-button *ngIf="user.userId" [routerLink]="routing.WISHLIST" [matTooltip]="'Ulubione' | uppercase | translate">
       <mat-icon>favorite</mat-icon>
     </button>
+    <form [formGroup]="langForm">
+      <select (change)="changeLanguage($event)" formControlName="lang">
+        <ng-container *ngFor="let item of languages">
+          <option [value]="item.code">
+            {{ item.flag }} {{ item.name }}
+          </option>
+        </ng-container>
+      </select>
+    </form>
   </div>
   <div *ngIf="loggedUser$ | async as user">
     <button
             mat-icon-button
             class="initials"
-            matTooltip="Konto"
+            [matTooltip]="'Konto' | uppercase | translate"
             *ngIf="user.userId; else notLogged"
             [matMenuTriggerFor]="userMenu">
       <div *ngIf="user.role === 0; else admin">{{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}</div>

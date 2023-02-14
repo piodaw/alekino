@@ -44,6 +44,8 @@ export class SettingsComponent {
   }
 
   updateNewsletter(value: boolean) {
-    console.log(value)
+    this.user$.pipe(take(1)).subscribe(loggedUser => {
+      this.settingsStore.updateNewsletter({ ...loggedUser, newsletter: value })
+    })
   }
 }

@@ -11,6 +11,8 @@ import { HallComponent } from './hall/hall.component';
 import { PromoCode, ShowingById, Ticket } from 'src/app/features/home/shared/home.interfaces'
 import { ContactFormComponent } from './contact-form/contact-form.component';
 import { PaymentComponent } from './payment/payment.component';
+import { UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-stepper',
@@ -23,12 +25,14 @@ import { PaymentComponent } from './payment/payment.component';
     MatButtonModule,
     HallComponent,
     ContactFormComponent,
-    PaymentComponent
+    PaymentComponent,
+    UpperCasePipe,
+    TranslateModule
   ],
   template: `
     <mat-stepper #stepper>
       <mat-step>
-        <ng-template matStepLabel>Wybierz miejsca</ng-template>
+        <ng-template matStepLabel>{{ 'Wybierz miejsca' | uppercase | translate }}</ng-template>
         <app-hall
           [showing$]="showing$"
           [tickets$]="tickets$"
@@ -36,11 +40,11 @@ import { PaymentComponent } from './payment/payment.component';
           (removedSeat)="removeSeatHandler($event)"></app-hall>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Wprowadź dane</ng-template>
+        <ng-template matStepLabel>{{ 'Wprowadź dane' | uppercase | translate }}</ng-template>
         <app-contact-form [showing$]="showing$" [promoCodes$]="promoCodes$"></app-contact-form>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Płatność</ng-template>
+        <ng-template matStepLabel>{{ 'Płatność' | uppercase | translate }}</ng-template>
         <app-payment></app-payment>
       </mat-step>
     </mat-stepper>

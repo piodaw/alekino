@@ -7,7 +7,7 @@ import {
   MovieResponse,
   ShowingData,
   ShowingResponse
-} from 'src/app/features/admin/shared/admin.interceptors'
+} from 'src/app/features/admin/shared/admin.interfaces'
 
 @Injectable({
   providedIn: 'root'

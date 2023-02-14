@@ -4,7 +4,7 @@ import { API_URL } from '@core/env.token'
 
 import { PromoCodeData, TicketsData } from 'src/app/features/home/shared/home.interfaces'
 import { SuccessState } from 'src/app/features/home/subpages/success/store/success.store'
-import { User } from 'src/app/features/home/subpages/reservations/store/reservations.store'
+import { User, UserResponse } from 'src/app/features/home/subpages/reservations/store/reservations.store'
 
 export interface PostReservationData {
   showingId: number
@@ -42,7 +42,7 @@ export class ReservationService {
   }
 
   getMe() {
-    return this.http.get<User>(`${this.base_url}/users/me`)
+    return this.http.get<UserResponse>(`${this.base_url}/users/me`)
   }
 
   getTicket(ticket_no: string, secret: string) {

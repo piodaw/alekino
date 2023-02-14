@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { AsyncPipe, JsonPipe, NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgForOf, NgIf, NgOptimizedImage, UpperCasePipe } from '@angular/common'
 import { Observable } from 'rxjs';
 
 import { WishList } from 'src/app/features/home/shared/home.interfaces';
@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-fav-movie-card',
@@ -22,6 +23,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatButtonModule,
     MatTooltipModule,
     MatMenuModule,
+    UpperCasePipe,
+    TranslateModule
   ],
   template: `
     <div class="movie-container">
@@ -32,11 +35,11 @@ import { MatMenuModule } from '@angular/material/menu';
         <div>
           <h3>{{ movie.title }}</h3>
         </div>
-        <div class="button-wrapper" matTooltip="Zobacz opis">
-          <button mat-icon-button [mat-menu-trigger-for]="description">
+        <div class="button-wrapper">
+          <button mat-icon-button [matTooltip]="'Zobacz opis' | uppercase | translate" [mat-menu-trigger-for]="description">
             <mat-icon>comment</mat-icon>
           </button>
-          <button mat-icon-button matTooltip="Usuń z ulubionych" (click)="removeHandler(movie.id)">
+          <button mat-icon-button [matTooltip]="'Usuń z ulubionych' | uppercase | translate" (click)="removeHandler(movie.id)">
             <mat-icon>remove_circle</mat-icon>
           </button>
         </div>
@@ -49,7 +52,7 @@ import { MatMenuModule } from '@angular/material/menu';
   styles: [
     `
       .movie-container {
-        padding: 24px;
+        padding: 24px 24px 0;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
         justify-items: center;

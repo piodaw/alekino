@@ -12,14 +12,29 @@ export const MovieReducer = createReducer(
   initialMovieState,
   on(MovieApiActions.getMoviesSuccess, (state, { MovieData }): MovieResponse => (
     { ...state, ...MovieData }
-  ))
+  )),
+
+  on(MovieApiActions.rateMovieSuccess, (state, { movie_id, rating }): MovieResponse => {
+    const movie = state.movies.find((movie) => movie.id === movie_id)
+    const newMovie = { ...movie, rating: rating }
+    const newMovies = state.movies.map((movie) => movie.id === movie_id ? newMovie : movie)
+    return { ...state, movies: newMovies }
+  })
 )
 
 export const ShowingsReducer = createReducer(
   initialShowingMoviesState,
   on(ShowingsApiActions.getShowingsSuccess, (state, { Showing }): ShowingData => (
     { ...state, ...Showing }
-  ))
+  )),
+
+  on(MovieApiActions.rateMovieSuccess, (state, { movie_id, rating }): ShowingData => {
+    const showing = state.showings.find((showing) => showing.id === movie_id)
+    if (!showing) return state
+    const newShowing = { ...showing, rating: rating }
+    const newShowings = state.showings.map((showing) => showing.id === movie_id ? newShowing : showing)
+    return { ...state, showings: newShowings }
+  })
 )
 
 export const ShowingsByIdReducer = createReducer(

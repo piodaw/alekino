@@ -24,6 +24,19 @@ mat-card-content {
   height: 200px;
   width: 150px;
   box-shadow: 0 0 10px 0 rgba(255, 143, 198, 0.3);
+  position: relative;
+}
+
+.premiere {
+  position: absolute;
+  top: 0;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100px;
+  height: 25px;
+  background-color: var(--secondaryDark);
+  justify-content: center;
+  align-items: center;
 }
 
 .info-wrapper {
@@ -78,6 +91,7 @@ mat-card-content {
 
 button {
   width: 130px;
+  padding: 0;
 }
 
 .mat-mdc-outlined-button:not(:disabled) {
@@ -91,4 +105,13 @@ button {
   & p {
     cursor: pointer;
   }
+}
+
+.star-rating .filled {
+  color: #ffc107;
+  cursor: pointer;
+}
+
+.star-rating {
+  padding: 12px;
 }

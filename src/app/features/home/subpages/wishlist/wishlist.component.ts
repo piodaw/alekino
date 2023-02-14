@@ -3,12 +3,18 @@ import { selectLoggedUser } from '@core/store/user.selectors'
 import { Store } from '@ngrx/store'
 import { FavMovieCardComponent } from '@shared/ui/fav-movie-card/fav-movie-card.component'
 import { WishListStore } from './store/wishlist.store'
+import { AsyncPipe, NgIf, UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-wishlist',
   standalone: true,
   imports: [
-    FavMovieCardComponent
+    FavMovieCardComponent,
+    NgIf,
+    AsyncPipe,
+    UpperCasePipe,
+    TranslateModule
   ],
   templateUrl: './wishlist.component.html',
   styleUrls: ['./wishlist.component.scss'],

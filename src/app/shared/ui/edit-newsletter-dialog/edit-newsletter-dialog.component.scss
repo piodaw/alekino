@@ -1,0 +1,16 @@
+.dialog-wrapper {
+  padding: 24px;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  width: 90px;
+}
+
+mat-error {
+  font-size: 14px;
+}

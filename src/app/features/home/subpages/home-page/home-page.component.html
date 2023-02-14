@@ -8,6 +8,7 @@
       [showing$]="showings$"
       [loggedIn$]="loggedIn$"
       (redirectToReservation)="handleRedirect($event)"
+      (movieRated)="handleMovieRating($event)"
       (wishList)="addToWishlist($event)"></app-movie-card>
   </div>
 </main>

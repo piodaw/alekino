@@ -1,0 +1,31 @@
+.dialog-wrapper {
+  padding: 24px;
+}
+
+.button-wrapper {
+  display: grid;
+  grid-column: 1/-1;
+}
+
+button {
+  width: 250px;
+}
+
+form {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  width: 800px;
+  overflow: auto;
+  max-height: calc(100vh - 175px);
+  padding: 24px;
+}
+
+mat-form-field {
+  width: 80%;
+}
+
+mat-slide-toggle {
+  height: 56px;
+  display: flex;
+}

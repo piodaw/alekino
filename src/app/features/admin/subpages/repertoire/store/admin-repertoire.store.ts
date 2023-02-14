@@ -1,10 +1,13 @@
 import { inject, Injectable } from '@angular/core'
-import { ComponentStore } from '@ngrx/component-store'
+import { ComponentStore, tapResponse } from '@ngrx/component-store'
 import { filter, map, Observable, switchMap, tap } from 'rxjs'
 
-import { Hall, Movie, Showing, ShowingData } from 'src/app/features/admin/shared/admin.interceptors'
+import { ErrorResponse, Hall, Movie, Showing, ShowingData } from 'src/app/features/admin/shared/admin.interfaces'
 import { AdminRepertoireService } from 'src/app/features/admin/services/admin-repertoire.service'
 import { Store } from '@ngrx/store'
+import { ShowingsActions } from 'src/app/features/home/store/home.actions'
+import { format } from 'date-fns'
+import { ToastFacadeService } from '@shared/services/toast.facade.service'
 
 export interface AdminRepertoireState {
   movies: Movie[];
@@ -16,6 +19,7 @@ export interface AdminRepertoireState {
 @Injectable()
 export class AdminRepertoireStore extends ComponentStore<AdminRepertoireState> {
   private repertoireService = inject(AdminRepertoireService)
+  private toastService = inject(ToastFacadeService)
   private store = inject(Store)
 
   constructor() {
@@ -41,7 +45,6 @@ export class AdminRepertoireStore extends ComponentStore<AdminRepertoireState> {
 
   readonly getShowings = this.effect((date: Observable<string>) => {
     return date.pipe(
-      // reverse date
       map((date) => {
         const [day, month, year] = date.split('-')
         return `${year}-${month}-${day}`
@@ -100,16 +103,22 @@ export class AdminRepertoireStore extends ComponentStore<AdminRepertoireState> {
           start
         }
       }),
-      switchMap((data) => this.repertoireService.createShowing(data)),
-      tap(() => {
-        this.getShowings(
-          this.state$.pipe(
-            map(
-              (state) => state.selectedDate
+      switchMap((data) => this.repertoireService.createShowing(data).pipe(
+        tapResponse(
+          () => {
+            const currentDate = format(new Date(), 'yyyy-MM-dd')
+            this.store.dispatch(ShowingsActions.getShowings({ date: currentDate, filters: "day", hall_id: 1 }))
+            this.getShowings(
+              this.state$.pipe(
+                map(
+                  (state) => state.selectedDate
+                )
+              )
             )
-          )
+          },
+          (error: ErrorResponse) => this.toastService.showError(error.error.message, 'Błąd')
         )
-      })
+      )),
     )
   })
 }

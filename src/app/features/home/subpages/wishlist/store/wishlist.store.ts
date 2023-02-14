@@ -9,6 +9,8 @@ import { WishlistService } from '../../../shared/services/wishlist.service';
 import { User } from '@core/store/user.interfaces';
 import { Store } from '@ngrx/store';
 import { selectLoggedUser } from '@core/store/user.selectors';
+import { ToastFacadeService } from '@shared/services/toast.facade.service'
+import { Routing } from '@shared/routes/routing'
 
 export interface WishlistState {
   wishlist: WishList[];
@@ -17,7 +19,7 @@ export interface WishlistState {
 @Injectable()
 export class WishListStore extends ComponentStore<WishlistState> {
   private wishlistService = inject(WishlistService);
-  private cookieService = inject(CookieService);
+  private toastService = inject(ToastFacadeService);
   private router = inject(Router);
   private store = inject(Store)
 
@@ -36,7 +38,7 @@ export class WishListStore extends ComponentStore<WishlistState> {
       }),
       tapResponse(
         ({wishlist}) => this.patchState({ wishlist }),
-        () => this.router.navigate(['/home'])
+        (err) => this.router.navigate([Routing.HOME])
       )
     );
   });
@@ -48,7 +50,9 @@ export class WishListStore extends ComponentStore<WishlistState> {
       }),
       tapResponse(
         () => this.getUserWishlist(this.user$),
-        () => this.router.navigate(['/home'])
+        () => {
+          this.toastService.showError('Nie udało się usunąć filmu');
+        }
       )
     );
   })

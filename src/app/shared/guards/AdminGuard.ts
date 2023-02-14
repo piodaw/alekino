@@ -2,7 +2,7 @@ import { CanActivate, Router } from '@angular/router'
 import { Store } from '@ngrx/store'
 import { inject, Injectable } from '@angular/core'
 import { selectLoggedUser } from '@core/store/user.selectors'
-import { map } from 'rxjs'
+import { map, Observable } from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate {
 
   loggedUser$ = this.store.select(selectLoggedUser)
 
-  canActivate() {
+  canActivate(): Observable<boolean> {
     return this.loggedUser$.pipe(
       map(user => {
         if (user.role === 1) {

@@ -3,6 +3,8 @@ import { MatInputModule } from '@angular/material/input'
 import { MatButtonModule } from '@angular/material/button'
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { UserData } from 'src/app/features/home/subpages/settings/settings.interfaces'
+import { UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-settings-phone',
@@ -10,19 +12,21 @@ import { UserData } from 'src/app/features/home/subpages/settings/settings.inter
   imports: [
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UpperCasePipe,
+    TranslateModule
   ],
   template: `
     <div class="general-form-wrapper">
-      <h2>Edytuj numer telefonu</h2>
+      <h2>{{ 'Edytuj numer telefonu' | uppercase | translate }}</h2>
       <form [formGroup]="phoneForm" (ngSubmit)="updatePhone()">
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Nowy numer telefonu</mat-label>
-          <input matInput placeholder="Numer telefonu" formControlName="phone">
+          <mat-label>{{ 'Nowy numer telefonu' | uppercase | translate }}</mat-label>
+          <input matInput [placeholder]="'Numer telefonu' | uppercase | translate" formControlName="phone">
           <mat-error></mat-error>
         </mat-form-field>
         <div class="button-wrapper">
-          <button mat-raised-button color="primary">Zapisz</button>
+          <button mat-raised-button color="primary">{{ 'Zapisz' | uppercase | translate }}</button>
         </div>
       </form>
     </div>

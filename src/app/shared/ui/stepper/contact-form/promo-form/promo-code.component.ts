@@ -5,7 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
-import { AsyncPipe, NgIf } from '@angular/common'
+import { AsyncPipe, NgIf, UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-promo-code',
@@ -19,20 +20,22 @@ import { AsyncPipe, NgIf } from '@angular/common'
     MatButtonModule,
     MatStepperModule,
     NgIf,
-    AsyncPipe
+    AsyncPipe,
+    UpperCasePipe,
+    TranslateModule
   ],
   template: `
     <form [formGroup]="promoCodeForm" (ngSubmit)="submitPromoCodeForm()">
       <mat-form-field appearance="outline" color="accent">
-        <mat-label>Kod rabatowy</mat-label>
+        <mat-label>{{ 'Kod rabatowy' | uppercase | translate }}</mat-label>
         <input 
-          matInput placeholder="Kod rabatowy"
+          matInput [placeholder]="'Kod rabatowy' | uppercase | translate"
           formControlName="discountCode" 
           (keypress)="isPromoCodeApplied ? $event.preventDefault() : ''"
         />
       </mat-form-field>
       <button mat-raised-button color="accent" type="submit" [disabled]="promoCodeForm.invalid || isPromoCodeApplied">
-        Zastosuj
+        {{ 'Zastosuj' | uppercase | translate }}
       </button>
     </form>
   `,

@@ -5,7 +5,7 @@ import { API_URL } from '@core/env.token'
 import {
   Hall,
   HallResponse, HellByIdResponse
-} from 'src/app/features/admin/shared/admin.interceptors'
+} from 'src/app/features/admin/shared/admin.interfaces'
 
 export interface CreateHallResponse {
   isError: boolean;

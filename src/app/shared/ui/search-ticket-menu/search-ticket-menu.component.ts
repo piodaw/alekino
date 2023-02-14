@@ -3,13 +3,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf, UpperCasePipe } from '@angular/common'
 
 import { Routing } from '@shared/routes/routing';
 import { MatListModule } from '@angular/material/list'
 import { MatInputModule } from '@angular/material/input'
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { emailValidator, whitespaceValidator } from '@shared/validators/form.validators'
+import { allowOnlyNumbersValidator, emailValidator, whitespaceValidator } from '@shared/validators/form.validators'
+import { TranslateModule } from '@ngx-translate/core'
+import { getErrorMessage } from '@shared/form-errors/form.errors'
 
 @Component({
   selector: 'app-search-ticket-menu',
@@ -18,16 +20,16 @@ import { emailValidator, whitespaceValidator } from '@shared/validators/form.val
     <div (click)="$event.stopPropagation()">
       <form [formGroup]="searchForm" (ngSubmit)="searchTicket()">
         <mat-form-field color="accent">
-          <mat-label>Numer biletu</mat-label>
-          <input matInput type="text" placeholder="Wpisz numer biletu" formControlName="ticketNumber" />
-          <mat-error></mat-error>
+          <mat-label>{{'Numer biletu' | uppercase | translate}}</mat-label>
+          <input matInput type="text" [placeholder]="'Wpisz numer biletu' | uppercase | translate" formControlName="ticketNumber" />
+          <mat-error *ngIf="errorMessage('ticketNumber') as message">{{ message | uppercase | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field color="accent">
-          <mat-label>E-mail</mat-label>
-          <input matInput type="email" placeholder="Wpisz adres email" formControlName="email" />
-          <mat-error></mat-error>
+          <mat-label>{{ 'E-mail' | uppercase | translate}}</mat-label>
+          <input matInput type="email" [placeholder]="'Wpisz adres email' | uppercase | translate" formControlName="email" />
+          <mat-error *ngIf="errorMessage('email') as message">{{ message | uppercase | translate }}</mat-error>
         </mat-form-field>
-        <button mat-raised-button color="primary">Szukaj</button>
+        <button mat-raised-button color="primary">{{ 'Szukaj' | uppercase | translate}}</button>
       </form>
     </div>
   `,
@@ -38,6 +40,10 @@ import { emailValidator, whitespaceValidator } from '@shared/validators/form.val
         flex-direction: column;
         align-items: center;
         padding: 24px;
+      }
+      
+      mat-error {
+        font-size: 14px;
       }
     `,
   ],
@@ -51,7 +57,9 @@ import { emailValidator, whitespaceValidator } from '@shared/validators/form.val
     MatMenuModule,
     MatListModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UpperCasePipe,
+    TranslateModule
   ]
 })
 export class SearchTicketMenuComponent {
@@ -61,6 +69,10 @@ export class SearchTicketMenuComponent {
   routing = Routing;
 
   searchForm = this.searchTicketForm();
+
+  errorMessage(formControlName: 'ticketNumber' | 'email') {
+    return getErrorMessage(formControlName, this.searchForm)
+  }
 
   searchTicket() {
     this.searchForm.markAllAsTouched();
@@ -74,8 +86,8 @@ export class SearchTicketMenuComponent {
 
   private searchTicketForm() {
     return this.formBuilder.group({
-      ticketNumber: this.formBuilder.control('', [Validators.required, Validators.minLength(3), whitespaceValidator]),
-      email: this.formBuilder.control('', [Validators.required, whitespaceValidator, emailValidator])
+      ticketNumber: this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20), whitespaceValidator, allowOnlyNumbersValidator]),
+      email: this.formBuilder.control('', [Validators.required, Validators.maxLength(100), whitespaceValidator, emailValidator])
     })
   }
 }

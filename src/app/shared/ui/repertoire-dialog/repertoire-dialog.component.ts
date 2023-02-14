@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, Inject, inject } from '@angular/core'
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common'
+import { AsyncPipe, NgForOf, NgIf, UpperCasePipe } from '@angular/common'
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
 import { MatButtonModule } from '@angular/material/button'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatSelectModule } from '@angular/material/select'
 import { Observable } from 'rxjs'
 
-import { Movie } from 'src/app/features/admin/shared/admin.interceptors'
+import { Movie } from 'src/app/features/admin/shared/admin.interfaces'
 import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { TranslateModule } from '@ngx-translate/core'
 
 export interface DialogData {
   movies$: Observable<Movie[]>
@@ -17,12 +18,12 @@ export interface DialogData {
   selector: 'app-repertoire-dialog',
   standalone: true,
   template: `
-    <h1 mat-dialog-title>Wybierz film w celu utworzenia seansu</h1>
+    <h1 mat-dialog-title>{{ 'Wybierz film w celu utworzenia seansu' | uppercase | translate }}</h1>
     <div class="dialog-wrapper" *ngIf="data.movies$ | async as movies">
       <div mat-dialog-content>
         <form [formGroup]="movieForm" (ngSubmit)="submit()">
           <mat-form-field appearance="outline" color="accent">
-            <mat-label>Wybierz film</mat-label>
+            <mat-label>{{ 'Wybierz film' | uppercase | translate }}</mat-label>
             <mat-select formControlName="movieId">
               <mat-option *ngFor="let movie of movies" [value]="movie.id">
                 {{ movie.title }}
@@ -30,8 +31,8 @@ export interface DialogData {
             </mat-select>
           </mat-form-field>
           <div class="button-wrapper" mat-dialog-actions>
-            <button mat-stroked-button color="warn" type="button" (click)="onNoClick()">Anuluj</button>
-            <button mat-raised-button color="primary" type="submit">Potwierdź</button>
+            <button mat-stroked-button color="warn" type="button" (click)="onNoClick()">{{ 'Anuluj' | uppercase | translate }}</button>
+            <button mat-raised-button color="primary" type="submit">{{ 'Potwierdź' | uppercase | translate }}</button>
           </div>
         </form>
       </div>
@@ -65,7 +66,9 @@ export interface DialogData {
     NgIf,
     AsyncPipe,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UpperCasePipe,
+    TranslateModule
   ]
 })
 export class RepertoireDialogComponent {

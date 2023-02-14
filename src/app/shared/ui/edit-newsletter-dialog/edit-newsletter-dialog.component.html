@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{ 'Aktualizuj adres email' | uppercase | translate }}</h1>
+<div class="dialog-wrapper">
+  <form [formGroup]="updateEmailForm">
+    <mat-form-field appearance="outline" color="accent">
+      <mat-label>{{ 'Adres e-mail' | uppercase | translate }}</mat-label>
+      <input matInput type="email" [placeholder]="'Adres e-mail' | uppercase | translate" formControlName="email">
+      <mat-error *ngIf="errorMessage('email') as message">{{ message | uppercase | translate }}</mat-error>
+    </mat-form-field>
+    <div class="button-wrapper">
+      <button mat-raised-button color="primary" (click)="submit()">{{ 'Aktualizuj' | uppercase | translate }}</button>
+    </div>
+  </form>
+</div>

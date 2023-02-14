@@ -1,3 +1,13 @@
 <main>
-  <app-table-paginator-filters [data$]="movies$" [displayedColumns]="displayedColumns"></app-table-paginator-filters>
+  <app-table-paginator-filters
+          [data$]="movies$"
+          [displayedColumns]="displayedColumns"
+          [isAddButtonVisible]="true"
+          (editId)="editHandler($event)"
+          (deleteId)="deleteHandler($event)"
+  >
+  </app-table-paginator-filters>
+  <button class="addButton" mat-fab (click)="addNewMovie()">
+    <mat-icon>add</mat-icon>
+  </button>
 </main>

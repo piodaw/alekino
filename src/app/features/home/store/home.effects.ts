@@ -190,4 +190,20 @@ export class HomeEffects {
       })
     )
   })
+
+  rateMovie$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(MovieActions.rateMovie),
+      switchMap(({ movie_id, rating, user_id }) => this.movieService.rateMovie(user_id, movie_id, rating).pipe(
+        map(({ movie_id, rating }) => {
+          this.toastService.showSuccess('Dodano ocenę', 'Sukces')
+          return MovieApiActions.rateMovieSuccess({ movie_id, rating })
+        }),
+        catchError((error) => {
+          this.toastService.showError(error.error.message, 'Błąd')
+          return of(MovieApiActions.rateMovieFailure())
+        })
+      )),
+    )
+  })
 }

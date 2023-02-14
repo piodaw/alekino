@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core'
-import { AsyncPipe, NgClass, NgForOf, NgIf } from '@angular/common'
+import { AsyncPipe, NgClass, NgForOf, NgIf, UpperCasePipe } from '@angular/common'
 import { combineLatest, map, Observable } from 'rxjs'
 import { MatIconModule } from '@angular/material/icon'
 import { MatDialog, MatDialogModule } from '@angular/material/dialog'
 
 import { hours } from '@shared/ui/repertoire/constants/hours'
-import { Hall, Movie, Showing } from 'src/app/features/admin/shared/admin.interceptors'
+import { Hall, Movie, Showing } from 'src/app/features/admin/shared/admin.interfaces'
 import { RepertoireDialogComponent } from '@shared/ui/repertoire-dialog/repertoire-dialog.component'
 import { isAfter, isToday, parse } from 'date-fns'
-import { NgScrollbarModule } from 'ngx-scrollbar'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-repertoire',
@@ -24,8 +24,9 @@ import { NgScrollbarModule } from 'ngx-scrollbar'
     MatIconModule,
     RepertoireDialogComponent,
     MatDialogModule,
-    NgScrollbarModule
-  ],
+    UpperCasePipe,
+    TranslateModule
+  ]
 })
 export class RepertoireComponent {
   @Input() movies$!: Observable<Movie[]>

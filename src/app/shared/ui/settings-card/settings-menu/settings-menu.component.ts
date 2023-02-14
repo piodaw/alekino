@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
 
 import { StepperComponent } from '@shared/ui/stepper/stepper.component';
 import { MatListModule } from '@angular/material/list'
-import { NgForOf } from '@angular/common'
+import { NgForOf, UpperCasePipe } from '@angular/common'
 import { MenuItems } from '@shared/ui/settings-card/settings-menu/constants/menu-items'
 import { MatIconModule } from '@angular/material/icon'
 import { MatLineModule } from '@angular/material/core'
+import { TranslateModule } from '@ngx-translate/core'
 
 
 @Component({
@@ -16,7 +17,9 @@ import { MatLineModule } from '@angular/material/core'
     MatListModule,
     NgForOf,
     MatIconModule,
-    MatLineModule
+    MatLineModule,
+    UpperCasePipe,
+    TranslateModule
   ],
   templateUrl: 'settings-menu.component.html',
   styleUrls: ['settings-menu.component.scss'],

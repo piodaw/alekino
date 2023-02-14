@@ -7,3 +7,7 @@ export interface UserData extends User {
   newPasswordRepeat: string;
   newEmail: string;
 }
+
+export interface NewsletterData extends User {
+  newsletter: boolean;
+}

@@ -20,4 +20,11 @@ export class MovieService {
       movie_id
     })
   }
+
+  rateMovie(user_id: number, movie_id: number, rating: number) {
+    return this.http.patch<{ movie_id: number, rating: number }>(`${this.base_url}/ratings/${movie_id}`, {
+      user_id,
+      rating
+    })
+  }
 }

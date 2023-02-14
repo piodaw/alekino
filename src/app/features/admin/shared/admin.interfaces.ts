@@ -102,14 +102,19 @@ export interface PromoCodeResponse {
 }
 
 export interface PromoCode {
-  "promo_id": number;
-  "promo_code": string;
-  "value": number;
+  id: number;
+  promo_code: string;
+  value: number;
 }
 
 export interface MoviesResponse {
+  message?: string;
   movies: Movie[];
   count: number;
+}
+
+export interface MovieByIdResponse {
+  movie: Movie;
 }
 
 export interface NewsletterResponse {
@@ -117,7 +122,32 @@ export interface NewsletterResponse {
   count: number;
 }
 
+export interface NewsletterByIdResponse {
+  newsletter: Newsletter;
+}
+
 export interface Newsletter {
-  newsletter_id: number;
+  id: number;
+  email: string;
+}
+
+export interface CreatePromoCodeData {
+  code: string
+  discount: number
+}
+
+export interface UpdatePromoCodeData {
+  id: number
+  updatedData: CreatePromoCodeData
+}
+
+export interface ErrorResponse {
+  error: {
+    message: string;
+  }
+}
+
+export interface UpdateNewsletterData {
+  id: number;
   email: string;
 }

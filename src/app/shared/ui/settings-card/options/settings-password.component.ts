@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button'
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { UserData } from 'src/app/features/home/subpages/settings/settings.interfaces'
 import { whitespaceValidator } from '@shared/validators/form.validators'
+import { UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-settings-password',
@@ -11,29 +13,31 @@ import { whitespaceValidator } from '@shared/validators/form.validators'
   imports: [
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UpperCasePipe,
+    TranslateModule
   ],
   template: `
     <div class="general-form-wrapper">
-      <h2>Edytuj hasło</h2>
+      <h2>{{ 'Edytuj hasło' | uppercase | translate }}</h2>
       <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Stare hasło</mat-label>
-          <input matInput placeholder="Hasło" type="password" formControlName="oldPassword">
+          <mat-label>{{ 'Stare hasło' | uppercase | translate }}</mat-label>
+          <input matInput [placeholder]="'Stare hasło' | uppercase | translate" type="password" formControlName="oldPassword">
           <mat-error></mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Nowe hasło</mat-label>
-          <input matInput placeholder="Hasło" type="password" formControlName="newPassword">
+          <mat-label>{{ 'Nowe hasło' | uppercase | translate }}</mat-label>
+          <input matInput [placeholder]="'Nowe hasło' | uppercase | translate" type="password" formControlName="newPassword">
           <mat-error></mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Powtórz hasło</mat-label>
-          <input matInput placeholder="Hasło" type="password" formControlName="passwordRepeat">
+          <mat-label>{{ 'Powtórz hasło' | uppercase | translate }}</mat-label>
+          <input matInput [placeholder]="'Powtórz hasło' | uppercase | translate" type="password" formControlName="passwordRepeat">
           <mat-error></mat-error>
         </mat-form-field>
         <div class="button-wrapper">
-          <button mat-raised-button color="primary">Zapisz</button>
+          <button mat-raised-button color="primary">{{'Zapisz' | uppercase | translate }}</button>
         </div>
       </form>
     </div>

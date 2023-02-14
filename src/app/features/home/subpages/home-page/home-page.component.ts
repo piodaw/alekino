@@ -42,6 +42,10 @@ export class HomePageComponent {
     ))
   }
 
+  handleMovieRating({ user_id, movie_id, rating }: { user_id: number, movie_id: number, rating: number }) {
+    this.store.dispatch(MovieActions.rateMovie({ user_id, movie_id, rating }))
+  }
+
   handleRedirect(link: string) {
     this.router.navigate([link])
   }

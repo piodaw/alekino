@@ -6,6 +6,8 @@ import { Observable } from 'rxjs'
 
 import { User } from '@core/store/user.interfaces'
 import { UserData } from 'src/app/features/home/subpages/settings/settings.interfaces'
+import { UpperCasePipe } from '@angular/common'
+import { TranslateModule } from '@ngx-translate/core'
 
 @Component({
   selector: 'app-settings-general',
@@ -13,24 +15,26 @@ import { UserData } from 'src/app/features/home/subpages/settings/settings.inter
   imports: [
     MatInputModule,
     ReactiveFormsModule,
-    MatButtonModule
+    MatButtonModule,
+    UpperCasePipe,
+    TranslateModule
   ],
   template: `
     <div class="general-form-wrapper">
-      <h2>Edytuj dane osobowe</h2>
+      <h2>{{ 'Edytuj dane osobowe' | uppercase | translate }}</h2>
       <form [formGroup]="updateUserForm" (ngSubmit)="updateUser()">
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Imię</mat-label>
-          <input matInput placeholder="Imię" formControlName="firstName">
+          <mat-label>{{ 'Imię' | uppercase | translate }}</mat-label>
+          <input matInput [placeholder]="'Imię' | uppercase | translate" formControlName="firstName">
           <mat-error></mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">
-          <mat-label>Nazwisko</mat-label>
-          <input matInput placeholder="Nazwisko" formControlName="lastName">
+          <mat-label>{{ 'Nazwisko' | uppercase | translate }}</mat-label>
+          <input matInput [placeholder]="'Nazwisko' | uppercase | translate" formControlName="lastName">
           <mat-error></mat-error>
         </mat-form-field>
         <div class="button-wrapper">
-          <button mat-raised-button type="submit" color="primary">Zapisz</button>
+          <button mat-raised-button type="submit" color="primary">{{ 'Zapisz' | uppercase | translate }}</button>
         </div>
       </form>
     </div>

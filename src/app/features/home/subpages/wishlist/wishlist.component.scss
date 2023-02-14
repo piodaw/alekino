@@ -2,3 +2,8 @@ main {
   min-height: calc(100vh - var(--headerAndFooter-height));
   margin-top: var(--header-height);
 }
+
+h1 {
+  padding-top: 48px;
+  text-align: center;
+}

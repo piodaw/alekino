@@ -1,3 +1,13 @@
 <main>
-  <app-fav-movie-card [favMovies$]="favMovies$" (removeFromWishlist)="removeWishlistHandler($event)"></app-fav-movie-card>
+  <div *ngIf="favMovies$ | async as movie">
+    <div class="h1-wrapper" *ngIf="!movie.length">
+      <h1>
+        {{ 'Brak filmów w ulubionych' | uppercase | translate }}
+      </h1>
+    </div>
+  </div>
+  <app-fav-movie-card
+          [favMovies$]="favMovies$"
+          (removeFromWishlist)="removeWishlistHandler($event)"
+  ></app-fav-movie-card>
 </main>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, inject } from '@angular/core';
-import { AsyncPipe, JsonPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgForOf, NgIf, UpperCasePipe } from '@angular/common'
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { SuccessCardComponent } from '@shared/ui/success-card/success-card.compo
 import { Ticket } from 'src/app/features/home/subpages/success/store/success.store';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MatListModule } from '@angular/material/list';
+import { TranslateModule } from '@ngx-translate/core'
 
 export interface DialogData {
   ticket$: Observable<Ticket>;
@@ -17,7 +18,7 @@ export interface DialogData {
   selector: 'app-user-ticket-dialog',
   standalone: true,
   template: `
-    <h1 mat-dialog-title>Twój bilet</h1>
+    <h1 mat-dialog-title>{{ 'Twój bilet' | uppercase | translate }}</h1>
     <div class="dialog-wrapper" *ngIf="data.ticket$ | async as ticket">
       <div mat-dialog-content>
         <div class="ticket-wrapper">
@@ -25,7 +26,7 @@ export interface DialogData {
             <h1>{{ ticket.title }}</h1>
           </div>
           <div>
-            <p>{{ ticket.start }} | Sala {{ ticket.hallno }}</p>
+            <p>{{ ticket.start }} | {{ 'Sala' | uppercase | translate }} {{ ticket.hallno }}</p>
           </div>
           <div>
             <qrcode
@@ -35,22 +36,22 @@ export interface DialogData {
               [colorDark]="'#FF8FC6'"></qrcode>
           </div>
           <div class="total-price-wrapper">
-            <span class="total-price-title">Podsumowanie:</span>
+            <span class="total-price-title">{{ 'Podsumowanie' | uppercase | translate }}:</span>
             <mat-divider></mat-divider>
             <div class="seat-wrapper">
               <div class="seat" *ngFor="let seat of ticket.seats">
-                <p>miejsce {{ seat.split('')[0] }}-{{ seat.slice(1,3) }}</p>
+                <p>{{ 'miejsce' | uppercase | translate }} {{ seat.split('')[0] }}-{{ seat.slice(1,3) }}</p>
               </div>
             </div>
             <div class="price">
-              <p>Razem:</p>
+              <p>{{ 'Razem' | uppercase | translate}}:</p>
               <p>{{ ticket.totalprice.toFixed(2) }} zł</p>
             </div>
           </div>
           <div class="button-wrapper" mat-dialog-actions>
-            <button mat-stroked-button color="warn" type="button" (click)="onNoClick()">Anuluj</button>
-            <button mat-raised-button color="accent" type="submit" (click)="refund(ticket.ticketno)">Zwróć</button>
-            <button mat-raised-button color="primary" type="submit" (click)="onNoClick()">Potwierdź</button>
+            <button mat-stroked-button color="warn" type="button" (click)="onNoClick()">{{ 'Anuluj' | uppercase | translate }}</button>
+            <button mat-raised-button color="accent" type="submit" (click)="refund(ticket.ticketno)">{{ 'Zwróć' | uppercase | translate }}</button>
+            <button mat-raised-button color="primary" type="submit" (click)="onNoClick()">{{ 'Potwierdź' | uppercase | translate}}</button>
           </div>
         </div>
       </div>
@@ -88,6 +89,7 @@ export interface DialogData {
 
       .mat-mdc-dialog-content {
         max-height: 75vh;
+        overflow-x: hidden;
       }
 
       mat-divider {
@@ -140,7 +142,9 @@ export interface DialogData {
     QRCodeModule,
     MatListModule,
     JsonPipe,
-  ],
+    UpperCasePipe,
+    TranslateModule
+  ]
 })
 export class UserTicketDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}

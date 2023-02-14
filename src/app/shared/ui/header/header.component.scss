@@ -34,5 +34,15 @@ span {
 }
 
 .icons-wrapper {
+  display: flex;
+  align-items: center;
   margin-right: 10px;
+}
+
+select {
+  background: transparent;
+  border: 0;
+  color: #fff;
+  outline: none;
+  cursor: pointer;
 }
