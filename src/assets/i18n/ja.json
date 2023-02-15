@@ -173,5 +173,6 @@
   "NUMER TELEFONU JEST ZA DŁUGI": "電話番号が長すぎます",
   "NUMER TELEFONU NIE MOŻE ZAWIERAĆ SPACJI": "電話番号にスペースを含めることはできません",
   "NUMER TELEFONU MOŻE ZAWIERAĆ TYLKO CYFRY": "電話番号は数字のみを含めることができます",
-  "NUMER TELEFONU JEST NIEPOPRAWNY": "電話番号が正しくありません"
+  "NUMER TELEFONU JEST NIEPOPRAWNY": "電話番号が正しくありません",
+  "ZALOGUJ SIĘ, ABY MÓC OCENIĆ FILM": "映画を評価するにはログインしてください"
 }

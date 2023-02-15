@@ -173,5 +173,6 @@
   "NUMER TELEFONU JEST ZA DŁUGI": "Phone number is too long",
   "NUMER TELEFONU NIE MOŻE ZAWIERAĆ SPACJI": "Phone number cannot contain spaces",
   "NUMER TELEFONU MOŻE ZAWIERAĆ TYLKO CYFRY": "Phone number can only contain numbers",
-  "NUMER TELEFONU JEST NIEPOPRAWNY": "Phone number is invalid"
+  "NUMER TELEFONU JEST NIEPOPRAWNY": "Phone number is invalid",
+  "ZALOGUJ SIĘ, ABY MÓC OCENIĆ FILM": "Log in to rate the movie"
 }
