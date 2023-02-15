@@ -38,7 +38,7 @@ import { TranslateModule } from '@ngx-translate/core'
 export class TableWithPaginatorAndFilterComponent implements AfterViewInit, OnInit {
   @Input() displayedColumns: string[] = []
   @Input() data$!: Observable<User[] | Reservation[] | PromoCode[] | Movie[] | Newsletter[] | Tickets[]>
-  @Input() isAddButtonVisible: boolean = false
+  @Input() isAddButtonVisible = false
   @Output() userTicket = new EventEmitter<number>()
   @Output() deleteId = new EventEmitter<number>()
   @Output() editId = new EventEmitter<number>()

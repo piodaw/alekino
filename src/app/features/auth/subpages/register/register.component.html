@@ -27,7 +27,7 @@
         <div class="phone-container">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'Numer telefonu' | uppercase | translate }}</mat-label>
-            <input matInput type="phone" formControlName="phoneNumber" [placeholder]="'Numer telefonu' | uppercase | translate" required>
+            <input matInput type="phone" appNumbersOnly formControlName="phoneNumber" [placeholder]="'Numer telefonu' | uppercase | translate" required>
             <mat-error *ngIf="errorMessage('phoneNumber') as message">{{ message | uppercase | translate }}</mat-error>
           </mat-form-field>
         </div>

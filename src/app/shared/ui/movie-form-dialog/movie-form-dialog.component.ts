@@ -15,6 +15,8 @@ import { MatIconModule } from '@angular/material/icon'
 import { COMMA, ENTER } from '@angular/cdk/keycodes'
 import { allowOnlyNumbersValidator, whitespaceValidator } from '@shared/validators/form.validators'
 import { getErrorMessage } from '@shared/form-errors/form.errors'
+import { MatSelectModule } from '@angular/material/select';
+import { Age } from './constants/age';
 
 export interface DialogData {
   movie$?: Observable<Movie>;
@@ -39,7 +41,8 @@ export interface DialogData {
     MatSlideToggleModule,
     MatChipsModule,
     MatIconModule,
-    NgForOf
+    NgForOf,
+    MatSelectModule
   ]
 })
 export class MovieFormDialogComponent implements OnInit {
@@ -49,6 +52,7 @@ export class MovieFormDialogComponent implements OnInit {
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   genreChips: string[] = [];
+  age = Age
   movieForm = this.createMovieForm()
 
   ngOnInit() {
@@ -69,6 +73,10 @@ export class MovieFormDialogComponent implements OnInit {
     })
   }
 
+  compareFn(o1: string, o2: string): boolean {
+    return o1 && o2 ? o1 === o2 : o1 === o2;
+  }
+
   errorMessage(formControlName: 'title' | 'description' | 'duration' | 'genre' | 'age' | 'img' | 'rating') {
     return getErrorMessage(formControlName, this.movieForm)
   }
@@ -82,7 +90,7 @@ export class MovieFormDialogComponent implements OnInit {
       })
     }
 
-    event.chipInput!.clear();
+    event.chipInput.clear();
   }
 
   remove(genre: string) {

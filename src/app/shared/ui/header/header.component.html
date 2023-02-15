@@ -22,13 +22,11 @@
       <mat-icon>favorite</mat-icon>
     </button>
     <form [formGroup]="langForm">
-      <select (change)="changeLanguage($event)" formControlName="lang">
-        <ng-container *ngFor="let item of languages">
-          <option [value]="item.code">
-            {{ item.flag }} {{ item.name }}
-          </option>
-        </ng-container>
-      </select>
+      <mat-select (ngModelChange)="changeLanguage($event)" formControlName="lang">
+        <mat-option *ngFor="let item of languages" [value]="item.code">
+          {{ item.flag }} {{ item.name }}
+        </mat-option>
+      </mat-select>
     </form>
   </div>
   <div *ngIf="loggedUser$ | async as user">

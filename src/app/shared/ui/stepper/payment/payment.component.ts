@@ -8,10 +8,11 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { map } from 'rxjs';
 
 import { ReservationsStore } from 'src/app/features/home/subpages/reservations/store/reservations.store';
-import { NgIf, UpperCasePipe } from '@angular/common'
-import { TranslateModule } from '@ngx-translate/core'
-import { getErrorMessage } from '@shared/form-errors/form.errors'
-import { allowOnlyNumbersValidator, whitespaceValidator } from '@shared/validators/form.validators'
+import { NgIf, UpperCasePipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { getErrorMessage } from '@shared/form-errors/form.errors';
+import { allowOnlyNumbersValidator, whitespaceValidator } from '@shared/validators/form.validators';
+import { NumbersOnlyDirective } from '@shared/directives/onlyNumbers.directive';
 
 @Component({
   selector: 'app-payment',
@@ -26,18 +27,26 @@ import { allowOnlyNumbersValidator, whitespaceValidator } from '@shared/validato
     MatStepperModule,
     UpperCasePipe,
     TranslateModule,
-    NgIf
+    NumbersOnlyDirective,
+    NgIf,
   ],
   template: `
     <div class="payment-wrapper">
       <form [formGroup]="paymentForm" (ngSubmit)="submitPaymentForm()">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>{{ 'Kod blik' | uppercase | translate }}</mat-label>
-          <input matInput [placeholder]="'Kod blik' | uppercase | translate" formControlName="blikCode" (keypress)="preventMoreNumbers($event)" />
+          <input
+            matInput
+            [placeholder]="'Kod blik' | uppercase | translate"
+            formControlName="blikCode"
+            appNumbersOnly
+            (keypress)="preventMoreNumbers($event)" />
           <mat-error *ngIf="errorMessage('blikCode') as message">{{ message | uppercase | translate }}</mat-error>
         </mat-form-field>
         <div class="button-wrapper">
-          <button mat-stroked-button color="warn" type="button" matStepperPrevious>{{ 'Wróć' | uppercase | translate }}</button>
+          <button mat-stroked-button color="warn" type="button" matStepperPrevious>
+            {{ 'Wróć' | uppercase | translate }}
+          </button>
           <button mat-raised-button type="submit" color="primary">{{ 'Zapłać' | uppercase | translate }}</button>
         </div>
       </form>
@@ -50,7 +59,7 @@ import { allowOnlyNumbersValidator, whitespaceValidator } from '@shared/validato
         justify-content: center;
         align-items: center;
       }
-      
+
       form {
         display: flex;
         flex-direction: column;
@@ -58,11 +67,11 @@ import { allowOnlyNumbersValidator, whitespaceValidator } from '@shared/validato
         gap: 10px;
         width: 300px;
       }
-      
+
       mat-form-field {
         width: 100%;
       }
-      
+
       .button-wrapper {
         display: flex;
         justify-content: center;
@@ -72,7 +81,7 @@ import { allowOnlyNumbersValidator, whitespaceValidator } from '@shared/validato
       .button-wrapper button {
         width: 100px;
       }
-      
+
       mat-error {
         font-size: 14px;
       }
@@ -92,12 +101,8 @@ export class PaymentComponent {
     }
   }
 
-  ngOnInit() {
-    this.reservationStore.state$.subscribe(state => console.log(state))
-  }
-
   errorMessage(formControlName: 'blikCode') {
-    return getErrorMessage(formControlName, this.paymentForm)
+    return getErrorMessage(formControlName, this.paymentForm);
   }
 
   submitPaymentForm() {
@@ -124,7 +129,7 @@ export class PaymentComponent {
         Validators.minLength(6),
         Validators.maxLength(6),
         whitespaceValidator,
-        allowOnlyNumbersValidator
+        allowOnlyNumbersValidator,
       ]),
     });
   }

@@ -5,6 +5,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { UserData } from 'src/app/features/home/subpages/settings/settings.interfaces'
 import { UpperCasePipe } from '@angular/common'
 import { TranslateModule } from '@ngx-translate/core'
+import { NumbersOnlyDirective } from '@shared/directives/onlyNumbers.directive'
 
 @Component({
   selector: 'app-settings-phone',
@@ -14,7 +15,8 @@ import { TranslateModule } from '@ngx-translate/core'
     MatButtonModule,
     ReactiveFormsModule,
     UpperCasePipe,
-    TranslateModule
+    TranslateModule,
+    NumbersOnlyDirective
   ],
   template: `
     <div class="general-form-wrapper">
@@ -22,7 +24,7 @@ import { TranslateModule } from '@ngx-translate/core'
       <form [formGroup]="phoneForm" (ngSubmit)="updatePhone()">
         <mat-form-field appearance="outline" color="accent">
           <mat-label>{{ 'Nowy numer telefonu' | uppercase | translate }}</mat-label>
-          <input matInput [placeholder]="'Numer telefonu' | uppercase | translate" formControlName="phone">
+          <input matInput appNumbersOnly [placeholder]="'Numer telefonu' | uppercase | translate" formControlName="phone">
           <mat-error></mat-error>
         </mat-form-field>
         <div class="button-wrapper">

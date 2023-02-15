@@ -12,6 +12,7 @@ import { NgIf, UpperCasePipe } from '@angular/common'
 import { emailValidator, phoneValidator, whitespaceValidator } from '@shared/validators/form.validators'
 import { AuthActions } from 'src/app/features/auth/store/auth.actions'
 import { TranslateModule } from '@ngx-translate/core'
+import { NumbersOnlyDirective } from '@shared/directives/onlyNumbers.directive'
 
 @Component({
   selector: 'app-register',
@@ -26,7 +27,8 @@ import { TranslateModule } from '@ngx-translate/core'
     ReactiveFormsModule,
     NgIf,
     UpperCasePipe,
-    TranslateModule
+    TranslateModule,
+    NumbersOnlyDirective
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -80,7 +80,7 @@ export class SettingsStore extends ComponentStore<SettingsState> {
         if (data.newsletter) {
           return this.settingsService.addUserToNewsletter(data.email).pipe(
             tapResponse(
-              (res) => {
+              () => {
                 this.toastService.showSuccess("Pomyślnie dodano do newslettera", 'Sukces')
                 this.patchState({
                   newsletter: true
@@ -94,7 +94,7 @@ export class SettingsStore extends ComponentStore<SettingsState> {
         } else {
           return this.settingsService.removeUserFromNewsletter(data.email).pipe(
             tapResponse(
-              (res) => {
+              () => {
                 this.toastService.showSuccess("Pomyślnie usunięto z newslettera", 'Sukces')
                 this.patchState({
                   newsletter: false

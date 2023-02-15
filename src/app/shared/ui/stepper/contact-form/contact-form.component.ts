@@ -13,7 +13,6 @@ import { PromoCodeComponent } from '@shared/ui/stepper/contact-form/promo-form/p
 import { ReservationsStore } from 'src/app/features/home/subpages/reservations/store/reservations.store'
 import { Store } from '@ngrx/store'
 import { selectLoggedUser } from '@core/store/user.selectors'
-import { User } from '@core/store/user.interfaces'
 import {
   allowOnlyLettersValidator,
   allowOnlyNumbersValidator,
@@ -22,6 +21,7 @@ import {
 } from '@shared/validators/form.validators'
 import { getErrorMessage } from '@shared/form-errors/form.errors'
 import { TranslateModule } from '@ngx-translate/core'
+import { NumbersOnlyDirective } from '@shared/directives/onlyNumbers.directive';
 
 @Component({
   selector: 'app-contact-form',
@@ -39,7 +39,8 @@ import { TranslateModule } from '@ngx-translate/core'
     PromoCodeComponent,
     NgForOf,
     UpperCasePipe,
-    TranslateModule
+    TranslateModule,
+    NumbersOnlyDirective
   ],
   template: `
     <div class="step2" *ngIf="showing$ | async as showing">
@@ -73,7 +74,7 @@ import { TranslateModule } from '@ngx-translate/core'
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">
           <mat-label>{{ 'Telefon' | uppercase | translate }}</mat-label>
-          <input matInput [placeholder]="'Telefon' | uppercase | translate " formControlName="phoneNumber" />
+          <input matInput appNumbersOnly [placeholder]="'Telefon' | uppercase | translate " formControlName="phoneNumber" />
           <mat-error *ngIf="errorMessage('phoneNumber') as message">{{ message | uppercase | translate  }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" color="accent">

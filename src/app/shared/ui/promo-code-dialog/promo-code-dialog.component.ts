@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Inject, inject, OnInit } from '@angular/core'
 import { AsyncPipe, NgForOf, NgIf, UpperCasePipe } from '@angular/common'
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog'
 import { MatButtonModule } from '@angular/material/button'
@@ -88,7 +88,7 @@ export interface DialogData {
     TranslateModule
   ]
 })
-export class PromoCodeDialogComponent {
+export class PromoCodeDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
   private dialogRef = inject(MatDialogRef)

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +18,7 @@ import { TicketActions } from 'src/app/features/home/store/home.actions'
 import { TranslateModule, TranslateService } from '@ngx-translate/core'
 import { MatInputModule } from '@angular/material/input'
 import { MatSelectModule } from '@angular/material/select'
-import { FormControl, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms'
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms'
 import { MatFormFieldModule } from '@angular/material/form-field'
 import { Languages } from '@shared/ui/header/constants/languages'
 
@@ -45,10 +45,11 @@ import { Languages } from '@shared/ui/header/constants/languages'
     MatFormFieldModule,
     UpperCasePipe,
     TranslateModule,
-    NgForOf
+    NgForOf,
+    MatSelectModule
   ]
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   private store = inject(Store);
   private cookieService = inject(CookieService);
   private router = inject(Router);
@@ -78,10 +79,9 @@ export class HeaderComponent {
     return;
   }
 
-  changeLanguage(event: any) {
-    const lang = event.target.value
-    this.translate.use(lang);
-    this.cookieService.set('lang', lang, 365, '/');
+  changeLanguage(event: string) {
+    this.translate.use(event);
+    this.cookieService.set('lang', event, 365, '/');
   }
 
   ticketSearchHandler(formData: { ticketNumber: string, email: string }) {

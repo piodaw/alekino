@@ -46,3 +46,14 @@ select {
   outline: none;
   cursor: pointer;
 }
+
+mat-select {
+  width: 100px;
+  text-align: center;
+}
+
+::ng-deep .mdc-list-item--selected {
+  .mdc-list-item__primary-text {
+    color: var(--secondary);
+  }
+}

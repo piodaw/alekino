@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 
@@ -38,7 +37,7 @@ export class WishListStore extends ComponentStore<WishlistState> {
       }),
       tapResponse(
         ({wishlist}) => this.patchState({ wishlist }),
-        (err) => this.router.navigate([Routing.HOME])
+        () => this.router.navigate([Routing.HOME])
       )
     );
   });

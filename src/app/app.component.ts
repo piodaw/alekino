@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core'
 import { CookieService } from 'ngx-cookie-service'
 import { TranslateService } from '@ngx-translate/core'
 
@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core'
   `,
   providers: [],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   private cookieStore = inject(CookieService);
   private translate = inject(TranslateService);
 

@@ -69,7 +69,7 @@ export class AdminMoviesStore extends ComponentStore<AdminMoviesState> {
       switchMap((id) => this.adminMoviesService.deleteMovie(id).pipe(
         tapResponse(
           ({ movies, message }) => {
-            this.toastService.showSuccess(message!, 'Sukces')
+            this.toastService.showSuccess(message, 'Sukces')
             this.patchState({
               movies
             })
@@ -87,7 +87,7 @@ export class AdminMoviesStore extends ComponentStore<AdminMoviesState> {
       switchMap((movie) => this.adminMoviesService.createMovie(movie).pipe(
         tapResponse(
           ({ movies, message }) => {
-            this.toastService.showSuccess(message!, 'Sukces')
+            this.toastService.showSuccess(message, 'Sukces')
             this.patchState({
               movies
             })
@@ -105,7 +105,7 @@ export class AdminMoviesStore extends ComponentStore<AdminMoviesState> {
       switchMap((movie) => this.adminMoviesService.updateMovie(movie).pipe(
         tapResponse(
           ({ movies, message }) => {
-            this.toastService.showSuccess(message!, 'Sukces')
+            this.toastService.showSuccess(message, 'Sukces')
             this.patchState({
               movies
             })

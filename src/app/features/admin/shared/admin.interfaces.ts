@@ -108,7 +108,7 @@ export interface PromoCode {
 }
 
 export interface MoviesResponse {
-  message?: string;
+  message: string;
   movies: Movie[];
   count: number;
 }
