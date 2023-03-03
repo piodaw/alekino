@@ -17,12 +17,12 @@ import { UserState } from '@core/store/user.interfaces'
 import { UserEffects } from '@core/store/user.effects'
 import { userReducer } from '@core/store/user.reducer'
 import { HeaderComponent } from '@shared/ui/header/header.component'
-import { TokenInterceptorProvider } from '@shared/interceptors/token.interceptor'
+import { TokenInterceptorProvider } from '@core/interceptors/token.interceptor'
 import { AuthGuard } from '@shared/guards/loginGuard'
 import { AdminGuard } from '@shared/guards/AdminGuard'
 import { SpinnerComponent } from '@shared/ui/spinner/spinner.component'
 import { UserGuard } from '@shared/guards/UserGuard'
-import { LoaderInterceptorProvider } from '@shared/interceptors/loader.interceptor'
+import { LoaderInterceptorProvider } from '@core/interceptors/loader.interceptor'
 
 export interface AppState {
   user: UserState;
