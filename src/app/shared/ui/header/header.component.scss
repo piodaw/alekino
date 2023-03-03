@@ -1,8 +1,11 @@
+@import 'breakpoints';
+
 mat-toolbar {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 999;
+  width: 100vw;
 }
 
 .spacer {
@@ -55,5 +58,11 @@ mat-select {
 ::ng-deep .mdc-list-item--selected {
   .mdc-list-item__primary-text {
     color: var(--secondary);
+  }
+}
+
+@include breakpoint('mobile') {
+  .icons-wrapper, .avatar {
+    display: none;
   }
 }

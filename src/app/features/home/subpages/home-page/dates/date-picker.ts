@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, inject, OnInit, Output } from '@angular/core'
-import { eachDayOfInterval, endOfISOWeek, format, parse, startOfISOWeek } from 'date-fns'
-import { NgClass, NgForOf } from '@angular/common'
-import { ActivatedRoute, Router } from '@angular/router'
-import { MatButtonModule } from '@angular/material/button'
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { eachDayOfInterval, endOfISOWeek, format, parse, startOfISOWeek } from 'date-fns';
+import { NgClass, NgForOf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-date-picker',
@@ -10,38 +10,19 @@ import { MatButtonModule } from '@angular/material/button'
   template: `
     <ul>
       <li *ngFor="let day of days">
-        <button [ngClass]="{ 'selected': day === selectedDate }" mat-button [disabled]="checkIfDateIsPast(day)" (click)="selectDate(day)">{{ day }}</button>
+        <button
+          [ngClass]="{ selected: day === selectedDate }"
+          mat-button
+          [disabled]="checkIfDateIsPast(day)"
+          (click)="selectDate(day)">
+          {{ day }}
+        </button>
       </li>
     </ul>
-
   `,
-  styles: [`
-    ul {
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-    }
-    
-    button {
-      background-color: var(--secondaryDark);
-      color: white;
-      padding: 10px;
-      margin: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    
-    .selected {
-      background-color: var(--primary);
-    }
-  `],
-  imports: [
-    NgForOf,
-    NgClass,
-    MatButtonModule
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./date-picker.scss'],
+  imports: [NgForOf, NgClass, MatButtonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DatePickerComponent implements OnInit {
   private activeRoute = inject(ActivatedRoute);
@@ -51,10 +32,10 @@ export class DatePickerComponent implements OnInit {
   dates = eachDayOfInterval({
     start: startOfISOWeek(new Date()),
     end: endOfISOWeek(new Date()),
-  }).map((day) => format(day, 'yyyy-MM-dd'));
+  }).map(day => format(day, 'yyyy-MM-dd'));
 
   get days() {
-    return this.dates.map((date) => format(parse(date, 'yyyy-MM-dd', new Date()), 'dd/MM'));
+    return this.dates.map(date => format(parse(date, 'yyyy-MM-dd', new Date()), 'dd/MM'));
   }
   currentDay = format(new Date(), 'dd/MM');
   selectedDate = this.currentDay;
@@ -75,12 +56,12 @@ export class DatePickerComponent implements OnInit {
         this.selectedDate = params['date'];
         this.dateSelected.emit(this.dates[this.days.indexOf(params['date'])]);
       } else {
-        this.router.navigate(['/404'], { replaceUrl: true })
+        this.router.navigate(['/404'], { replaceUrl: true });
       }
 
       if (!params['date']) {
         this.dateSelected.emit(format(new Date(), 'yyyy-MM-dd'));
       }
-    })
+    });
   }
 }

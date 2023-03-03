@@ -32,50 +32,7 @@ import { TranslateModule } from '@ngx-translate/core'
       <div class="footer-copyright">&copy; 2023 Cinvelo</div>
     </footer>
   `,
-  styles: [`
-    .footer-wrapper {
-      margin-top: 24px;
-      width: 100%;
-      height: 100px;
-      background-color: var(--primaryDark);
-    }
-
-    .footer-items {
-      display: flex;
-      justify-content: space-between;
-      height: 70%;
-      align-items: center;
-      padding: 0 20px;
-    }
-
-    .footer-icons {
-      display: flex;
-      flex-direction: row;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .nav-wrapper {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      padding: 0 32px;
-    }
-
-    a {
-      text-decoration: none;
-      color: var(--text-primary);
-    }
-
-    .footer-copyright {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 30%;
-    }
-
-  `],
+  styleUrls: ['./footer.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatIconModule,

@@ -1,3 +1,5 @@
+@import 'breakpoints';
+
 .showing-card-wrapper {
   display: flex;
   flex-direction: column;
@@ -114,4 +116,26 @@ button {
 
 .star-rating {
   padding: 12px;
+}
+
+@include breakpoint('mobile') {
+  mat-card-content {
+    flex-direction: column;
+    padding: 0;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .info-wrapper {
+    padding: 0;
+    max-width: 80vw;
+  }
+
+  .info {
+    width: 80vw;
+  }
+
+  .button-wrapper {
+    align-items: center;
+  }
 }

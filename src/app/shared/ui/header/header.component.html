@@ -29,7 +29,7 @@
       </mat-select>
     </form>
   </div>
-  <div *ngIf="loggedUser$ | async as user">
+  <div class="avatar" *ngIf="loggedUser$ | async as user">
     <button
             mat-icon-button
             class="initials"
