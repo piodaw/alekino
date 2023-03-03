@@ -1,4 +1,4 @@
-import { AsyncPipe, JsonPipe, NgClass, NgForOf, NgIf, UpperCasePipe } from '@angular/common'
+import { AsyncPipe, NgClass, NgForOf, NgIf, UpperCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,14 +11,14 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { ShowingById, Ticket } from 'src/app/features/home/shared/home.interfaces';
 import { ReservationsStore } from 'src/app/features/home/subpages/reservations/store/reservations.store';
-import { TranslateModule } from '@ngx-translate/core'
+import { TranslateModule } from '@ngx-translate/core';
+import { ToastFacadeService } from '@shared/services/toast.facade.service';
 
 @Component({
   selector: 'app-hall',
   standalone: true,
   imports: [
     AsyncPipe,
-    JsonPipe,
     MatStepperModule,
     MatFormFieldModule,
     MatInputModule,
@@ -31,13 +31,14 @@ import { TranslateModule } from '@ngx-translate/core'
     MatSelectModule,
     MatIconModule,
     UpperCasePipe,
-    TranslateModule
+    TranslateModule,
   ],
   template: `
     <div class="reservation" *ngIf="showing$ | async as showing">
       <div class="info-wrapper">
         <p>
-          {{ showing.title }}, {{ 'sala' | uppercase | translate }} {{ 'nr' | uppercase | translate }} {{ showing.hallno }}, {{ showing.start.split(' ')[0] }},
+          {{ showing.title }}, {{ 'sala' | uppercase | translate }} {{ 'nr' | uppercase | translate }}
+          {{ showing.hallno }}, {{ showing.start.split(' ')[0] }},
           {{ 'godz.' | uppercase | translate }}
           {{ showing.start.split(' ')[1] }}
         </p>
@@ -64,7 +65,10 @@ import { TranslateModule } from '@ngx-translate/core'
       <form [formGroup]="seatsFormGroup" (ngSubmit)="firstStep()">
         <div class="tickets-wrapper" *ngFor="let ticket of selectedSeats; let i = index">
           <div class="ticket-info">
-            <p>{{ 'Rząd' | uppercase | translate }} {{ ticket[0] }} {{ 'Miejsce' | uppercase | translate }} {{ ticket.slice(1) }}</p>
+            <p>
+              {{ 'Rząd' | uppercase | translate }} {{ ticket[0] }} {{ 'Miejsce' | uppercase | translate }}
+              {{ ticket.slice(1) }}
+            </p>
           </div>
           <mat-form-field class="ticket-select" appearance="fill" color="accent">
             <mat-label>{{ 'Rodzaj biletu' | uppercase | translate }}</mat-label>
@@ -113,6 +117,7 @@ export class HallComponent implements OnInit {
   @Output() removedSeat = new EventEmitter<{ seat: string; showingId: number }>();
 
   private reservationsStore = inject(ReservationsStore);
+  private toastService = inject(ToastFacadeService);
 
   selectedTickets$ = this.reservationsStore.state$.pipe(map(state => state.selectedTickets));
 
@@ -145,6 +150,11 @@ export class HallComponent implements OnInit {
   addToBookedSeats(row: string, column: string, showingId: number) {
     const seat = row + column;
     this.showing$.pipe(take(1)).subscribe(showing => {
+      if (this.selectedSeats.length >= 10) {
+        this.toastService.showError('Nie możesz zarezerwować więcej niż 10 miejsc na raz', 'Błąd');
+        return;
+      }
+
       if (!showing.bookedseats?.includes(seat)) {
         this.selectedSeats.push(seat);
         this.seatsFormGroup.addControl(seat, new FormControl('', Validators.required));
